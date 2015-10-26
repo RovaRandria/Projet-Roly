@@ -1,0 +1,17 @@
+-Faire un système de progression (barre d'xp)
+-Système de succès
+-Liste des sports individuels qu'on peut gérer :
+	*Athlétisme(sprint-fond)
+	*Natation
+	*Jogging
+	*Yoga
+	*Escalade
+	*Musculation
+	*Badminton
+	*Arts martiaux
+	*Vélo
+	*Gymnastique
+	*Danse
+	*Ski
+	*Escrime
+	*Marche/Randonnée
