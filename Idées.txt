@@ -15,3 +15,6 @@
 	*Ski
 	*Escrime
 	*Marche/Randonnée
+-Confidentialité
+-Carte des lieux
+-Graphique avec comparaison entre amis
