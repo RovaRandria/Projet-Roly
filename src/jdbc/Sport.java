@@ -6,7 +6,7 @@ public class Sport {
 		private int id;
 		private String name;
 		private ArrayList<Performance> performance;
-		private ArrayList<Exercice> exercices;
+		private ArrayList<Exercise> exercises;
 		
 		public Sport() {
 			
@@ -45,12 +45,12 @@ public class Sport {
 			this.performance = performance;
 		}
 
-		public ArrayList<Exercice> getExercices() {
-			return exercices;
+		public ArrayList<Exercise> getexercises() {
+			return exercises;
 		}
 
-		public void setExercices(ArrayList<Exercice> exercices) {
-			this.exercices = exercices;
+		public void setExercises(ArrayList<Exercise> exercises) {
+			this.exercises = exercises;
 		}
 		
 		

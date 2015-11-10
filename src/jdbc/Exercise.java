@@ -1,16 +1,16 @@
 package jdbc;
 
-public class Exercice {
+public class Exercise {
 	private int id;
 	private String name;
 	private String areaOfEffect;
 	private String description;
 	
-	public Exercice() {
+	public Exercise() {
 		
 	}
 	
-	public Exercice(int id, String name, String areaOfEffect, String description) {
+	public Exercise(int id, String name, String areaOfEffect, String description) {
 		this.id = id;
 		this.name = name;
 		this.areaOfEffect = areaOfEffect;
@@ -60,7 +60,7 @@ public class Exercice {
 
 	@Override
 	public String toString() {
-		return "Exercice [id=" + id + ", name=" + name + ", areaOfEffect="
+		return "Exercise [id=" + id + ", name=" + name + ", areaOfEffect="
 				+ areaOfEffect + ", description=" + description + "]";
 	}
 	
