@@ -18,3 +18,5 @@
 -Confidentialité
 -Carte des lieux
 -Graphique avec comparaison entre amis
+-Réseau social On/OffLine
+-Wishlist

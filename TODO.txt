@@ -1,4 +1,3 @@
 -Installer et comprendre Hibernate et JFreeChart avant le rdv avec T.Liu
 -Choisir un SGBG (MySQL, Oracle ou PostgreSQL)
 -Faire le schéma MCD/MLD de la BDD
--Réseau social On/OffLine
