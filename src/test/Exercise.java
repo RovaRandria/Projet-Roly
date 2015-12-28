@@ -1,17 +1,29 @@
-package jdbc;
+package test;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 public class Exercise {
-	private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private String id;
+	
+	@Column(name = "name", length = 50, nullable = false)
 	private String name;
+	
+	@Column(name = "area_of_effet", length = 50, nullable = false)
 	private String areaOfEffect;
+	
+	@Column(name = "description", length = 300, nullable = false)
 	private String description;
 	
 	public Exercise() {
 		
 	}
 	
-	public Exercise(int id, String name, String areaOfEffect, String description) {
-		this.id = id;
+	public Exercise(String name, String areaOfEffect, String description) {
 		this.name = name;
 		this.areaOfEffect = areaOfEffect;
 		this.description = description;
@@ -23,12 +35,12 @@ public class Exercise {
 	}
 
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

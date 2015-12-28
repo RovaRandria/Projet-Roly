@@ -1,19 +1,38 @@
-package jdbc;
+package test;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 public class Practice {
-	private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private String id;
+	
+	@Column(name = "sport", nullable = false)
 	private Sport sport;
-	private String date;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "date", nullable = false)
+	private Date date;
+	
+	@Column(name = "place", nullable = false)
 	private String place;
+	
+	@Column(name = "duration", nullable = false)
 	private float duration;
 	
 	public Practice() {
 		
 	}
 	
-	public Practice(int id, Sport sport, String date, String place,
+	public Practice(Sport sport, Date date, String place,
 			float duration) {
-		this.id = id;
 		this.sport = sport;
 		this.date = date;
 		this.place = place;
@@ -28,19 +47,19 @@ public class Practice {
 		this.sport = sport;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
