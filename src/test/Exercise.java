@@ -1,10 +1,22 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "exercise")
 public class Exercise {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,49 +25,54 @@ public class Exercise {
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	
-	@Column(name = "area_of_effet", length = 50, nullable = false)
-	private String areaOfEffect;
+	@Enumerated(EnumType.ORDINAL)
+	private AreaOfEffect areaOfEffect;
 	
 	@Column(name = "description", length = 300, nullable = false)
 	private String description;
 	
+	@ManyToMany(mappedBy="exercisesList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity=Sport.class)
+	private List<Sport> sportsList = new ArrayList<Sport>();
+	
+	
 	public Exercise() {
 		
 	}
-	
-	public Exercise(String name, String areaOfEffect, String description) {
-		this.name = name;
-		this.areaOfEffect = areaOfEffect;
-		this.description = description;
-	}
 
 	
-	public String getName() {
-		return name;
-	}
+	
+	public Exercise(String name, AreaOfEffect areaOfEffect,
+		String description) {
+	this.name = name;
+	this.areaOfEffect = areaOfEffect;
+	this.description = description;
+}
+
 
 
 	public String getId() {
 		return id;
 	}
 
-
 	public void setId(String id) {
 		this.id = id;
 	}
-
-
+	
+	public String getName() {
+		return name;
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
 
 
-	public String getAreaOfEffect() {
+	public AreaOfEffect getAreaOfEffect() {
 		return areaOfEffect;
 	}
 
 
-	public void setAreaOfEffect(String areaOfEffect) {
+	public void setAreaOfEffect(AreaOfEffect areaOfEffect) {
 		this.areaOfEffect = areaOfEffect;
 	}
 
@@ -68,6 +85,15 @@ public class Exercise {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public List<Sport> getSportsList() {
+		return sportsList;
+	}
+
+	public void setSportsList(List<Sport> sportsList) {
+		this.sportsList = sportsList;
+	}
+
 
 
 	@Override

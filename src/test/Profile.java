@@ -35,7 +35,7 @@ public class Profile {
 	private Gender gender;
 	
 	@Temporal(TemporalType.DATE)
-	private Date birthday;
+	private Date birthdate;
 	
 	@Column(name = "friends")
 	private ArrayList<Profile> friends;
@@ -54,13 +54,13 @@ public class Profile {
 	}
 	
 	public Profile(String lastName, String firstName,
-			Date registrationDate, Gender gender, Date birthday, float weight) {
+			Date registrationDate, Gender gender, Date birthdate, float weight) {
 		super();
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.registrationDate = registrationDate;
 		this.gender = gender;
-		this.birthday = birthday;
+		this.birthdate = birthdate;
 		this.weight = weight;
 	}
 
@@ -104,12 +104,12 @@ public class Profile {
 		this.gender = gender;
 	}
 
-	public Date getBirthday() {
-		return birthday;
+	public Date getBirthdate() {
+		return birthdate;
 	}
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
 	}
 
 	public ArrayList<Profile> getFriends() {
@@ -148,7 +148,7 @@ public class Profile {
 	public String toString() {
 		return "Profile [id=" + id + ", lastName=" + lastName + ", firstName="
 				+ firstName + ", registrationDate=" + registrationDate
-				+ ", gender=" + gender + ", birthday=" + birthday
+				+ ", gender=" + gender + ", birthdate=" + birthdate
 				+ ", friends=" + friends + ", sports=" + sports
 				+ ", practices=" + practices + ", weight=" + weight + "]";
 	}

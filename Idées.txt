@@ -20,3 +20,4 @@
 -Graphique avec comparaison entre amis
 -Réseau social On/OffLine
 -Wishlist
+-Recherche d'exercice/sport par zone d'effet désirée

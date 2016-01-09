@@ -2,20 +2,21 @@ package test;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 
 public class Practice {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
-	
-	@Column(name = "sport", nullable = false)
-	private Sport sport;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date", nullable = false)
@@ -26,6 +27,9 @@ public class Practice {
 	
 	@Column(name = "duration", nullable = false)
 	private float duration;
+	
+	@OneToOne(mappedBy="class1", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Sport.class)
+	private Sport sport;
 	
 	public Practice() {
 		
