@@ -1,9 +1,8 @@
 package test;
 import org.hibernate.Session;
+import utils.DataUtility;
 
-//import utils.DataUtility;
-
-public class TestExerciseSport {
+public class TestExercisePractice {
 
 	public static void main(String[] args) {
 		System.out.println("CREATE TABLE");
@@ -16,31 +15,29 @@ public class TestExerciseSport {
 
 		//Test persist.
 		session.beginTransaction();
-//		Exercise exercise = new Exercise("1", "lskdf", "ldvk", "isdhf");
-//		session.persist(exercise);
-//		session.getTransaction().commit();
-		Sport sport = new Sport("Esca");
-		session.persist(sport);
+		Sport escalade = new Sport("Escalade");
+		Practice practice = new Practice(escalade, DataUtility.createDate(11, 06, 2015), "Cergy" , 120);
+		session.persist(practice);
 		session.getTransaction().commit();
 
 		//Test flush.
 //		session.beginTransaction();
-//		Sport retrievedSport = (Sport) session.get(Sport.class, "1");
-//		System.out.println(retrievedSport.toString());
-//		retrievedSport.setName("Escalade");
+//		Practice retrievedPractice = (Practice) session.get(Practice.class, "1");
+//		System.out.println(retrievedPractice.toString());
+//		retrievedPractice.setLocation("SOA");
 //		session.flush();
 //		session.getTransaction().commit();
 		
 		//Test merge.
 		session.beginTransaction();
-		Sport retrievedSport = (Sport) session.get(Sport.class, "1");
-		System.out.println(retrievedSport.toString());
+		Practice retrievedPractice = (Practice) session.get(Practice.class, "1");
+		System.out.println(retrievedPractice.toString());
 		session.getTransaction().commit();
 		session.close();
-		retrievedSport.setName("Escalade");
+		retrievedPractice.setDate(DataUtility.createDate(21, 01, 2015));
 		session = DBConnection.getSession();
 		session.beginTransaction();
-		session.merge(retrievedSport);
+		session.merge(retrievedPractice);
 		session.getTransaction().commit();
 		
 		

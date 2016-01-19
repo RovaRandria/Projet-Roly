@@ -31,24 +31,19 @@ public class Exercise {
 	@Column(name = "description", length = 300, nullable = false)
 	private String description;
 	
-	@ManyToMany(mappedBy="exercisesList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity=Sport.class)
-	private List<Sport> sportsList = new ArrayList<Sport>();
-	
+	@ManyToMany(mappedBy="exercisesList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity=Practice.class)
+	private List<Practice> practicesList = new ArrayList<Practice>();
 	
 	public Exercise() {
 		
-	}
-
-	
+	}	
 	
 	public Exercise(String name, AreaOfEffect areaOfEffect,
 		String description) {
-	this.name = name;
-	this.areaOfEffect = areaOfEffect;
-	this.description = description;
-}
-
-
+		this.name = name;
+		this.areaOfEffect = areaOfEffect;
+		this.description = description;
+	}
 
 	public String getId() {
 		return id;
@@ -86,15 +81,13 @@ public class Exercise {
 		this.description = description;
 	}
 	
-	public List<Sport> getSportsList() {
-		return sportsList;
+	public List<Practice> getPracticesList() {
+		return practicesList;
 	}
 
-	public void setSportsList(List<Sport> sportsList) {
-		this.sportsList = sportsList;
+	public void setPracticesList(List<Practice> practicesList) {
+		this.practicesList = practicesList;
 	}
-
-
 
 	@Override
 	public String toString() {

@@ -12,8 +12,8 @@ public class TestProfile {
 		Session session = DBConnection.getSession();
 		//Test persist.
 		session.beginTransaction();
-		Profile Profile = new Profile("Dupont", "Paul", DataUtility.createDate(1, 6, 2015), Gender.MALE, DataUtility.createDate(1, 6, 1986), 75);
-		session.persist(Profile);
+		Profile profile = new Profile("Dupont", "Paul", DataUtility.createDate(1, 6, 2015), Gender.MALE, DataUtility.createDate(1, 6, 1986), 75);
+		session.persist(profile);
 		session.getTransaction().commit();
 
 		//Test flush.
