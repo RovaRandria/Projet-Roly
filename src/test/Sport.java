@@ -24,10 +24,7 @@ public class Sport {
 		
 		@Column(name = "name", length = 50, nullable = false)
 		private String name;
-		
-		@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Practice.class)
-		@JoinTable(name = "practice_sport", joinColumns = @JoinColumn(name = "practice_id"), inverseJoinColumns = @JoinColumn(name = "sport_id"))
-		private List<Practice> practicesList = new ArrayList<Practice>();
+
 		
 		public Sport() {
 		}
@@ -51,14 +48,7 @@ public class Sport {
 		public void setName(String name) {
 			this.name = name;
 		}			
-		
-		public List<Practice> getPracticesList() {
-			return practicesList;
-		}
 
-		public void setPracticesList(List<Practice> practicesList) {
-			this.practicesList = practicesList;
-		}
 
 		@Override
 		public String toString() {

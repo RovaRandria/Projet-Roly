@@ -13,9 +13,11 @@ public class DBConnection {
 			config = new AnnotationConfiguration();
 			config.addAnnotatedClass(Sport.class);
 			config.addAnnotatedClass(Exercise.class);
-			config.addAnnotatedClass(Performance.class);
+			config.addAnnotatedClass(Practice.class);
 			config.addAnnotatedClass(Exercise.class);
 			config.addAnnotatedClass(Profile.class);
+			config.addAnnotatedClass(PhysicalData.class);
+			config.addAnnotatedClass(User.class);
 			
 			String packageName = DBConnection.class.getPackage().getName();
 			config.configure(packageName + "/connection.cfg.xml");

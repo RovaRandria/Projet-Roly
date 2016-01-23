@@ -15,9 +15,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 
 @Entity
 @Table(name = "practice")
@@ -30,18 +32,25 @@ public class Practice {
 	@Column(name = "date", nullable = false)
 	private Date date;
 	
-	@Column(name = "place", nullable = false)
+	@Column(name = "place")
 	private String place;
 	
-	@Column(name = "duration", nullable = false)
+	@Column(name = "performance")
+	private String performance;
+	
+	@Column(name = "duration")
 	private float duration;
 	
-	@ManyToOne(cascade = CascadeType.ALL, targetEntity = Sport.class)
-    @JoinTable(name="practice_sport", joinColumns = @JoinColumn(name="sport_id"),inverseJoinColumns = @JoinColumn(name="practice_id"))
+	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Sport.class)
+	@JoinColumn(name = "sport_id", nullable = false, updatable = false)
 	private Sport sport;
 	
-	@ManyToMany(mappedBy="practicesList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Exercise.class)
-	@JoinTable(name = "practice_exercise", joinColumns = @JoinColumn(name = "exercise_id"), inverseJoinColumns = @JoinColumn(name = "practice_id"))
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Profile.class)
+	@JoinColumn(name = "profile_id", nullable = false)
+	private Profile profile;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Exercise.class)
+	@JoinTable(name = "practice_exercise", joinColumns = @JoinColumn(name = "practice_id"), inverseJoinColumns = @JoinColumn(name = "exercise_id"))
 	private List<Exercise> exercisesList = new ArrayList<Exercise>();
 	
 	public Practice() {

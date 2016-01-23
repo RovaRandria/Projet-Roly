@@ -2,17 +2,27 @@ package test;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 
 @Entity
 @Table(name = "profile")
@@ -21,10 +31,10 @@ public class Profile {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 	
-	@Column(name = "lastname", length = 50, nullable = false)
+	@Column(name = "last_name", length = 50, nullable = false)
 	private String lastName;
 	
-	@Column(name = "firstname", length = 50, nullable = false)
+	@Column(name = "first_name", length = 50, nullable = false)
 	private String firstName;
 	
 	@Column(name = "registration_date")
@@ -37,10 +47,23 @@ public class Profile {
 	@Temporal(TemporalType.DATE)
 	private Date birthdate;
 	
-	private ArrayList<PhysicData> physicData;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = PhysicalData.class)
+	@JoinColumn(name = "profil_id", nullable = false)
+	private List<PhysicalData> physicalDataList = new ArrayList<PhysicalData>();
 	
-	@Column(name = "sports")
-	private ArrayList<Sport> sports;
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Sport.class)
+	@JoinTable(name = "profile_sport", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "sport_id"))
+	private List<Sport> sportsList = new ArrayList<Sport>();
+	
+	@OneToMany(mappedBy="profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Practice.class)
+	private List<Practice> practicesList = new ArrayList<Practice>();
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Practice.class)
+	@JoinColumn(name = "profile_id", nullable = false)
+	private List<Practice> practiceList = new ArrayList<Practice>();
+	
+	@OneToOne(mappedBy="profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = User.class)
+	private User user;
 	
 	public Profile() {
 		
@@ -104,36 +127,22 @@ public class Profile {
 		this.birthdate = birthdate;
 	}
 		
-	public ArrayList<Sport> getSports() {
-		return sports;
-	}
-
-	public void setSports(ArrayList<Sport> sports) {
-		this.sports = sports;
-	}
 	
-	public String displaySport() {
-		String sportsStr = null;
-		for(int i = 0; i< this.sports.size(); i++) {
-			sportsStr += sports.get(i).toString()+ " ";
-		}
-		return sportsStr;
-	}	
+//	public String displaySport() {
+//		String sportsStr = null;
+//		for(int i = 0; i< this.sports.size(); i++) {
+//			sportsStr += sports.get(i).toString()+ " ";
+//		}
+//		return sportsStr;
+//	}	
 	
-	public ArrayList<PhysicData> getPhysicData() {
-		return physicData;
-	}
 
-	public void setPhysicData(ArrayList<PhysicData> physicData) {
-		this.physicData = physicData;
-	}
-
-	@Override
-	public String toString() {
-		return "Profile [id=" + id + ", lastName=" + lastName + ", firstName="
-				+ firstName + ", registrationDate=" + registrationDate
-				+ ", gender=" + gender + ", birthdate=" + birthdate
-				+ "sports=" + displaySport() + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Profile [id=" + id + ", lastName=" + lastName + ", firstName="
+//				+ firstName + ", registrationDate=" + registrationDate
+//				+ ", gender=" + gender + ", birthdate=" + birthdate
+//				+ "sports=" + displaySport() + "]";
+//	}
 	
 }

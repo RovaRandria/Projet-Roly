@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -15,32 +17,23 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String id;
 	
+	@Id
 	@Column(name = "pseudo", length = 50, nullable = false)
 	private String pseudo;
 	
 	private String password;
+			
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
+	@OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Profile.class)
+	@JoinColumn(name = "profile_id", nullable = false, updatable = false)
 	private Profile profile;
-		
+	
 	@Column(name = "friends")
 	private ArrayList<Profile> friends;
 	
 	public User(String pseudo) {
 		this.pseudo = pseudo;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getPseudo() {

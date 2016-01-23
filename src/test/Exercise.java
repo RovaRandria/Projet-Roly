@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -25,14 +27,13 @@ public class Exercise {
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	
-	@Enumerated(EnumType.ORDINAL)
-	private AreaOfEffect areaOfEffect;
-	
-	@Column(name = "description", length = 300, nullable = false)
+	@Column(name = "description", length = 300)
 	private String description;
 	
-	@ManyToMany(mappedBy="exercisesList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity=Practice.class)
-	private List<Practice> practicesList = new ArrayList<Practice>();
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "area_of_effect")
+	private AreaOfEffect areaOfEffect;
+	
 	
 	public Exercise() {
 		
@@ -81,14 +82,6 @@ public class Exercise {
 		this.description = description;
 	}
 	
-	public List<Practice> getPracticesList() {
-		return practicesList;
-	}
-
-	public void setPracticesList(List<Practice> practicesList) {
-		this.practicesList = practicesList;
-	}
-
 	@Override
 	public String toString() {
 		return "Exercise [id=" + id + ", name=" + name + ", areaOfEffect="
