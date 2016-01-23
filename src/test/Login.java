@@ -8,6 +8,8 @@ public class Login {
 	
 	private boolean coState;
 	
+	private Session session;
+	
 	public Login() {
 		//TABLES CREATION
 		DataInit.createTables();
@@ -25,13 +27,7 @@ public class Login {
 		return null;
 	}
 	
-	public int connect(String pseudo, String password, User retrievedUser) {
-		System.out.println("DBCONNECTION");
-		Session session = DBConnection.getSession();
-		
-		System.out.println("BEGIN TRANSACTION");
-		session.beginTransaction();
-		
+	public int connect(String pseudo, String password, User retrievedUser, Session session) {		
 		if(retrievedUser != null) {
 			if(retrievedUser.getPassword().equals(password)) {
 				System.out.println(retrievedUser.getPseudo() + " est bien connecté !");
@@ -42,7 +38,7 @@ public class Login {
 				return 1;
 			}
 			else {
-				System.out.println("Mot de passe incorrect !");
+				System.out.println(	"Mot de passe incorrect !");
 				retrievedUser = null;
 				return 2;
 			}
@@ -68,12 +64,22 @@ public class Login {
 	public void setCoState(boolean coState) {
 		this.coState = coState;
 	}
+	
+	public Session getSession() {
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+	}
 
 	public User register(String pseudo, String password) {
 		User newUser;
-		//Test persist.
+
 		Session session = DBConnection.getSession();
 		session.beginTransaction();
+		//Test persist.
+		
 		User retrievedUser = (User) session.get(User.class, pseudo);
 		if(retrievedUser != null) { 
 			System.out.println("Ce pseudo est déjà utilisé.");

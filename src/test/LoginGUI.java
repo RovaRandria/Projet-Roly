@@ -40,6 +40,7 @@ public class LoginGUI extends JFrame {
 	private JTextField pseudoTextField = new JTextField(25);
 	private JTextField passwordTextField = new JPasswordField(25);
 	
+	private JButton backButton = new JButton("Retour");
 	private JButton connectionButton = new JButton("Connexion");
 	private JButton newRegistrationButton = new JButton("Inscription");
 	private JButton registrationButton = new JButton("Inscription");
@@ -68,6 +69,8 @@ public class LoginGUI extends JFrame {
 		frameConstraints.gridy = 0;
 		homePanel.add(registrationLabel);
 		homePanel.add(newRegistrationButton);
+		homePanel.add(backButton);
+		backButton.setVisible(false);
 		this.add(homePanel, frameConstraints);
 
 		frameConstraints.gridx = 1;
@@ -123,14 +126,26 @@ public class LoginGUI extends JFrame {
 		disconnectionButton.addActionListener(new DisconnectionAction());
 		newRegistrationButton.addActionListener(new NewRegistrationAction());
 		registrationButton.addActionListener(new RegistrationAction());
+		backButton.addActionListener(new BackHomeAction());
+	}
+	
+	private class BackHomeAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			init();
+			instance.repaint();
+		}
 	}
 	
 	private class ConnectionAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+
 			Session session = DBConnection.getSession();
+			System.out.println("BEGIN TRANSACTION");
+			session.beginTransaction();
 			User retrievedUser = (User) session.get(User.class, pseudoTextField.getText());
-			switch(login.connect(pseudoTextField.getText(), passwordTextField.getText(), retrievedUser)) {
+			switch(login.connect(pseudoTextField.getText(), passwordTextField.getText(), retrievedUser, session)) {
 				case 0 :
 					userInfoLabel.setText("Ce pseudo existe déjà !");
 					instance.repaint();
@@ -171,6 +186,7 @@ public class LoginGUI extends JFrame {
 			connectionPanel.remove(connectionButton);
 			homePanel.remove(registrationLabel);
 			homePanel.remove(newRegistrationButton);
+			backButton.setVisible(true);
 			userInfoLabel.setText("6 caractères minimum.");
 			pseudoTextField.setText("");
 			passwordTextField.setText("");
@@ -192,7 +208,7 @@ public class LoginGUI extends JFrame {
 			}
 			else {
 				User newUser = login.register(pseudoTextField.getText(), passwordTextField.getText());
-				if (!newUser.equals(null)) {
+				if (newUser != null) {
 				init();
 				userInfoLabel.setText("L'utilisateur " + newUser.getPseudo() + " a bien été créé ! Vous pouvez maintenant vous connecter !");
 				instance.repaint();
