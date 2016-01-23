@@ -1,20 +1,12 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,13 +19,12 @@ public class Exercise {
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	
-	@Column(name = "description", length = 300)
-	private String description;
-	
-	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "area_of_effect")
+	@Enumerated(EnumType.ORDINAL)
 	private AreaOfEffect areaOfEffect;
 	
+	@Column(name = "description", length = 300, nullable = false)
+	private String description;
 	
 	public Exercise() {
 		

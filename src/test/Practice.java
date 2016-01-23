@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,8 +40,8 @@ public class Practice {
 	@Column(name = "duration")
 	private float duration;
 	
-	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Sport.class)
-	@JoinColumn(name = "sport_id", nullable = false, updatable = false)
+	@ManyToOne(cascade = CascadeType.ALL, targetEntity = Sport.class)
+    @JoinColumn(name="sport_id", nullable = false, updatable = false)
 	private Sport sport;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Profile.class)
@@ -79,6 +78,14 @@ public class Practice {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
 
 	public String getPlace() {
 		return place;
@@ -102,6 +109,22 @@ public class Practice {
 
 	public void setSport(Sport sport) {
 		this.sport = sport;
+	}
+	
+	public String getPerformance() {
+		return performance;
+	}
+
+	public void setPerformance(String performance) {
+		this.performance = performance;
+	}
+
+	public List<Exercise> getExercisesList() {
+		return exercisesList;
+	}
+
+	public void setExercisesList(List<Exercise> exercisesList) {
+		this.exercisesList = exercisesList;
 	}
 
 	public void setExercises(List<Exercise> exercisesList) {

@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -57,11 +56,7 @@ public class Profile {
 	
 	@OneToMany(mappedBy="profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Practice.class)
 	private List<Practice> practicesList = new ArrayList<Practice>();
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Practice.class)
-	@JoinColumn(name = "profile_id", nullable = false)
-	private List<Practice> practiceList = new ArrayList<Practice>();
-	
+
 	@OneToOne(mappedBy="profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = User.class)
 	private User user;
 	
@@ -126,23 +121,55 @@ public class Profile {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-		
 	
-//	public String displaySport() {
-//		String sportsStr = null;
-//		for(int i = 0; i< this.sports.size(); i++) {
-//			sportsStr += sports.get(i).toString()+ " ";
-//		}
-//		return sportsStr;
-//	}	
-	
+	public String displaySport() {
+		String sportsStr = null;
+		for(int i = 0; i< this.sportsList.size(); i++) {
+			sportsStr += sportsList.get(i).toString()+ " ";
+		}
+		return sportsStr;
+	}	
 
-//	@Override
-//	public String toString() {
-//		return "Profile [id=" + id + ", lastName=" + lastName + ", firstName="
-//				+ firstName + ", registrationDate=" + registrationDate
-//				+ ", gender=" + gender + ", birthdate=" + birthdate
-//				+ "sports=" + displaySport() + "]";
-//	}
-	
+	public List<PhysicalData> getPhysicalDataList() {
+		return physicalDataList;
+	}
+	public void setPhysicalDataList(ArrayList<PhysicalData> physicalDataList) {
+		this.physicalDataList = physicalDataList;
+	}
+
+	@Override
+	public String toString() {
+		return "Profile [id=" + id + ", lastName=" + lastName + ", firstName="
+				+ firstName + ", registrationDate=" + registrationDate
+				+ ", gender=" + gender + ", birthdate=" + birthdate
+				+ "sports=" + displaySport() + "]";
+	}
+
+	public List<Sport> getSportsList() {
+		return sportsList;
+	}
+
+	public void setSportsList(List<Sport> sportsList) {
+		this.sportsList = sportsList;
+	}
+
+	public List<Practice> getPracticesList() {
+		return practicesList;
+	}
+
+	public void setPracticesList(List<Practice> practicesList) {
+		this.practicesList = practicesList;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setPhysicalDataList(List<PhysicalData> physicalDataList) {
+		this.physicalDataList = physicalDataList;
+	}
 }

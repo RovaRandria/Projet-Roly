@@ -6,36 +6,36 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
 public class User {
-	
 	@Id
 	@Column(name = "pseudo", length = 50, nullable = false)
 	private String pseudo;
 	
+	@Column(name = "password", nullable = false)
 	private String password;
-			
-	
-	@OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Profile.class)
-	@JoinColumn(name = "profile_id", nullable = false, updatable = false)
+		
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Profile.class)
+	@JoinColumn(name = "profile_id", updatable = false)
 	private Profile profile;
 	
 	@Column(name = "friends")
 	private ArrayList<Profile> friends;
 	
-	public User(String pseudo) {
-		this.pseudo = pseudo;
+	public User() {
 	}
-
+	
+	public User(String pseudo, String password) {
+		this.pseudo = pseudo;
+		this.password = password;
+	}
+	
 	public String getPseudo() {
 		return pseudo;
 	}

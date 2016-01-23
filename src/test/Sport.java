@@ -1,20 +1,11 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 @Entity
 @Table(name = "sport")
 public class Sport {
@@ -24,7 +15,6 @@ public class Sport {
 		
 		@Column(name = "name", length = 50, nullable = false)
 		private String name;
-
 		
 		public Sport() {
 		}
@@ -47,12 +37,12 @@ public class Sport {
 
 		public void setName(String name) {
 			this.name = name;
-		}			
-
-
+		}
+		
 		@Override
 		public String toString() {
 			return "Sport [id=" + id + ", name=" + name + "]";
 		}
+		
 			
 }
