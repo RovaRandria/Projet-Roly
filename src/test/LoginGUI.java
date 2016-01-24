@@ -149,6 +149,7 @@ public class LoginGUI extends JFrame {
 				case 0 :
 					userInfoLabel.setText("L'utilisateur n'existe pas !");
 					instance.repaint();
+					break;
 				case 1 :
 					login.setCurrentUser(retrievedUser);
 					userInfoLabel.setText(login.getCurrentUser().getPseudo() + " est bien connecté !");
@@ -158,7 +159,7 @@ public class LoginGUI extends JFrame {
 					connectionPanel.add(disconnectionButton);
 					disconnectionButton.setVisible(true);
 					instance.repaint();
-				break;
+					break;
 				case 2 :
 					userInfoLabel.setText("Mot de passe incorrect !");
 					instance.repaint();
