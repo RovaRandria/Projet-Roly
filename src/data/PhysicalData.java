@@ -1,4 +1,4 @@
-package test;
+package data;
 
 import java.util.Date;
 

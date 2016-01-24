@@ -1,4 +1,4 @@
-package test;
+package data;
 
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;

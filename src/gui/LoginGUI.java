@@ -1,4 +1,4 @@
-package test;
+package gui;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -13,6 +13,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import org.hibernate.Session;
+
+import data.DBConnection;
+import data.Login;
+import data.User;
 
 	
 public class LoginGUI extends JFrame {
@@ -147,7 +151,7 @@ public class LoginGUI extends JFrame {
 			User retrievedUser = (User) session.get(User.class, pseudoTextField.getText());
 			switch(login.connect(pseudoTextField.getText(), passwordTextField.getText(), retrievedUser, session)) {
 				case 0 :
-					userInfoLabel.setText("L'utilisateur n'existe pas !");
+					userInfoLabel.setText("Cet utilisateur n'existe pas !");
 					instance.repaint();
 					break;
 				case 1 :

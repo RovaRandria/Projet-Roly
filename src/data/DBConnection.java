@@ -1,4 +1,4 @@
-package test;
+package data;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
