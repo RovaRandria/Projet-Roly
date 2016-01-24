@@ -147,7 +147,7 @@ public class LoginGUI extends JFrame {
 			User retrievedUser = (User) session.get(User.class, pseudoTextField.getText());
 			switch(login.connect(pseudoTextField.getText(), passwordTextField.getText(), retrievedUser, session)) {
 				case 0 :
-					userInfoLabel.setText("Ce pseudo existe déjà !");
+					userInfoLabel.setText("L'utilisateur n'existe pas !");
 					instance.repaint();
 				case 1 :
 					login.setCurrentUser(retrievedUser);
