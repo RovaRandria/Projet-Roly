@@ -20,5 +20,4 @@ public class DataUtility {
 		}
 		return null;
 	}
-
 }

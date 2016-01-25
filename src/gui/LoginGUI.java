@@ -34,7 +34,6 @@ public class LoginGUI extends JFrame {
 	private JPanel homePanel = new JPanel();
 	private JPanel connectionPanel = new JPanel();
 	private JPanel userInfoPanel = new JPanel();
-	
 	private JLabel homeLabel = new JLabel("Bienvenu sur Pass'Sport, le réseau social des sportfis !");
 	private JLabel pseudoLabel = new JLabel("Pseudo :");
 	private JLabel passwordLabel = new JLabel("Mot de passe :");
@@ -48,6 +47,9 @@ public class LoginGUI extends JFrame {
 	private JButton connectionButton = new JButton("Connexion");
 	private JButton newRegistrationButton = new JButton("Inscription");
 	private JButton registrationButton = new JButton("Inscription");
+
+	private JButton updateInfoButton = new JButton("Modifier ses informations");
+	private JButton displayProfileButton = new JButton("Afficher le profil");
 	private JButton disconnectionButton = new JButton("Déconnexion");
 	
 	public LoginGUI(String title) {
@@ -58,7 +60,7 @@ public class LoginGUI extends JFrame {
 		initActions();
 
 	}
-	private void init() {
+	public void init() {
 		/*homePanel.setPreferredSize(new Dimension(800, 200));
 		connectionPanel.setPreferredSize(new Dimension(800, 400));
 		userInfoPanel.setPreferredSize(new Dimension(800, 200));*/
@@ -80,9 +82,11 @@ public class LoginGUI extends JFrame {
 		frameConstraints.gridx = 1;
 		frameConstraints.gridy = 1;
 
-		if (!login.isCoState()) 
+		if (!login.isCoState()) {
 			disconnectionButton.setVisible(false);
-		
+			updateInfoButton.setVisible(false);
+			displayProfileButton.setVisible(false);
+		}
 		connectionPanel.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints2 = new GridBagConstraints();
 		frameConstraints2.gridx = 1;
@@ -105,6 +109,7 @@ public class LoginGUI extends JFrame {
 		frameConstraints2.gridy = 6;
 		connectionPanel.add(connectionButton, frameConstraints2);
 		connectionPanel.add(registrationButton, frameConstraints2);
+		connectionPanel.add(disconnectionButton, frameConstraints2);
 		registrationButton.setVisible(false);
 		this.add(connectionPanel, frameConstraints);
 		
@@ -120,7 +125,7 @@ public class LoginGUI extends JFrame {
 		setResizable(false);
 	}
 	
-	private void initStyle() {
+	public void initStyle() {
 	//Font & Backgrounds Settings
 	}
 	
@@ -131,6 +136,8 @@ public class LoginGUI extends JFrame {
 		newRegistrationButton.addActionListener(new NewRegistrationAction());
 		registrationButton.addActionListener(new RegistrationAction());
 		backButton.addActionListener(new BackHomeAction());
+		displayProfileButton.addActionListener(new DisplayProfileAction());
+		updateInfoButton.addActionListener(new UpdateInfoAction());
 	}
 	
 	private class BackHomeAction implements ActionListener {
@@ -161,7 +168,11 @@ public class LoginGUI extends JFrame {
 					homePanel.remove(registrationLabel);
 					homePanel.remove(newRegistrationButton);
 					connectionPanel.add(disconnectionButton);
+					connectionPanel.add(updateInfoButton);
+					connectionPanel.add(displayProfileButton);
 					disconnectionButton.setVisible(true);
+					updateInfoButton.setVisible(true);
+					displayProfileButton.setVisible(true);
 					instance.repaint();
 					break;
 				case 2 :
@@ -227,6 +238,40 @@ public class LoginGUI extends JFrame {
 			}
 		}
 	}
+	
+	private class UpdateInfoAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			instance.removeAll();
+			instance.add(backButton);
+			User user = instance.getLogin().getCurrentUser();
+			InfoManagerPanel infoManagerPanel = new InfoManagerPanel(user);
+			instance.add(infoManagerPanel);
+			instance.repaint();
+			
+		}
+	}
+	
+	private class DisplayProfileAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			instance.repaint();
+		}
+	}
+
+	public Login getLogin() {
+		return login;
+	}
+	public void setLogin(Login login) {
+		this.login = login;
+	}
+	public LoginGUI getInstance() {
+		return instance;
+	}
+	public void setInstance(LoginGUI instance) {
+		this.instance = instance;
+	}
+	
+	
 		//TABLES CREATION
 		//DataInit.createTables();
 		//login.register("Lily", "lilybg");

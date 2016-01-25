@@ -30,10 +30,10 @@ public class Profile {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 	
-	@Column(name = "last_name", length = 50, nullable = false)
+	@Column(name = "last_name", length = 50)
 	private String lastName;
 	
-	@Column(name = "first_name", length = 50, nullable = false)
+	@Column(name = "first_name", length = 50)
 	private String firstName;
 	
 	@Column(name = "registration_date")

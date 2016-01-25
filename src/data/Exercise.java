@@ -25,7 +25,7 @@ public class Exercise {
 	
 	@Column(name = "description", length = 300, nullable = false)
 	private String description;
-	
+		
 	public Exercise() {
 		
 	}	

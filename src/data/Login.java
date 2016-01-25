@@ -87,6 +87,8 @@ public class Login {
 		}
 		else {
 				newUser = new User(pseudo, password);
+				Profile profile = new Profile();
+				newUser.setProfile(profile);
 				session.persist(newUser);
 				session.getTransaction().commit();
 				System.out.println("L'utilisateur " + pseudo +" a bien été créé.");
