@@ -64,6 +64,11 @@ public class Profile {
 		
 	}
 	
+	public Profile(Date registrationDate) {
+		super();
+		this.registrationDate = registrationDate;
+	}
+	
 	public Profile(String lastName, String firstName,
 			Date registrationDate, Gender gender, Date birthdate, float weight) {
 		super();

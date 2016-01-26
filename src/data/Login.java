@@ -1,6 +1,12 @@
 package data;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.hibernate.Session;
+
+import utils.DataUtility;
 
 public class Login {
 	
@@ -12,12 +18,12 @@ public class Login {
 	
 	public Login() {
 		//TABLES CREATION
-		DataInit.createTables();
+		//DataInit.createTables();
 	}
 	
 	public Login (boolean coState) {
 		//TABLES CREATION
-		DataInit.createTables();
+		//DataInit.createTables();
 		this.coState = coState;
 	}
 	
@@ -31,8 +37,7 @@ public class Login {
 		if(retrievedUser != null) {
 			if(retrievedUser.getPassword().equals(password)) {
 				System.out.println(retrievedUser.getPseudo() + " est bien connecté !");
-				session.getTransaction().commit();			
-				session.close();
+				session.getTransaction().commit();
 				currentUser = retrievedUser;
 				coState = true;
 				return 1;
@@ -87,9 +92,11 @@ public class Login {
 		}
 		else {
 				newUser = new User(pseudo, password);
-				Profile profile = new Profile();
+				Calendar calendar = Calendar.getInstance();
+				Profile profile = new Profile(DataUtility.createDate(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR)));
 				newUser.setProfile(profile);
 				session.persist(newUser);
+				session.persist(profile);
 				session.getTransaction().commit();
 				System.out.println("L'utilisateur " + pseudo +" a bien été créé.");
 		}

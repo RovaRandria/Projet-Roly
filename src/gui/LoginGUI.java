@@ -31,17 +31,19 @@ public class LoginGUI extends JFrame {
 	private Login login;
 	private LoginGUI instance = this;
 	
+	private InfoManagerPanel infoManagerPanel = new InfoManagerPanel();
 	private JPanel homePanel = new JPanel();
 	private JPanel connectionPanel = new JPanel();
 	private JPanel userInfoPanel = new JPanel();
+	
 	private JLabel homeLabel = new JLabel("Bienvenu sur Pass'Sport, le réseau social des sportfis !");
 	private JLabel pseudoLabel = new JLabel("Pseudo :");
 	private JLabel passwordLabel = new JLabel("Mot de passe :");
 	private JLabel registrationLabel = new JLabel("Pour s'inscrire :");
 	private JLabel userInfoLabel = new JLabel("Utilisateur connecté : ");
 	
-	private JTextField pseudoTextField = new JTextField(25);
-	private JTextField passwordTextField = new JPasswordField(25);
+	private JTextField pseudoTextField = new JTextField(10);
+	private JTextField passwordTextField = new JPasswordField(10);
 	
 	private JButton backButton = new JButton("Retour");
 	private JButton connectionButton = new JButton("Connexion");
@@ -61,9 +63,12 @@ public class LoginGUI extends JFrame {
 
 	}
 	public void init() {
-		/*homePanel.setPreferredSize(new Dimension(800, 200));
-		connectionPanel.setPreferredSize(new Dimension(800, 400));
-		userInfoPanel.setPreferredSize(new Dimension(800, 200));*/
+		infoManagerPanel.setVisible(false);
+		updateInfoButton.setVisible(false);
+		displayProfileButton.setVisible(false);
+		infoManagerPanel.setVisible(false);
+		disconnectionButton.setVisible(false);
+		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
 		
@@ -94,8 +99,6 @@ public class LoginGUI extends JFrame {
 		connectionPanel.add(pseudoLabel, frameConstraints2);
 		frameConstraints2.gridx = 1;
 		frameConstraints2.gridy = 2;
-		pseudoTextField.setPreferredSize(new Dimension(50,20));
-		passwordTextField.setPreferredSize(new Dimension(50,20));
 		pseudoTextField.setText("");
 		passwordTextField.setText("");
 		connectionPanel.add(pseudoTextField, frameConstraints2);
@@ -241,11 +244,15 @@ public class LoginGUI extends JFrame {
 	
 	private class UpdateInfoAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			instance.removeAll();
-			instance.add(backButton);
+			homePanel.removeAll();
+			instance.remove(connectionPanel);
+			instance.remove(userInfoPanel);
+			instance.homePanel.add(backButton);
+			backButton.setVisible(true);
 			User user = instance.getLogin().getCurrentUser();
-			InfoManagerPanel infoManagerPanel = new InfoManagerPanel(user);
+			infoManagerPanel = new InfoManagerPanel(user);
 			instance.add(infoManagerPanel);
+			infoManagerPanel.setVisible(true);
 			instance.repaint();
 			
 		}
@@ -254,7 +261,7 @@ public class LoginGUI extends JFrame {
 	private class DisplayProfileAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			instance.repaint();
+			ProfileGUI profileGUI = new ProfileGUI(login.getCurrentUser().getPseudo(), login.getCurrentUser().getProfile().getId());
 		}
 	}
 
