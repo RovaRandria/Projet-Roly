@@ -21,7 +21,9 @@ public class Exercise {
 	
 	@Column(name = "area_of_effect")
 	@Enumerated(EnumType.ORDINAL)
+	//private ArrayList<AreaOfEffect> areasOfEffect = new ArrayList<AreaOfEffect>();
 	private AreaOfEffect areaOfEffect;
+
 	
 	@Column(name = "description", length = 300, nullable = false)
 	private String description;
@@ -30,12 +32,17 @@ public class Exercise {
 		
 	}	
 	
-	public Exercise(String name, AreaOfEffect areaOfEffect,
-		String description) {
-		this.name = name;
-		this.areaOfEffect = areaOfEffect;
-		this.description = description;
+	public Exercise(String name, String description, AreaOfEffect areaOfEffect) {
+	this.name = name;
+	this.areaOfEffect = areaOfEffect;
+	this.description = description;
 	}
+	
+	/*public Exercise(String name, String description, ArrayList<AreaOfEffect> areasOfEffect) {
+		this.name = name;
+		this.areasOfEffect = areasOfEffect;
+		this.description = description;
+	}*/
 
 	public String getId() {
 		return id;
@@ -53,17 +60,6 @@ public class Exercise {
 		this.name = name;
 	}
 
-
-	public AreaOfEffect getAreaOfEffect() {
-		return areaOfEffect;
-	}
-
-
-	public void setAreaOfEffect(AreaOfEffect areaOfEffect) {
-		this.areaOfEffect = areaOfEffect;
-	}
-
-
 	public String getDescription() {
 		return description;
 	}
@@ -73,6 +69,14 @@ public class Exercise {
 		this.description = description;
 	}
 	
+	public AreaOfEffect getAreaOfEffect() {
+		return areaOfEffect;
+	}
+
+	public void setAreaOfEffect(AreaOfEffect areaOfEffect) {
+		this.areaOfEffect = areaOfEffect;
+	}
+
 	@Override
 	public String toString() {
 		return "Exercise [id=" + id + ", name=" + name + ", areaOfEffect="

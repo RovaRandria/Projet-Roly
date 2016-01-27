@@ -1,3 +1,7 @@
+-Régler dupplication des sports
+-PhysicalData
+-Plusieurs exercices pour une séance
+-Plusieurs area of effect pour un exercice
 -Ajout d'une séance=activité
 -Créer la liste des exercices
 -Ajout profil amis

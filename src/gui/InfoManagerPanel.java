@@ -10,6 +10,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
@@ -166,7 +167,7 @@ public class InfoManagerPanel extends JPanel {
 			retrievedProfile.setGender(Gender.Femme);
 		
 		retrievedProfile.setBirthdate(DataUtility.createDate((Integer)birthdayDayComboBox.getSelectedItem(), (Integer)birthdayMonthComboBox.getSelectedItem(), (Integer)birthdayYearComboBox.getSelectedItem()));
-		
+		JOptionPane.showMessageDialog(instance, "Vos informations ont bien été mises à jour !", "Informations à jour", JOptionPane.INFORMATION_MESSAGE);
 		session.merge(retrievedProfile);
 		
 		session.getTransaction().commit();

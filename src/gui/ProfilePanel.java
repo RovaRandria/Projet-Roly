@@ -30,7 +30,7 @@ public class ProfilePanel extends JPanel {
 	}
 	public ProfilePanel() {
 	}
-	private void init() {		
+	private void init() {
 		nameLabel = new JLabel(user.getProfile().getFirstName()+" "+user.getProfile().getLastName());
 		if(user.getProfile().getBirthdate() != null)
 			birthdateLabel = new JLabel(user.getProfile().getBirthdate().toString());

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -16,6 +17,7 @@ import javax.swing.JTextField;
 import org.hibernate.Session;
 
 import data.DBConnection;
+import data.DataInit;
 import data.Login;
 import data.User;
 
@@ -23,6 +25,7 @@ import data.User;
 public class LoginGUI extends JFrame {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		DataInit.createTables();
 		LoginGUI loginGUI = new LoginGUI("Pass'Sport");
 	}
 		/**
@@ -70,14 +73,16 @@ public class LoginGUI extends JFrame {
 		this.setPreferredSize(new Dimension(600, 300));
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
-		
+
+		frameConstraints.gridx = 0;
+		frameConstraints.gridy = 0;
+		this.add(backButton, frameConstraints);
+		backButton.setVisible(false);
 		frameConstraints.gridx = 1;
 		frameConstraints.gridy = 0;
 		homePanel.add(homeLabel, frameConstraints);
 		homePanel.add(registrationLabel);
 		homePanel.add(newRegistrationButton);
-		homePanel.add(backButton);
-		backButton.setVisible(false);
 		this.add(homePanel, frameConstraints);
 		
 		frameConstraints.gridx = 1;
@@ -140,7 +145,6 @@ public class LoginGUI extends JFrame {
 			this.remove(profileGUI);
 
 			Session session = DBConnection.getSession();
-			System.out.println("BEGIN TRANSACTION");
 			session.beginTransaction();
 			User currentUser = (User) session.get(User.class, login.getCurrentUser().getPseudo());
 			profileGUI = new ProfilePanel(currentUser);
@@ -191,6 +195,7 @@ public class LoginGUI extends JFrame {
 			User retrievedUser = (User) session.get(User.class, pseudoTextField.getText());
 			switch(login.connect(pseudoTextField.getText(), passwordTextField.getText(), retrievedUser, session)) {
 				case 0 :
+					JOptionPane.showMessageDialog(instance, "Cet utilisateur n'existe pas !", "Echec de connexion", JOptionPane.ERROR_MESSAGE);
 					userInfoLabel.setText("Cet utilisateur n'existe pas !");
 					instance.repaint();
 					session.getTransaction().commit();
@@ -200,12 +205,14 @@ public class LoginGUI extends JFrame {
 					session.getTransaction().commit();
 					login.setCurrentUser(retrievedUser);
 					login.setCoState(true);
+					JOptionPane.showMessageDialog(instance, "Connexion réussie ! Bienvenu " + login.getCurrentUser().getPseudo() + " !", "Connexion réussie", JOptionPane.INFORMATION_MESSAGE);
 					userInfoLabel.setText("Utilisateur connecté : " + login.getCurrentUser().getPseudo());
 					init();
 					instance.pack();
 					instance.repaint();
 					break;
 				case 2 :
+					JOptionPane.showMessageDialog(instance, "Mot de passe incorrect !", "Echec de connexion", JOptionPane.ERROR_MESSAGE);
 					userInfoLabel.setText("Mot de passe incorrect !");
 					instance.repaint();
 					session.getTransaction().commit();
@@ -223,6 +230,7 @@ public class LoginGUI extends JFrame {
 			user = login.getCurrentUser();
 			login.disconnect();
 			init();
+			JOptionPane.showMessageDialog(instance, this.user.getPseudo() + " a bien été déconnecté !", "Déconnexion réussie", JOptionPane.INFORMATION_MESSAGE);
 			userInfoLabel.setText(this.user.getPseudo() + " a bien été déconnecté !");
 			instance.repaint();
 			session.close();
@@ -260,6 +268,7 @@ public class LoginGUI extends JFrame {
 				User newUser = login.register(pseudoTextField.getText(), passwordTextField.getText());
 				if (newUser != null) {
 				init();
+				JOptionPane.showMessageDialog(instance, "L'utilisateur " + newUser.getPseudo() + " a bien été créé ! Vous pouvez maintenant vous connecter !", "Inscription réussie", JOptionPane.INFORMATION_MESSAGE);
 				userInfoLabel.setText("L'utilisateur " + newUser.getPseudo() + " a bien été créé ! Vous pouvez maintenant vous connecter !");
 				instance.repaint();
 				}
@@ -282,7 +291,7 @@ public class LoginGUI extends JFrame {
 			User user = instance.getLogin().getCurrentUser();
 			infoManagerPanel = new InfoManagerPanel(user);
 			instance.add(infoManagerPanel);
-			infoManagerPanel.add(backButton);
+			instance.add(backButton);
 			backButton.setVisible(true);
 			infoManagerPanel.setVisible(true);
 			pack();
@@ -300,7 +309,7 @@ public class LoginGUI extends JFrame {
 			User user = instance.getLogin().getCurrentUser();
 			sportManagerPanel = new SportManagerPanel(user);
 			instance.add(sportManagerPanel);
-			sportManagerPanel.add(backButton);
+			instance.add(backButton);
 			backButton.setVisible(true);
 			sportManagerPanel.setVisible(true);
 			pack();
@@ -308,7 +317,7 @@ public class LoginGUI extends JFrame {
 			
 		}
 	}
-	
+		
 	/*private class DisplayProfileAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {

@@ -41,11 +41,11 @@ public class Practice {
 	private float duration;
 	
 	@ManyToOne(cascade = CascadeType.ALL, targetEntity = Sport.class)
-    @JoinColumn(name="sport_id", nullable = false, updatable = false)
+    @JoinColumn(name="sport_id", nullable = false)
 	private Sport sport;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Profile.class)
-	@JoinColumn(name = "profile_id", nullable = false)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Profile.class)
+	@JoinColumn(name = "profile_id")
 	private Profile profile;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Exercise.class)
@@ -57,10 +57,12 @@ public class Practice {
 	}
 
 	public Practice(Sport sport, Date date, String place,
-			float duration) {
+			float duration, String performance) {
+		this.sport = sport;
 		this.date = date;
 		this.place = place;
 		this.duration = duration;
+		this.performance=performance;
 	}
 
 	public String getId() {
@@ -148,27 +150,27 @@ public class Practice {
 				+ ", place=" + place + ", duration=" + duration + "exercices" + displayExercise() + "]";
 	}
 	
-	public void addExercice(int exerciseId, String name, String description, AreaOfEffect aoe) {
-		Exercise exercise = new Exercise(name, aoe, description);
+	/*public void addExercice(int exerciseId, String name, String description, ArrayList<AreaOfEffect> aoe) {
+		Exercise exercise = new Exercise(name, description, aoe);
 			 this.exercisesList.add(exercise);
 	}
 	
-	public void updateExercice(int exerciseId, String name, String description, AreaOfEffect aoe) {
+	public void updateExercice(int exerciseId, String name, String description,ArrayList<AreaOfEffect> aoe) {
 		for(int i = 0; i < this.exercisesList.size(); i++) {
 			 if(this.exercisesList.get(i).getId().equals(exerciseId)) {
 				 this.exercisesList.get(i).setName(name);
 				 this.exercisesList.get(i).setDescription(description);
-				 this.exercisesList.get(i).setAreaOfEffect(aoe);
+				 this.exercisesList.get(i).setAreasOfEffect(aoe);
 			 }
 		}
 	}
-
+	
 	public void removeExercice(int exerciseId) {
 		 for(int i = 0; i < this.exercisesList.size(); i++) {
 			 if(this.exercisesList.get(i).getId().equals(exerciseId))
 				 this.exercisesList.remove(i);
 	    }   
-	}
+	}*/
 
 	public void removeAllExercises() {
 		this.exercisesList.removeAll(exercisesList);
