@@ -32,8 +32,14 @@ public class ProfilePanel extends JPanel {
 	}
 	private void init() {		
 		nameLabel = new JLabel(user.getProfile().getFirstName()+" "+user.getProfile().getLastName());
-		birthdateLabel = new JLabel(user.getProfile().getBirthdate().toString());
-		genderLabel = new JLabel(user.getProfile().getGender().toString());
+		if(user.getProfile().getBirthdate() != null)
+			birthdateLabel = new JLabel(user.getProfile().getBirthdate().toString());
+		else
+			birthdateLabel = new JLabel("Âge inconnu");
+		if(user.getProfile().getGender() != null)
+			genderLabel = new JLabel(user.getProfile().getGender().toString());
+		else
+			genderLabel = new JLabel("Sexe inconnu");
 		sportsLabel.setText("Sports pratiqués : " + user.getProfile().displaySport());
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();

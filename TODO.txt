@@ -1,5 +1,4 @@
--Gérer les exceptions d'affichage d'un profil vide
--Ajout d'une séance/activité
+-Ajout d'une séance=activité
 -Créer la liste des exercices
 -Ajout profil amis
 -Courbe évolution performance selon le sport

@@ -90,7 +90,7 @@ public class Login {
 		else {
 				newUser = new User(pseudo, password);
 				Calendar calendar = Calendar.getInstance();
-				Profile profile = new Profile(DataUtility.createDate(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR)));
+				Profile profile = new Profile("", "", DataUtility.createDate(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR)));
 				newUser.setProfile(profile);
 				session.persist(newUser);
 				session.persist(profile);

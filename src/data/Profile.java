@@ -64,8 +64,10 @@ public class Profile {
 		
 	}
 	
-	public Profile(Date registrationDate) {
+	public Profile(String firstName, String lastName, Date registrationDate) {
 		super();
+		this.firstName = "";
+		this.lastName = "";
 		this.registrationDate = registrationDate;
 	}
 	
