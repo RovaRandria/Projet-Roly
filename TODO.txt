@@ -1,3 +1,7 @@
--Installer et comprendre Hibernate et JFreeChart avant le rdv avec T.Liu
--Choisir un SGBG (MySQL, Oracle ou PostgreSQL)
--Faire le sch�ma MCD/MLD de la BDD
+-Gérer les exceptions d'affichage d'un profil vide
+-Ajout d'une séance/activité
+-Créer la liste des exercices
+-Ajout profil amis
+-Courbe évolution performance selon le sport
+-Courbe évolution des PhysicalData
+-Calculer l'âge d'un utilisateur

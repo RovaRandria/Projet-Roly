@@ -1,7 +1,8 @@
--Faire un système de progression (barre d'xp)
--Système de succès
--Liste des sports individuels qu'on peut gérer :
-	*Athlétisme(sprint-fond)
+-ConfidentialitÃ©
+-Faire un systÃ¨me de progression (barre d'xp)
+-SystÃ¨me de succÃ¨s
+-Liste des sports individuels qu'on peut gÃ©rer :
+	*AthlÃ©tisme(sprint-fond)
 	*Natation
 	*Jogging
 	*Yoga
@@ -9,15 +10,14 @@
 	*Musculation
 	*Badminton
 	*Arts martiaux
-	*Vélo
+	*VÃ©lo
 	*Gymnastique
 	*Danse
 	*Ski
 	*Escrime
-	*Marche/Randonnée
--Confidentialité
+	*Marche/RandonnÃ©e
 -Carte des lieux
 -Graphique avec comparaison entre amis
--Réseau social On/OffLine
+-RÃ©seau social On/OffLine
 -Wishlist
--Recherche d'exercice/sport par zone d'effet désirée
+-Recherche d'exercice/sport par zone d'effet dÃ©sirÃ©

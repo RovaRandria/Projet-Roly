@@ -1,10 +1,10 @@
 package gui;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -56,6 +56,7 @@ public class InfoManagerPanel extends JPanel {
 	private JComboBox birthdayMonthComboBox = new JComboBox(DateNumbersList.month().toArray());
 	private JComboBox birthdayYearComboBox = new JComboBox(DateNumbersList.year().toArray());
 	
+	
 	public InfoManagerPanel() {
 	}
 	
@@ -102,7 +103,7 @@ public class InfoManagerPanel extends JPanel {
 		frameConstraints.gridy = 3;
 		this.add(femaleRadioButton, frameConstraints);
 		if(user.getProfile().getGender() != null) {
-			if(user.getProfile().getGender().equals(Gender.FEMALE))
+			if(user.getProfile().getGender().equals(Gender.Femme))
 				femaleRadioButton.setSelected(true);
 			else
 				maleRadioButton.setSelected(true);
@@ -112,6 +113,11 @@ public class InfoManagerPanel extends JPanel {
 		this.add(birthdayLabel, frameConstraints);
 		frameConstraints.gridx = 1;
 		frameConstraints.gridy = 4;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(user.getProfile().getBirthdate());
+		birthdayDayComboBox.setSelectedItem(cal.get(Calendar.DAY_OF_MONTH));
+		birthdayMonthComboBox.setSelectedItem(cal.get(Calendar.MONTH)+1);
+		birthdayYearComboBox.setSelectedItem(cal.get(Calendar.YEAR));
 		this.add(birthdayDayComboBox, frameConstraints);
 		frameConstraints.gridx = 2;
 		frameConstraints.gridy = 4;
@@ -119,7 +125,7 @@ public class InfoManagerPanel extends JPanel {
 		frameConstraints.gridx = 3;
 		frameConstraints.gridy = 4;
 		this.add(birthdayYearComboBox, frameConstraints);
-		frameConstraints.gridx = 0;
+		frameConstraints.gridx = 1;
 		frameConstraints.gridy = 5;
 		this.add(updateInfoButton, frameConstraints);
 		frameConstraints.gridx = 0;
@@ -155,9 +161,9 @@ public class InfoManagerPanel extends JPanel {
 		retrievedProfile.setLastName(lastNameTextField.getText());
 		
 		if(maleRadioButton.isSelected())
-			retrievedProfile.setGender(Gender.MALE);
+			retrievedProfile.setGender(Gender.Homme);
 		else if (femaleRadioButton.isSelected())
-			retrievedProfile.setGender(Gender.FEMALE);
+			retrievedProfile.setGender(Gender.Femme);
 		
 		retrievedProfile.setBirthdate(DataUtility.createDate((Integer)birthdayDayComboBox.getSelectedItem(), (Integer)birthdayMonthComboBox.getSelectedItem(), (Integer)birthdayYearComboBox.getSelectedItem()));
 		

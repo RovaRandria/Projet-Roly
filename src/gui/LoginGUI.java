@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,11 +33,13 @@ public class LoginGUI extends JFrame {
 	private LoginGUI instance = this;
 	
 	private InfoManagerPanel infoManagerPanel = new InfoManagerPanel();
+	private SportManagerPanel sportManagerPanel = new SportManagerPanel();
+	private ProfilePanel profileGUI = new ProfilePanel();
 	private JPanel homePanel = new JPanel();
 	private JPanel connectionPanel = new JPanel();
 	private JPanel userInfoPanel = new JPanel();
 	
-	private JLabel homeLabel = new JLabel("Bienvenu sur Pass'Sport, le réseau social des sportfis !");
+	private JLabel homeLabel = new JLabel("Bienvenu sur Pass'Sport, le réseau social des sportifs !");
 	private JLabel pseudoLabel = new JLabel("Pseudo :");
 	private JLabel passwordLabel = new JLabel("Mot de passe :");
 	private JLabel registrationLabel = new JLabel("Pour s'inscrire :");
@@ -52,6 +55,7 @@ public class LoginGUI extends JFrame {
 
 	private JButton updateInfoButton = new JButton("Modifier ses informations");
 	private JButton displayProfileButton = new JButton("Afficher le profil");
+	private JButton sportManagerButton = new JButton("Mes activités");
 	private JButton disconnectionButton = new JButton("Déconnexion");
 	
 	public LoginGUI(String title) {
@@ -63,35 +67,23 @@ public class LoginGUI extends JFrame {
 
 	}
 	public void init() {
-		infoManagerPanel.setVisible(false);
-		updateInfoButton.setVisible(false);
-		displayProfileButton.setVisible(false);
-		infoManagerPanel.setVisible(false);
-		disconnectionButton.setVisible(false);
-		
+		this.setPreferredSize(new Dimension(600, 300));
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
 		
 		frameConstraints.gridx = 1;
 		frameConstraints.gridy = 0;
 		homePanel.add(homeLabel, frameConstraints);
-		
-		frameConstraints.gridx = 1;
-		frameConstraints.gridy = 0;
 		homePanel.add(registrationLabel);
 		homePanel.add(newRegistrationButton);
 		homePanel.add(backButton);
 		backButton.setVisible(false);
 		this.add(homePanel, frameConstraints);
-
+		
 		frameConstraints.gridx = 1;
-		frameConstraints.gridy = 1;
-
-		if (!login.isCoState()) {
-			disconnectionButton.setVisible(false);
-			updateInfoButton.setVisible(false);
-			displayProfileButton.setVisible(false);
-		}
+		frameConstraints.gridy = 1;		
+		this.add(sportManagerPanel, frameConstraints);
+		
 		connectionPanel.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints2 = new GridBagConstraints();
 		frameConstraints2.gridx = 1;
@@ -114,14 +106,52 @@ public class LoginGUI extends JFrame {
 		connectionPanel.add(registrationButton, frameConstraints2);
 		connectionPanel.add(disconnectionButton, frameConstraints2);
 		registrationButton.setVisible(false);
+		frameConstraints.gridx = 1;
+		frameConstraints.gridy = 2;	
 		this.add(connectionPanel, frameConstraints);
 		
 		frameConstraints.gridx = 1;
-		frameConstraints.gridy = 2;
+		frameConstraints.gridy = 3;
 		userInfoPanel.add(userInfoLabel);
 		this.add(userInfoPanel, frameConstraints);
 
-		//this.setPreferredSize(new Dimension(800, 600));
+		if (!login.isCoState()) {
+			disconnectionButton.setVisible(false);
+			updateInfoButton.setVisible(false);
+			displayProfileButton.setVisible(false);
+			sportManagerButton.setVisible(false);
+			profileGUI.setVisible(false);
+			infoManagerPanel.setVisible(false);
+			sportManagerPanel.setVisible(false);
+			userInfoLabel.setText("");
+		}
+		else {
+			connectionPanel.removeAll();
+			homePanel.remove(registrationLabel);
+			homePanel.remove(newRegistrationButton);
+			connectionPanel.add(disconnectionButton);
+			connectionPanel.add(updateInfoButton);
+			connectionPanel.add(sportManagerButton);
+			disconnectionButton.setVisible(true);
+			updateInfoButton.setVisible(true);
+			sportManagerButton.setVisible(true);
+			this.remove(infoManagerPanel);
+			this.remove(sportManagerPanel);
+			this.remove(profileGUI);
+
+			Session session = DBConnection.getSession();
+			System.out.println("BEGIN TRANSACTION");
+			session.beginTransaction();
+			User currentUser = (User) session.get(User.class, login.getCurrentUser().getPseudo());
+			profileGUI = new ProfilePanel(currentUser);
+			frameConstraints.gridx = 1;
+			frameConstraints.gridy = 1;		
+			this.add(profileGUI, frameConstraints);
+			profileGUI.setVisible(true);
+			infoManagerPanel.setVisible(true);
+			sportManagerPanel.setVisible(true);
+			session.getTransaction().commit();
+		}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
@@ -139,8 +169,9 @@ public class LoginGUI extends JFrame {
 		newRegistrationButton.addActionListener(new NewRegistrationAction());
 		registrationButton.addActionListener(new RegistrationAction());
 		backButton.addActionListener(new BackHomeAction());
-		displayProfileButton.addActionListener(new DisplayProfileAction());
+		//displayProfileButton.addActionListener(new DisplayProfileAction());
 		updateInfoButton.addActionListener(new UpdateInfoAction());
+		sportManagerButton.addActionListener(new SportManagerAction());
 	}
 	
 	private class BackHomeAction implements ActionListener {
@@ -154,7 +185,6 @@ public class LoginGUI extends JFrame {
 	private class ConnectionAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			Session session = DBConnection.getSession();
 			System.out.println("BEGIN TRANSACTION");
 			session.beginTransaction();
@@ -163,24 +193,23 @@ public class LoginGUI extends JFrame {
 				case 0 :
 					userInfoLabel.setText("Cet utilisateur n'existe pas !");
 					instance.repaint();
+					session.getTransaction().commit();
+					session.close();
 					break;
 				case 1 :
+					session.getTransaction().commit();
 					login.setCurrentUser(retrievedUser);
-					userInfoLabel.setText(login.getCurrentUser().getPseudo() + " est bien connecté !");
-					connectionPanel.removeAll();
-					homePanel.remove(registrationLabel);
-					homePanel.remove(newRegistrationButton);
-					connectionPanel.add(disconnectionButton);
-					connectionPanel.add(updateInfoButton);
-					connectionPanel.add(displayProfileButton);
-					disconnectionButton.setVisible(true);
-					updateInfoButton.setVisible(true);
-					displayProfileButton.setVisible(true);
+					login.setCoState(true);
+					userInfoLabel.setText("Utilisateur connecté : " + login.getCurrentUser().getPseudo());
+					init();
+					instance.pack();
 					instance.repaint();
 					break;
 				case 2 :
 					userInfoLabel.setText("Mot de passe incorrect !");
 					instance.repaint();
+					session.getTransaction().commit();
+					session.close();
 					break;
 			}
 		}
@@ -190,11 +219,13 @@ public class LoginGUI extends JFrame {
 		private User user;
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			Session session = DBConnection.getSession();
 			user = login.getCurrentUser();
 			login.disconnect();
 			init();
 			userInfoLabel.setText(this.user.getPseudo() + " a bien été déconnecté !");
 			instance.repaint();
+			session.close();
 		}
 	}
 	
@@ -247,23 +278,43 @@ public class LoginGUI extends JFrame {
 			homePanel.removeAll();
 			instance.remove(connectionPanel);
 			instance.remove(userInfoPanel);
-			instance.homePanel.add(backButton);
-			backButton.setVisible(true);
+			instance.remove(profileGUI);
 			User user = instance.getLogin().getCurrentUser();
 			infoManagerPanel = new InfoManagerPanel(user);
 			instance.add(infoManagerPanel);
+			infoManagerPanel.add(backButton);
+			backButton.setVisible(true);
 			infoManagerPanel.setVisible(true);
+			pack();
 			instance.repaint();
 			
 		}
 	}
 	
-	private class DisplayProfileAction implements ActionListener {
+	private class SportManagerAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			homePanel.removeAll();
+			instance.remove(connectionPanel);
+			instance.remove(userInfoPanel);
+			instance.remove(profileGUI);
+			User user = instance.getLogin().getCurrentUser();
+			sportManagerPanel = new SportManagerPanel(user);
+			instance.add(sportManagerPanel);
+			sportManagerPanel.add(backButton);
+			backButton.setVisible(true);
+			sportManagerPanel.setVisible(true);
+			pack();
+			instance.repaint();
+			
+		}
+	}
+	
+	/*private class DisplayProfileAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			ProfileGUI profileGUI = new ProfileGUI(login.getCurrentUser().getPseudo(), login.getCurrentUser().getProfile().getId());
 		}
-	}
+	}*/
 
 	public Login getLogin() {
 		return login;

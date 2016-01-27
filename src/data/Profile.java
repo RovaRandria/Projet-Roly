@@ -128,9 +128,9 @@ public class Profile {
 	}
 	
 	public String displaySport() {
-		String sportsStr = null;
+		String sportsStr = "";
 		for(int i = 0; i< this.sportsList.size(); i++) {
-			sportsStr += sportsList.get(i).toString()+ " ";
+			sportsStr += sportsList.get(i).getName()+ " ";
 		}
 		return sportsStr;
 	}	

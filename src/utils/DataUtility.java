@@ -2,6 +2,7 @@ package utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DataUtility {
@@ -20,4 +21,17 @@ public class DataUtility {
 		}
 		return null;
 	}
+	
+	@SuppressWarnings("null")
+	public static int[] parseDate(Calendar cal) {
+		int[] parsedDate = null;	
+		parsedDate[0] = cal.get(Calendar.DATE);
+		parsedDate[1] = cal.get(Calendar.MONTH);
+		parsedDate[2] = cal.get(Calendar.YEAR);
+		return parsedDate;
+	}
+	
+	
+	
+
 }
