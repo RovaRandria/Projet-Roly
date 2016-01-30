@@ -45,7 +45,7 @@ public class Practice {
 	private Sport sport;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Profile.class)
-	@JoinColumn(name = "profile_id")
+	@JoinColumn(name = "profile_id", nullable = false)
 	private Profile profile;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Exercise.class)
@@ -57,12 +57,13 @@ public class Practice {
 	}
 
 	public Practice(Sport sport, Date date, String place,
-			float duration, String performance) {
+			float duration, String performance, Profile profile) {
 		this.sport = sport;
 		this.date = date;
 		this.place = place;
 		this.duration = duration;
-		this.performance=performance;
+		this.performance = performance;
+		this.profile = profile; 
 	}
 
 	public String getId() {
@@ -137,7 +138,7 @@ public class Practice {
 		return exercisesList;
 	}
 	public String displayExercise() {
-		String exercisesStr = null;
+		String exercisesStr = "";
 		for(int i = 0; i< this.exercisesList.size(); i++) {
 			exercisesStr += exercisesList.get(i).toString()+ " ";
 		}
@@ -147,7 +148,7 @@ public class Practice {
 	@Override
 	public String toString() {
 		return "Practice [id=" + id + ", date=" + date
-				+ ", place=" + place + ", duration=" + duration + "exercices" + displayExercise() + "]";
+				+ ", place=" + place + ", duration=" + duration + displayExercise() + "]";
 	}
 	
 	/*public void addExercice(int exerciseId, String name, String description, ArrayList<AreaOfEffect> aoe) {

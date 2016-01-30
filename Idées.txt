@@ -1,3 +1,4 @@
+-Avatar + logo du site
 -Confidentialité
 -Faire un système de progression (barre d'xp)
 -Système de succès

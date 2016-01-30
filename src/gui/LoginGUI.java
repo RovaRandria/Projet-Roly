@@ -25,7 +25,7 @@ import data.User;
 public class LoginGUI extends JFrame {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		DataInit.createTables();
+		//DataInit.createTables();
 		LoginGUI loginGUI = new LoginGUI("Pass'Sport");
 	}
 		/**
@@ -70,7 +70,7 @@ public class LoginGUI extends JFrame {
 
 	}
 	public void init() {
-		this.setPreferredSize(new Dimension(600, 300));
+		this.setPreferredSize(new Dimension(800, 300));
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
 

@@ -20,6 +20,7 @@ import utils.AvailableExercises;
 import utils.DataUtility;
 import utils.DateNumbersList;
 import data.DBConnection;
+import data.Exercise;
 import data.Practice;
 import data.Profile;
 import data.Sport;
@@ -141,10 +142,12 @@ public class PracticeManagerFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			Session session = DBConnection.getSession();
 			session.beginTransaction();
-			Profile profile = (Profile) session.get(Profile.class, user.getProfile().getId());	
-			Sport sport = new Sport(sportComboBox.getSelectedItem().toString());
+			Profile profile = (Profile) session.get(Profile.class, user.getProfile().getId());				  
+			Sport sport = (Sport) session.get(Sport.class, sportComboBox.getSelectedItem().toString());
 			Date date = DataUtility.createDate((Integer)dayComboBox.getSelectedItem(), (Integer)monthComboBox.getSelectedItem(), (Integer)yearComboBox.getSelectedItem());
-			Practice practice = new Practice(sport, date, placeTextField.getText(), Float.parseFloat(durationTextField.getText()), performanceTextField.getText());
+			Practice practice = new Practice(sport, date, placeTextField.getText(), Float.parseFloat(durationTextField.getText()), performanceTextField.getText(), profile);
+			Exercise exercise = (Exercise) session.get(Exercise.class, exercisesComboBox.getSelectedItem().toString());	
+			practice.getExercisesList().add(exercise);
 			profile.getPracticesList().add(practice);			  
 			JOptionPane.showMessageDialog(instance, "Votre séance a bien été ajoutée !", "Séance ajoutée", JOptionPane.INFORMATION_MESSAGE);
 			session.merge(profile);

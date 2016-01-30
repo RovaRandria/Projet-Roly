@@ -115,10 +115,12 @@ public class InfoManagerPanel extends JPanel {
 		frameConstraints.gridx = 1;
 		frameConstraints.gridy = 4;
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(user.getProfile().getBirthdate());
-		birthdayDayComboBox.setSelectedItem(cal.get(Calendar.DAY_OF_MONTH));
-		birthdayMonthComboBox.setSelectedItem(cal.get(Calendar.MONTH)+1);
-		birthdayYearComboBox.setSelectedItem(cal.get(Calendar.YEAR));
+		if(user.getProfile().getBirthdate() != null) {
+			cal.setTime(user.getProfile().getBirthdate());
+			birthdayDayComboBox.setSelectedItem(cal.get(Calendar.DAY_OF_MONTH));
+			birthdayMonthComboBox.setSelectedItem(cal.get(Calendar.MONTH)+1);
+			birthdayYearComboBox.setSelectedItem(cal.get(Calendar.YEAR));
+		}
 		this.add(birthdayDayComboBox, frameConstraints);
 		frameConstraints.gridx = 2;
 		frameConstraints.gridy = 4;

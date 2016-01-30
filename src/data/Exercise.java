@@ -4,18 +4,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "exercise")
 public class Exercise {
-	@Id
+	/*@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String id;
+	private String id;*/
 	
+	@Id
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	
@@ -44,13 +43,13 @@ public class Exercise {
 		this.description = description;
 	}*/
 
-	public String getId() {
+	/*public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
-	}
+	}*/
 	
 	public String getName() {
 		return name;
@@ -79,7 +78,7 @@ public class Exercise {
 
 	@Override
 	public String toString() {
-		return "Exercise [id=" + id + ", name=" + name + ", areaOfEffect="
+		return "Exercise [name=" + name + ", areaOfEffect="
 				+ areaOfEffect + ", description=" + description + "]";
 	}
 	
