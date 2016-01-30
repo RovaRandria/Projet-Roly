@@ -150,7 +150,7 @@ public class PracticeManagerFrame extends JFrame {
 			practice.getExercisesList().add(exercise);
 			profile.getPracticesList().add(practice);			  
 			JOptionPane.showMessageDialog(instance, "Votre séance a bien été ajoutée !", "Séance ajoutée", JOptionPane.INFORMATION_MESSAGE);
-			session.merge(profile);
+			session.persist(profile);
 			session.getTransaction().commit();
 			instance.dispose();
 		}
