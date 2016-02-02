@@ -1,5 +1,6 @@
 package data;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -19,7 +20,7 @@ public class PhysicalData {
 	private String id;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "meqsure_date", nullable = false)
+	@Column(name = "measure_date", nullable = false)
 	private Date measureDate;	
 	
 	@Column(name = "weight")
@@ -73,6 +74,13 @@ public class PhysicalData {
 		this.measureDate = measureDate;
 	}
 
+	public String convertMonth (int month){
+		String[] monthName = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" };
+	 
+	    Calendar cal = Calendar.getInstance();
+	    return monthName[cal.get(Calendar.MONTH)];
+	}
+	
 	@Override
 	public String toString() {
 		return "PhysicData [measureDate=" + measureDate + ", weight=" + weight

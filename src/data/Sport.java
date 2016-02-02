@@ -15,8 +15,20 @@ public class Sport {
 		@Column(name = "name", length = 50, nullable = false)
 		private String name;
 		
+		@Column(name = "description", length = 150)
+		private String description;
+
 		public Sport() {
 		}
+		
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
 
 		public Sport(String name) {
 			this.name = name;

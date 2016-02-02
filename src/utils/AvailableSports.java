@@ -3,8 +3,6 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import data.Sport;
-
 public class AvailableSports {
 	public static List<String> getSportsListString (){
 		List<String> sportsList = new ArrayList<String>();

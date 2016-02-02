@@ -17,7 +17,6 @@ import javax.swing.JTextField;
 import org.hibernate.Session;
 
 import data.DBConnection;
-import data.DataInit;
 import data.Login;
 import data.User;
 
@@ -26,7 +25,7 @@ public class LoginGUI extends JFrame {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//DataInit.createTables();
-		LoginGUI loginGUI = new LoginGUI("Pass'Sport");
+		new LoginGUI("Pass'Sport");
 	}
 		/**
 	 * 

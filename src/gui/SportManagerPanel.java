@@ -6,7 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -40,6 +39,7 @@ public class SportManagerPanel extends JPanel {
 	private JButton addSportButton = new JButton("Ajouter");	
 	private JButton removeSportButton = new JButton("Retirer");
 	private JButton addPracticeButton = new JButton("Ajouter une séance");
+	private JButton showChartButton = new JButton("Voir sa progression");
 	
 	private JScrollPane practicesJScrollPane = new JScrollPane();
 	
@@ -70,6 +70,9 @@ public class SportManagerPanel extends JPanel {
 		frameConstraints.gridy = 0; 
 		sportPanel.add(sportsLabel, frameConstraints);
 		sportsLabel.setText("Vous pratiquez : " + user.getProfile().displaySport());
+		frameConstraints.gridx = 1; 
+		frameConstraints.gridy = 0; 
+		sportPanel.add(showChartButton, frameConstraints);
 		frameConstraints.gridx = 0; 
 		frameConstraints.gridy = 1; 
 		sportPanel.add(addSportLabel, frameConstraints);
@@ -117,6 +120,7 @@ public class SportManagerPanel extends JPanel {
 		addSportButton.addActionListener(new addSportAction());
 		removeSportButton.addActionListener(new removeSportAction());
 		addPracticeButton.addActionListener(new addPracticeAction());
+		showChartButton.addActionListener(new showChartAction());
 	}
 	
 	private class addSportAction implements ActionListener {
@@ -167,7 +171,14 @@ public class SportManagerPanel extends JPanel {
 
 	private class addPracticeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			PracticeManagerFrame practiceManager = new PracticeManagerFrame(user);
+			new PracticeManagerFrame(user);
 		}
 	}
+	
+	private class showChartAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			new ChartFrame(user);
+		}
+	}
+	
 }
