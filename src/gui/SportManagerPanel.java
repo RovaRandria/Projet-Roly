@@ -177,7 +177,7 @@ public class SportManagerPanel extends JPanel {
 	
 	private class showChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new ChartFrame(user);
+			new ChartGUI(user);
 		}
 	}
 	

@@ -10,7 +10,6 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
 
 import data.Profile;
 import data.User;
@@ -22,60 +21,29 @@ public class WeightChart extends ApplicationFrame {
 	private int month;
 	private String monthName;
 	private int year;
-
+	
 	public WeightChart(String title, int month, int year, User user) {
 		super(title);
 		this.user = user;
 		this.month = month;
 		this.year = year;
-		XYDataset dataset = createDataset();
-		JFreeChart chart = createChart(dataset);
-		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-		setContentPane(chartPanel);
-		
-		
-		
-		
-		
-//		 XYPlot xyPlot = (XYPlot) jfreechart.getPlot();
-//	        xyPlot.setDomainCrosshairVisible(true);
-//	        xyPlot.setRangeCrosshairVisible(true);
-//	        XYItemRenderer renderer = xyPlot.getRenderer();
-//	        renderer.setSeriesPaint(0, Color.blue);
-//	        NumberAxis domain = (NumberAxis) xyPlot.getDomainAxis();
-//	        domain.setRange(0.00, 1.00);
-//	        domain.setTickUnit(new NumberTickUnit(0.1));
-//	        domain.setVerticalTickLabels(true);
-//	        NumberAxis range = (NumberAxis) xyPlot.getRangeAxis();
-//	        range.setRange(0.0, 1.0);
-//	        range.setTickUnit(new NumberTickUnit(0.1));
-//	        return new ChartPanel(jfreechart);
-		
-		
-		
-		
-		
-		
-		
-		this.pack();
-		RefineryUtilities.centerFrameOnScreen(this);
-		this.setVisible(true);
 	}
+	
 
 	private XYDataset createDataset() {
-		XYSeries weightSeries = new XYSeries("Weight");
+		
+		XYSeries weightSeries = new XYSeries("Poids");
 		Profile profile = user.getProfile();
 		
 		int nbPractices = profile.getPhysicalDataList().size();
-		int currentMonth, currentYear, i=nbPractices;
+		int currentMonth, currentYear, i=nbPractices-1;
 
 		Calendar cal = Calendar.getInstance();
 		if (!profile.getPhysicalDataList().isEmpty()){
-			cal.setTime(profile.getPhysicalDataList().get(i-1).getMeasureDate());
+			cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
 			currentMonth = cal.get(Calendar.MONTH)+1;
 			currentYear = cal.get(Calendar.YEAR);	
-			while ((currentMonth!=month || currentYear!=year) && i>0){	
+			while ((currentMonth!=month || currentYear!=year) && i>0 && i<nbPractices){	
 				if (currentYear > year){
 					i--;
 					cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
@@ -83,8 +51,13 @@ public class WeightChart extends ApplicationFrame {
 				}else{
 					if (currentYear < year){
 						i++;
-						cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
-						currentYear = cal.get(Calendar.YEAR);
+						if (i<nbPractices){
+							cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
+							currentYear = cal.get(Calendar.YEAR);
+						}
+						else{
+							System.out.println("Erreur à implémenter : annnée pas encore passée");
+						}
 					}
 					else{
 						if (currentMonth > month){
@@ -94,60 +67,42 @@ public class WeightChart extends ApplicationFrame {
 						}else{
 							if (currentMonth < month){
 								i++;
-								cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
-								currentMonth = cal.get(Calendar.MONTH)+1;
+								if (i<nbPractices){
+									cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
+									currentMonth = cal.get(Calendar.MONTH)+1;
+								}
+								else{
+									System.out.println("Erreur à implémenter : mois pas encore passé");
+								}
 							}
 						}
 					}
 				}
 			}
-				
 
-			if (i>=0){
-				monthName = user.getProfile().getPhysicalDataList().get(i-1).convertMonth(month);		
-				cal.setTime(profile.getPhysicalDataList().get(i-1).getMeasureDate());
-				while (currentMonth==month && currentYear==year && i>=0){
-//					System.out.println("-------------------");
-//					System.out.println("i = "+i);
-//					System.out.println("jour = "+cal.get(Calendar.DAY_OF_MONTH));
-//					System.out.println("valeur poids = "+profile.getPhysicalDataList().get(i-1).getWeight());
-					weightSeries.add(cal.get(Calendar.DAY_OF_MONTH), profile.getPhysicalDataList().get(i-1).getWeight());
-					cal.setTime(profile.getPhysicalDataList().get(i-1).getMeasureDate());
+			if (i>=0 && i<nbPractices){
+				monthName = user.getProfile().getPhysicalDataList().get(i).convertMonth(month);		
+				
+				do {
+					cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
 					currentMonth = cal.get(Calendar.MONTH)+1;
 					currentYear = cal.get(Calendar.YEAR);
-				
+					if (currentMonth==month && currentYear==year){
+						weightSeries.add(cal.get(Calendar.DAY_OF_MONTH), profile.getPhysicalDataList().get(i).getWeight());
+						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" poids = "+profile.getPhysicalDataList().get(i).getWeight());
+					}
 					i--;
-				}
+					//System.out.println("i = "+i+" currentMonth = "+currentMonth+" month = "+month+" currentYear = "+currentYear+" year = "+year);
+				}while (currentMonth==month && currentYear==year && i>=0);
 			}
 			else{
-				System.out.println("l'indice i est inférieur à 0.");
+				System.out.println("Erreur à implémenter : l'indice i est inférieur à 0 ou supérieur au nb de practice.");
 			}
 			
 		}
 		else{
 			System.out.println("Aucune donnée physique n'a été renseignée.");
 		}
-
-
-//		XYSeries series2 = new XYSeries("Second");
-//		series2.add(1.0, 5.0);
-//		series2.add(2.0, 7.0);
-//		series2.add(3.0, 6.0);
-//		series2.add(4.0, 8.0);
-//		series2.add(5.0, 4.0);
-//		series2.add(6.0, 4.0);
-//		series2.add(7.0, 2.0);
-//		series2.add(8.0, 1.0);
-//
-//		XYSeries series3 = new XYSeries("Third");
-//		series3.add(3.0, 4.0);
-//		series3.add(4.0, 3.0);
-//		series3.add(5.0, 2.0);
-//		series3.add(6.0, 3.0);
-//		series3.add(7.0, 6.0);
-//		series3.add(8.0, 3.0);
-//		series3.add(9.0, 4.0);
-//		series3.add(10.0, 3.0);
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(weightSeries);
@@ -157,8 +112,16 @@ public class WeightChart extends ApplicationFrame {
 	}
 
 	private JFreeChart createChart(XYDataset dataset) {
-		
 		return ChartFactory.createXYLineChart("Courbe de poids", monthName, "kilogrammes", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}	
 
+	
+	
+	public ChartPanel showWeightPanel(){
+		XYDataset dataset = createDataset();
+		JFreeChart chart = createChart(dataset);
+		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+		return chartPanel;
+	}
 }
