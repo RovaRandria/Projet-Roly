@@ -1,6 +1,5 @@
 package data;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -76,9 +75,7 @@ public class PhysicalData {
 
 	public String convertMonth (int month){
 		String[] monthName = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" };
-	 
-	    Calendar cal = Calendar.getInstance();
-	    return monthName[cal.get(Calendar.MONTH)];
+	    return monthName[month-1];
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import org.hibernate.Session;
 import org.jfree.chart.ChartPanel;
 import org.jfree.ui.RefineryUtilities;
 
+import chart.WaistSizeChart;
 import chart.WeightChart;
 import data.DBConnection;
 import data.User;
@@ -26,19 +27,27 @@ public class ChartGUI extends JFrame {
 	private User user;
 	private int currentMonth;
 	private int currentYear;
-	private JButton nextMonth = new JButton("Suivant");
-	private JButton previousMonth = new JButton("Précédent");
+	private JButton nextMonthWeightButton = new JButton("Suivant");
+	private JButton previousMonthWeightButton = new JButton("Précédent");
+	private JButton nextMonthWaistSizeButton = new JButton("Suivant");
+	private JButton previousMonthWaistSizeButton = new JButton("Précédent");
+	private WeightChart weightChart;
+	private WaistSizeChart waistSizeChart;
 	
-	private Box buttonMonthBox = Box.createHorizontalBox();
+	private Box buttonMonthWeightBox = Box.createHorizontalBox();
+	private Box buttonMonthWaistSizeBox = Box.createHorizontalBox();
 	private Box weightMainBox = Box.createVerticalBox();
-	private Box waistSiseMainBox = Box.createVerticalBox();
+	private Box waistSizeMainBox = Box.createVerticalBox();
 	
-	private ChartPanel currentChartPanel;
-	
+	private ChartPanel currentWeightChartPanel;
+	private ChartPanel currentWaistSizeChartPanel;
+
 	private JTabbedPane choiceTabbedPane = new JTabbedPane();
 	
-	private JPanel nextMonthPanel = new JPanel();
-	private JPanel previousMonthPanel = new JPanel();
+	private JPanel nextMonthWeightPanel = new JPanel();
+	private JPanel previousMonthWeightPanel = new JPanel();
+	private JPanel nextMonthWaistSizePanel = new JPanel();
+	private JPanel previousMonthWaistSizePanel = new JPanel();
 	private JPanel homePanel = new JPanel();
 
 	
@@ -58,16 +67,31 @@ public class ChartGUI extends JFrame {
 		/*
 		 * Weight chart
 		 */
-		WeightChart weightChart = new WeightChart("Courbe de poids", currentMonth, currentYear, user);	
-		currentChartPanel = weightChart.showWeightPanel();
+		weightChart = new WeightChart("Courbe de poids", currentMonth, currentYear, user);	
+		currentWeightChartPanel = weightChart.showWeightPanel();
 		
-		nextMonthPanel.add(nextMonth);
-		previousMonthPanel.add(previousMonth);
-		buttonMonthBox.add(previousMonthPanel);
-		buttonMonthBox.add(nextMonthPanel);
+		nextMonthWeightPanel.add(nextMonthWeightButton);
+		previousMonthWeightPanel.add(previousMonthWeightButton);
+		buttonMonthWeightBox.add(previousMonthWeightPanel);
+		buttonMonthWeightBox.add(nextMonthWeightPanel);
 		
-		weightMainBox.add(currentChartPanel);
-		weightMainBox.add(buttonMonthBox);
+		weightMainBox.add(currentWeightChartPanel);
+		weightMainBox.add(buttonMonthWeightBox);
+		
+		
+		/*
+		 * Waist size chart
+		 */
+		waistSizeChart = new WaistSizeChart("Courbe de tour de taille", currentMonth, currentYear, user);	
+		currentWaistSizeChartPanel = waistSizeChart.showWaistSizePanel();
+		
+		nextMonthWaistSizePanel.add(nextMonthWaistSizeButton);
+		previousMonthWaistSizePanel.add(previousMonthWaistSizeButton);
+		buttonMonthWaistSizeBox.add(previousMonthWaistSizePanel);
+		buttonMonthWaistSizeBox.add(nextMonthWaistSizePanel);
+		
+		waistSizeMainBox.add(currentWaistSizeChartPanel);
+		waistSizeMainBox.add(buttonMonthWaistSizeBox);
 		
 		
 		/*
@@ -76,7 +100,7 @@ public class ChartGUI extends JFrame {
 		choiceTabbedPane.addTab("Poids", weightMainBox);
 		choiceTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
-		choiceTabbedPane.addTab("Tour de taille", waistSiseMainBox);
+		choiceTabbedPane.addTab("Tour de taille", waistSizeMainBox);
 		choiceTabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
 		homePanel.add(choiceTabbedPane);
@@ -91,16 +115,19 @@ public class ChartGUI extends JFrame {
 	}
 	
 	public void initStyle(){
-		
+
 	}
 	
 	public void initActions(){
-		previousMonth.addActionListener(new previousMonthAction());
-		nextMonth.addActionListener(new nextMonthAction());
+		previousMonthWeightButton.addActionListener(new previousMonthWeightAction());
+		nextMonthWeightButton.addActionListener(new nextMonthWeightAction());
+		nextMonthWaistSizeButton.addActionListener(new nextMonthWaistSizeAction());
+		previousMonthWaistSizeButton.addActionListener(new previousMonthWaistSizeAction());
 	}
 	
-	private class previousMonthAction implements ActionListener {
+	private class previousMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			nextMonthWeightButton.setVisible(true);
 			if (currentMonth==1){
 				currentMonth=12;
 				currentYear--;
@@ -109,16 +136,15 @@ public class ChartGUI extends JFrame {
 				
 			System.out.println("Mois précédent : "+currentMonth+"/"+currentYear);
 
-			WeightChart weightChart = new WeightChart("Courbe de poids", currentMonth, currentYear, user);	
-			currentChartPanel.removeAll();
-			currentChartPanel = weightChart.showWeightPanel();
-			//currentChartPanel.repaint();
-			//instance.repaint();
-			init();
+			weightChart = new WeightChart("Courbe de poids", currentMonth, currentYear, user);	
+			currentWeightChartPanel.removeAll();
+			currentWeightChartPanel.add(weightChart.showWeightPanel());
+			weightMainBox.repaint();
+			homePanel.repaint();
 		}
 	}
 	
-	private class nextMonthAction implements ActionListener {
+	private class nextMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (currentMonth==12){
 				currentMonth=1;
@@ -126,15 +152,62 @@ public class ChartGUI extends JFrame {
 			}else
 				currentMonth++;
 			System.out.println("Mois suivant : "+currentMonth+"/"+currentYear);
-			WeightChart weightChart = new WeightChart("Courbe de poids", currentMonth, currentYear, user);	
-			currentChartPanel.removeAll();
-			currentChartPanel = weightChart.showWeightPanel();
-			//currentChartPanel.repaint();
-			//instance.repaint();
-			init();
+			weightChart = new WeightChart("Courbe de poids", currentMonth, currentYear, user);	
+
+			currentWeightChartPanel.removeAll();
+			currentWeightChartPanel.add(weightChart.showWeightPanel());
+			System.out.println("nb error = "+weightChart.getNbError());
+			if (weightChart.getNbError()==2)
+				nextMonthWeightButton.setVisible(false);
+			else
+				nextMonthWeightButton.setVisible(true);
+			
+			weightMainBox.repaint();
+			homePanel.repaint();
 		}
 	}
 
+	private class previousMonthWaistSizeAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			nextMonthWaistSizeButton.setVisible(true);
+			if (currentMonth==1){
+				currentMonth=12;
+				currentYear--;
+			}else
+				currentMonth--;
+				
+			System.out.println("Mois précédent : "+currentMonth+"/"+currentYear);
+
+			waistSizeChart = new WaistSizeChart("Courbe de tour de taille", currentMonth, currentYear, user);	
+			currentWaistSizeChartPanel.removeAll();
+			currentWaistSizeChartPanel.add(waistSizeChart.showWaistSizePanel());
+			waistSizeMainBox.repaint();
+			homePanel.repaint();
+		}
+	}
+	
+	private class nextMonthWaistSizeAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (currentMonth==12){
+				currentMonth=1;
+				currentYear++;
+			}else
+				currentMonth++;
+			System.out.println("Mois suivant : "+currentMonth+"/"+currentYear);
+			waistSizeChart = new WaistSizeChart("Courbe de tour de taille", currentMonth, currentYear, user);	
+
+			currentWaistSizeChartPanel.removeAll();
+			currentWaistSizeChartPanel.add(waistSizeChart.showWaistSizePanel());
+			System.out.println("nb error = "+waistSizeChart.getNbError());
+			if (waistSizeChart.getNbError()==2)
+				nextMonthWaistSizeButton.setVisible(false);
+			else
+				nextMonthWaistSizeButton.setVisible(true);
+			
+			waistSizeMainBox.repaint();
+			homePanel.repaint();
+		}
+	}
 	
 	public static void main(String[] args) {
 		Session session = DBConnection.getSession();

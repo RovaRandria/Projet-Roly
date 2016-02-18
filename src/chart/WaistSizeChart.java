@@ -14,7 +14,7 @@ import org.jfree.ui.ApplicationFrame;
 import data.Profile;
 import data.User;
 
-public class WeightChart extends ApplicationFrame {
+public class WaistSizeChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
@@ -23,7 +23,7 @@ public class WeightChart extends ApplicationFrame {
 	private int year;
 	private int nbError;
 	
-	public WeightChart(String title, int month, int year, User user) {
+	public WaistSizeChart(String title, int month, int year, User user) {
 		super(title);
 		this.user = user;
 		this.month = month;
@@ -34,7 +34,7 @@ public class WeightChart extends ApplicationFrame {
 
 	private XYDataset createDataset() {
 		
-		XYSeries weightSeries = new XYSeries("Poids");
+		XYSeries waistSizeSeries = new XYSeries("Tour de taille");
 		Profile profile = user.getProfile();
 		
 		int nbPractices = profile.getPhysicalDataList().size();
@@ -85,16 +85,15 @@ public class WeightChart extends ApplicationFrame {
 
 			if (i>=0 && i<nbPractices){
 				monthName = user.getProfile().getPhysicalDataList().get(i).convertMonth(month);		
-				weightSeries.add(0.9, null);
-				weightSeries.add(31.1, null);
-
+//				waistSizeSeries.add(0, null);
+//				waistSizeSeries.add(32, null);
 				do {
 					cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
 					currentMonth = cal.get(Calendar.MONTH)+1;
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
-						weightSeries.add(cal.get(Calendar.DAY_OF_MONTH), profile.getPhysicalDataList().get(i).getWeight());
-						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" poids = "+profile.getPhysicalDataList().get(i).getWeight());
+						waistSizeSeries.add(cal.get(Calendar.DAY_OF_MONTH), profile.getPhysicalDataList().get(i).getWaistSize());
+						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" tour de taille = "+profile.getPhysicalDataList().get(i).getWaistSize());
 					}
 					i--;
 				}while (currentMonth==month && currentYear==year && i>=0);
@@ -105,19 +104,18 @@ public class WeightChart extends ApplicationFrame {
 		}
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(weightSeries);
+		dataset.addSeries(waistSizeSeries);
 
 		return dataset;
 
 	}
 
 	private JFreeChart createChart(XYDataset dataset) {
-		return ChartFactory.createXYLineChart("Courbe de poids", monthName, "kilogrammes", dataset, PlotOrientation.VERTICAL, true, true, false);
+		return ChartFactory.createXYLineChart("Courbe de tour de taille", monthName, "cm", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}	
 
 	
-	
-	public ChartPanel showWeightPanel(){
+	public ChartPanel showWaistSizePanel(){
 		XYDataset dataset = createDataset();
 		JFreeChart chart = createChart(dataset);
 		ChartPanel chartPanel = new ChartPanel(chart);
