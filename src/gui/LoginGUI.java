@@ -17,14 +17,14 @@ import javax.swing.JTextField;
 import org.hibernate.Session;
 
 import data.DBConnection;
+import data.DataInit;
 import data.Login;
 import data.User;
 
 	
 public class LoginGUI extends JFrame {
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//DataInit.createTables();
+		DataInit.createTables();
 		new LoginGUI("Pass'Sport");
 	}
 		/**
@@ -36,6 +36,8 @@ public class LoginGUI extends JFrame {
 	
 	private InfoManagerPanel infoManagerPanel = new InfoManagerPanel();
 	private SportManagerPanel sportManagerPanel = new SportManagerPanel();
+	private PhysicalDataPanel physicalDataPanel = new PhysicalDataPanel();
+	
 	private ProfilePanel profileGUI = new ProfilePanel();
 	private JPanel homePanel = new JPanel();
 	private JPanel connectionPanel = new JPanel();
@@ -56,6 +58,7 @@ public class LoginGUI extends JFrame {
 	private JButton registrationButton = new JButton("Inscription");
 
 	private JButton updateInfoButton = new JButton("Modifier ses informations");
+	private JButton updatePhysicalDataButton = new JButton("Modifier ses données physiques");
 	private JButton displayProfileButton = new JButton("Afficher le profil");
 	private JButton sportManagerButton = new JButton("Mes activités");
 	private JButton disconnectionButton = new JButton("Déconnexion");
@@ -122,24 +125,30 @@ public class LoginGUI extends JFrame {
 		if (!login.isCoState()) {
 			disconnectionButton.setVisible(false);
 			updateInfoButton.setVisible(false);
+			updatePhysicalDataButton.setVisible(false);
 			displayProfileButton.setVisible(false);
 			sportManagerButton.setVisible(false);
 			profileGUI.setVisible(false);
 			infoManagerPanel.setVisible(false);
+			physicalDataPanel.setVisible(false);
 			sportManagerPanel.setVisible(false);
 			userInfoLabel.setText("");
 		}
 		else {
 			connectionPanel.removeAll();
+			backButton.setText("Retour au profil");
 			homePanel.remove(registrationLabel);
 			homePanel.remove(newRegistrationButton);
 			connectionPanel.add(disconnectionButton);
 			connectionPanel.add(updateInfoButton);
+			connectionPanel.add(updatePhysicalDataButton);
 			connectionPanel.add(sportManagerButton);
 			disconnectionButton.setVisible(true);
 			updateInfoButton.setVisible(true);
+			updatePhysicalDataButton.setVisible(true);
 			sportManagerButton.setVisible(true);
 			this.remove(infoManagerPanel);
+			this.remove(physicalDataPanel);
 			this.remove(sportManagerPanel);
 			this.remove(profileGUI);
 
@@ -152,6 +161,7 @@ public class LoginGUI extends JFrame {
 			this.add(profileGUI, frameConstraints);
 			profileGUI.setVisible(true);
 			infoManagerPanel.setVisible(true);
+			physicalDataPanel.setVisible(true);
 			sportManagerPanel.setVisible(true);
 			session.getTransaction().commit();
 		}
@@ -174,6 +184,7 @@ public class LoginGUI extends JFrame {
 		backButton.addActionListener(new BackHomeAction());
 		//displayProfileButton.addActionListener(new DisplayProfileAction());
 		updateInfoButton.addActionListener(new UpdateInfoAction());
+		updatePhysicalDataButton.addActionListener(new UpdatePhysicalDataAction());
 		sportManagerButton.addActionListener(new SportManagerAction());
 	}
 	
@@ -299,6 +310,24 @@ public class LoginGUI extends JFrame {
 		}
 	}
 	
+	private class UpdatePhysicalDataAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			homePanel.removeAll();
+			instance.remove(connectionPanel);
+			instance.remove(userInfoPanel);
+			instance.remove(profileGUI);
+			User user = instance.getLogin().getCurrentUser();
+			physicalDataPanel = new PhysicalDataPanel(user);
+			instance.add(physicalDataPanel);
+			instance.add(backButton);
+			backButton.setVisible(true);
+			infoManagerPanel.setVisible(true);
+			pack();
+			instance.repaint();
+			
+		}
+	}
+	
 	private class SportManagerAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			homePanel.removeAll();
@@ -316,13 +345,6 @@ public class LoginGUI extends JFrame {
 			
 		}
 	}
-		
-	/*private class DisplayProfileAction implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			ProfileGUI profileGUI = new ProfileGUI(login.getCurrentUser().getPseudo(), login.getCurrentUser().getProfile().getId());
-		}
-	}*/
 
 	public Login getLogin() {
 		return login;

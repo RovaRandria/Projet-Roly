@@ -19,6 +19,8 @@ public class ProfilePanel extends JPanel {
 	
 	//private JPanel homePanel = new JPanel();
 
+	private JLabel pseudoLabel;
+	private JLabel registrationDateLabel;
 	private JLabel nameLabel;
 	private JLabel birthdateLabel;
 	private JLabel genderLabel;
@@ -42,9 +44,11 @@ public class ProfilePanel extends JPanel {
 	public ProfilePanel() {
 	}
 	private void init() {
+		pseudoLabel = new JLabel(user.getPseudo());
+		registrationDateLabel = new JLabel("inscrit le "+ user.getProfile().getRegistrationDate().toString());
 		nameLabel = new JLabel(user.getProfile().getFirstName()+" "+user.getProfile().getLastName());
 		if(user.getProfile().getBirthdate() != null)
-			birthdateLabel = new JLabel(user.getProfile().getBirthdate().toString());
+			birthdateLabel = new JLabel("né le " + user.getProfile().getBirthdate().toString());
 		else
 			birthdateLabel = new JLabel("Âge inconnu");
 		if(user.getProfile().getGender() != null)
@@ -61,11 +65,11 @@ public class ProfilePanel extends JPanel {
 			physicalDataPanel.add(physicalDataBox);
 		}
 		else{
-			PhysicalData p = physicalDataList.get(physicalDataList.size()-1);
-			physicalDataDateLabel = new JLabel("Dernière mesure prise le "+p.getMeasureDate());	
-			physicalDataWeightLabel = new JLabel("Poids : "+p.getWeight());
-			physicalDataHipLabel = new JLabel("Tour de hanche : "+p.getHipSize());
-			physicalDataWaistLabel = new JLabel("Tour de taille : "+p.getWaistSize());
+			PhysicalData latestPhysicalData = user.getProfile().getPhysicalDataList().get(user.getProfile().getPhysicalDataList().size()-1);
+			physicalDataDateLabel = new JLabel("Dernière mesure prise le "+latestPhysicalData.getMeasureDate());	
+			physicalDataWeightLabel = new JLabel("Poids : "+latestPhysicalData.getWeight());
+			physicalDataHipLabel = new JLabel("Tour de hanche : "+latestPhysicalData.getHipSize());
+			physicalDataWaistLabel = new JLabel("Tour de taille : "+latestPhysicalData.getWaistSize());
 
 			physicalDataBox.add(physicalDataDateLabel);
 			physicalDataBox.add(physicalDataWeightLabel);
@@ -78,18 +82,22 @@ public class ProfilePanel extends JPanel {
 		GridBagConstraints frameConstraints = new GridBagConstraints();
 		frameConstraints.gridx = 0;
 		frameConstraints.gridy = 0;
-		this.add(nameLabel, frameConstraints);
+		this.add(pseudoLabel);
+		this.add(registrationDateLabel);
 		frameConstraints.gridx = 0;
 		frameConstraints.gridy = 1;
-		this.add(birthdateLabel, frameConstraints);
+		this.add(nameLabel, frameConstraints);
 		frameConstraints.gridx = 1;
 		frameConstraints.gridy = 1;
-		this.add(genderLabel, frameConstraints);
+		this.add(birthdateLabel, frameConstraints);
 		frameConstraints.gridx = 0;
 		frameConstraints.gridy = 2;
-		this.add(sportsLabel, frameConstraints);
+		this.add(genderLabel, frameConstraints);
 		frameConstraints.gridx = 0;
 		frameConstraints.gridy = 3;
+		this.add(sportsLabel, frameConstraints);
+		frameConstraints.gridx = 0;
+		frameConstraints.gridy = 4;
 		this.add(physicalDataPanel, frameConstraints);
 	}
 	
