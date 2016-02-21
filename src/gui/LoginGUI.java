@@ -17,19 +17,16 @@ import javax.swing.JTextField;
 import org.hibernate.Session;
 
 import data.DBConnection;
-import data.DataInit;
 import data.Login;
 import data.User;
 
 	
 public class LoginGUI extends JFrame {
 	public static void main(String[] args) {
-		DataInit.createTables();
+		//DataInit.createTables();
 		new LoginGUI("Pass'Sport");
 	}
-		/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private Login login;
 	private LoginGUI instance = this;
@@ -38,7 +35,7 @@ public class LoginGUI extends JFrame {
 	private SportManagerPanel sportManagerPanel = new SportManagerPanel();
 	private PhysicalDataPanel physicalDataPanel = new PhysicalDataPanel();
 	
-	private ProfilePanel profileGUI = new ProfilePanel();
+	private ProfilePanel profilePanel = new ProfilePanel();
 	private JPanel homePanel = new JPanel();
 	private JPanel connectionPanel = new JPanel();
 	private JPanel userInfoPanel = new JPanel();
@@ -56,6 +53,7 @@ public class LoginGUI extends JFrame {
 	private JButton connectionButton = new JButton("Connexion");
 	private JButton newRegistrationButton = new JButton("Inscription");
 	private JButton registrationButton = new JButton("Inscription");
+	private JButton searchProfileButton = new JButton("Rechercher un utilisateur");
 
 	private JButton updateInfoButton = new JButton("Modifier ses informations");
 	private JButton updatePhysicalDataButton = new JButton("Modifier ses données physiques");
@@ -128,7 +126,7 @@ public class LoginGUI extends JFrame {
 			updatePhysicalDataButton.setVisible(false);
 			displayProfileButton.setVisible(false);
 			sportManagerButton.setVisible(false);
-			profileGUI.setVisible(false);
+			profilePanel.setVisible(false);
 			infoManagerPanel.setVisible(false);
 			physicalDataPanel.setVisible(false);
 			sportManagerPanel.setVisible(false);
@@ -147,24 +145,28 @@ public class LoginGUI extends JFrame {
 			updateInfoButton.setVisible(true);
 			updatePhysicalDataButton.setVisible(true);
 			sportManagerButton.setVisible(true);
+			searchProfileButton.setVisible(true);
 			this.remove(infoManagerPanel);
 			this.remove(physicalDataPanel);
 			this.remove(sportManagerPanel);
-			this.remove(profileGUI);
+			this.remove(profilePanel);
 
 			Session session = DBConnection.getSession();
 			session.beginTransaction();
 			User currentUser = (User) session.get(User.class, login.getCurrentUser().getPseudo());
-			profileGUI = new ProfilePanel(currentUser);
+			profilePanel = new ProfilePanel(currentUser);
 			frameConstraints.gridx = 1;
 			frameConstraints.gridy = 1;		
-			this.add(profileGUI, frameConstraints);
-			profileGUI.setVisible(true);
+			this.add(profilePanel, frameConstraints);
+			profilePanel.setVisible(true);
 			infoManagerPanel.setVisible(true);
 			physicalDataPanel.setVisible(true);
 			sportManagerPanel.setVisible(true);
 			session.getTransaction().commit();
+			this.add(searchProfileButton);
 		}
+
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
@@ -186,17 +188,19 @@ public class LoginGUI extends JFrame {
 		updateInfoButton.addActionListener(new UpdateInfoAction());
 		updatePhysicalDataButton.addActionListener(new UpdatePhysicalDataAction());
 		sportManagerButton.addActionListener(new SportManagerAction());
+		searchProfileButton.addActionListener(new searchAction());
 	}
 	
-	private class BackHomeAction implements ActionListener {
+	class BackHomeAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			searchProfileButton.setVisible(true);
 			init();
 			instance.repaint();
 		}
 	}
 	
-	private class ConnectionAction implements ActionListener {
+	class ConnectionAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Session session = DBConnection.getSession();
@@ -232,7 +236,7 @@ public class LoginGUI extends JFrame {
 		}
 	}
 	
-	private class DisconnectionAction implements ActionListener {
+	class DisconnectionAction implements ActionListener {
 		private User user;
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -247,7 +251,7 @@ public class LoginGUI extends JFrame {
 		}
 	}
 	
-	private class NewRegistrationAction implements ActionListener {
+	class NewRegistrationAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
@@ -259,12 +263,13 @@ public class LoginGUI extends JFrame {
 			pseudoTextField.setText("");
 			passwordTextField.setText("");
 			registrationButton.setVisible(true);
+			searchProfileButton.setVisible(false);
 			instance.repaint();
 			
 		}
 	}
 	
-	private class RegistrationAction implements ActionListener {
+	class RegistrationAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
@@ -292,57 +297,67 @@ public class LoginGUI extends JFrame {
 		}
 	}
 	
-	private class UpdateInfoAction implements ActionListener {
+	class UpdateInfoAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			homePanel.removeAll();
 			instance.remove(connectionPanel);
 			instance.remove(userInfoPanel);
-			instance.remove(profileGUI);
+			instance.remove(profilePanel);
 			User user = instance.getLogin().getCurrentUser();
 			infoManagerPanel = new InfoManagerPanel(user);
 			instance.add(infoManagerPanel);
 			instance.add(backButton);
 			backButton.setVisible(true);
 			infoManagerPanel.setVisible(true);
+			searchProfileButton.setVisible(false);
 			pack();
 			instance.repaint();
 			
 		}
 	}
 	
-	private class UpdatePhysicalDataAction implements ActionListener {
+	class UpdatePhysicalDataAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			homePanel.removeAll();
 			instance.remove(connectionPanel);
 			instance.remove(userInfoPanel);
-			instance.remove(profileGUI);
+			instance.remove(profilePanel);
 			User user = instance.getLogin().getCurrentUser();
 			physicalDataPanel = new PhysicalDataPanel(user);
 			instance.add(physicalDataPanel);
 			instance.add(backButton);
 			backButton.setVisible(true);
 			infoManagerPanel.setVisible(true);
+			searchProfileButton.setVisible(false);
 			pack();
 			instance.repaint();
 			
 		}
 	}
 	
-	private class SportManagerAction implements ActionListener {
+	class SportManagerAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			homePanel.removeAll();
 			instance.remove(connectionPanel);
 			instance.remove(userInfoPanel);
-			instance.remove(profileGUI);
+			instance.remove(profilePanel);
 			User user = instance.getLogin().getCurrentUser();
 			sportManagerPanel = new SportManagerPanel(user);
 			instance.add(sportManagerPanel);
 			instance.add(backButton);
 			backButton.setVisible(true);
 			sportManagerPanel.setVisible(true);
+			searchProfileButton.setVisible(false);
 			pack();
 			instance.repaint();
 			
+		}
+	}
+	
+	class searchAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new SearchProfileGUI();
 		}
 	}
 

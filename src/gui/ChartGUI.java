@@ -107,7 +107,7 @@ public class ChartGUI extends JFrame {
 		
 		RefineryUtilities.centerFrameOnScreen(this);
 		this.add(homePanel);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
 		setVisible(true);
 		setResizable(false);
@@ -125,7 +125,7 @@ public class ChartGUI extends JFrame {
 		previousMonthWaistSizeButton.addActionListener(new previousMonthWaistSizeAction());
 	}
 	
-	private class previousMonthWeightAction implements ActionListener {
+	class previousMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			nextMonthWeightButton.setVisible(true);
 			if (currentMonth==1){
@@ -144,7 +144,7 @@ public class ChartGUI extends JFrame {
 		}
 	}
 	
-	private class nextMonthWeightAction implements ActionListener {
+	class nextMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (currentMonth==12){
 				currentMonth=1;
@@ -167,7 +167,7 @@ public class ChartGUI extends JFrame {
 		}
 	}
 
-	private class previousMonthWaistSizeAction implements ActionListener {
+	class previousMonthWaistSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			nextMonthWaistSizeButton.setVisible(true);
 			if (currentMonth==1){
@@ -186,7 +186,7 @@ public class ChartGUI extends JFrame {
 		}
 	}
 	
-	private class nextMonthWaistSizeAction implements ActionListener {
+	class nextMonthWaistSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (currentMonth==12){
 				currentMonth=1;

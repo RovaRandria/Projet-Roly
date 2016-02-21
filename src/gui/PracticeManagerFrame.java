@@ -123,7 +123,7 @@ public class PracticeManagerFrame extends JFrame {
 		frameConstraints.gridy = 5; 
 		this.add(addPracticeButton, frameConstraints);
 		session.getTransaction().commit();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
 		setVisible(true);
 		setResizable(false);

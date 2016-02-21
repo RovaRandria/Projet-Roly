@@ -96,7 +96,7 @@ public class PhysicalDataPanel extends JPanel {
 		updateInfoButton.addActionListener(new UpdateInfo());
 	}
 
-	private class UpdateInfo implements ActionListener {
+	class UpdateInfo implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Session session = DBConnection.getSession();

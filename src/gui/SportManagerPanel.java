@@ -123,14 +123,13 @@ public class SportManagerPanel extends JPanel {
 		showChartButton.addActionListener(new showChartAction());
 	}
 	
-	private class addSportAction implements ActionListener {
+	class addSportAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		Session session = DBConnection.getSession();
 		session.beginTransaction();
 		Profile profile = (Profile) session.get(Profile.class, user.getProfile().getId());			  
 		Sport sport = (Sport) session.get(Sport.class, sportComboBox.getSelectedItem().toString());
-		System.out.println(sport.toString());
 		if(!profile.getSportsList().contains(sport)) {
 			profile.getSportsList().add(sport);			  
 			JOptionPane.showMessageDialog(instance, "Le sport " + sport.getName() + " a bien été ajouté !", "Sport ajouté", JOptionPane.INFORMATION_MESSAGE);
@@ -144,7 +143,7 @@ public class SportManagerPanel extends JPanel {
 		}	
 	}
 	
-	private class removeSportAction implements ActionListener {
+	class removeSportAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Session session = DBConnection.getSession();
@@ -169,13 +168,13 @@ public class SportManagerPanel extends JPanel {
 	}
 	
 
-	private class addPracticeAction implements ActionListener {
+	class addPracticeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			new PracticeManagerFrame(user);
 		}
 	}
 	
-	private class showChartAction implements ActionListener {
+	class showChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			new ChartGUI(user);
 		}
