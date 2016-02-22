@@ -11,6 +11,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 
+import utils.DataUtility;
+
 import data.Profile;
 import data.User;
 
@@ -82,9 +84,8 @@ public class WeightChart extends ApplicationFrame {
 					}
 				}
 			}
-
-			if (i>=0 && i<nbPractices){
-				monthName = user.getProfile().getPhysicalDataList().get(i).convertMonth(month);		
+			monthName = DataUtility.convertMonth(month);
+			if (i>=0 && i<nbPractices){		
 				weightSeries.add(0.9, null);
 				weightSeries.add(31.1, null);
 

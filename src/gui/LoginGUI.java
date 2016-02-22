@@ -17,13 +17,16 @@ import javax.swing.JTextField;
 import org.hibernate.Session;
 
 import data.DBConnection;
+import data.DataInit;
 import data.Login;
 import data.User;
 
 	
 public class LoginGUI extends JFrame {
 	public static void main(String[] args) {
-		//DataInit.createTables();
+		/*DataInit.createTables();
+		DataInit.insertSports();
+		DataInit.insertExercises();*/
 		new LoginGUI("Pass'Sport");
 	}
 
@@ -357,7 +360,7 @@ public class LoginGUI extends JFrame {
 	class searchAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new SearchProfileGUI();
+			new SearchProfileGUI(login.getCurrentUser());
 		}
 	}
 

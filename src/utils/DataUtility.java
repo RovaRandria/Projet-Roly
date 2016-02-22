@@ -31,6 +31,10 @@ public class DataUtility {
 		return parsedDate;
 	}
 	
+	public static String convertMonth (int month){
+		String[] monthName = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" };
+	    return monthName[month-1];
+	}
 	
 	
 

@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import org.hibernate.Session;
 
 import utils.AvailableExercises;
+import utils.ClimbingColors;
 import utils.DataUtility;
 import utils.DateNumbersList;
 import data.DBConnection;
@@ -41,6 +42,7 @@ public class PracticeManagerFrame extends JFrame {
 	private JComboBox yearComboBox = new JComboBox(DateNumbersList.year().toArray());
 	private JComboBox sportComboBox = new JComboBox();	
 	private JComboBox exercisesComboBox = new JComboBox(AvailableExercises.getExercisesListString().toArray());
+	private JComboBox colorComboBox = new JComboBox(ClimbingColors.getClimbingColorsString().toArray());
 
 	private JButton addPracticeButton = new JButton("Ajouter");
 
@@ -137,15 +139,19 @@ public class PracticeManagerFrame extends JFrame {
 		addPracticeButton.addActionListener(new addPracticeAction());
 	}
 
-	private class addPracticeAction implements ActionListener {
+	class addPracticeAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Session session = DBConnection.getSession();
 			session.beginTransaction();
 			Profile profile = (Profile) session.get(Profile.class, user.getProfile().getId());				  
 			Sport sport = (Sport) session.get(Sport.class, sportComboBox.getSelectedItem().toString());
+			Practice practice = null;
 			Date date = DataUtility.createDate((Integer)dayComboBox.getSelectedItem(), (Integer)monthComboBox.getSelectedItem(), (Integer)yearComboBox.getSelectedItem());
-			Practice practice = new Practice(sport, date, placeTextField.getText(), Float.parseFloat(durationTextField.getText()), performanceTextField.getText(), profile);
+			if(sportComboBox.getSelectedItem().toString().equals("Jogging"))
+					practice = new Practice(sport, date, placeTextField.getText(), Float.parseFloat(durationTextField.getText()), performanceTextField.getText(), profile);
+			else if(sportComboBox.getSelectedItem().toString().equals("Escalade"))				
+				practice = new Practice(sport, date, placeTextField.getText(), Float.parseFloat(durationTextField.getText()), colorComboBox.getSelectedItem().toString(), profile);
 			Exercise exercise = (Exercise) session.get(Exercise.class, exercisesComboBox.getSelectedItem().toString());	
 			practice.getExercisesList().add(exercise);
 			profile.getPracticesList().add(practice);			  

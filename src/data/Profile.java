@@ -60,6 +60,10 @@ public class Profile {
 	@OneToOne(mappedBy="profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = User.class)
 	private User user;
 	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Profile.class)
+	@JoinTable(name = "profile_friends", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
+	private List<Profile> friends = new ArrayList<Profile>();
+	
 	public Profile() {
 		
 	}
@@ -179,4 +183,14 @@ public class Profile {
 	public void setPhysicalDataList(List<PhysicalData> physicalDataList) {
 		this.physicalDataList = physicalDataList;
 	}
+
+	public List<Profile> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(List<Profile> friends) {
+		this.friends = friends;
+	}
+	
+	
 }

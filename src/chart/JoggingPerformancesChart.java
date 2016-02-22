@@ -1,6 +1,9 @@
+
 package chart;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -13,10 +16,11 @@ import org.jfree.ui.ApplicationFrame;
 
 import utils.DataUtility;
 
+import data.Practice;
 import data.Profile;
 import data.User;
 
-public class WaistSizeChart extends ApplicationFrame {
+public class JoggingPerformancesChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
@@ -24,40 +28,46 @@ public class WaistSizeChart extends ApplicationFrame {
 	private String monthName;
 	private int year;
 	private int nbError;
-	
-	public WaistSizeChart(String title, int month, int year, User user) {
+
+	public JoggingPerformancesChart(String title, int month, int year, User user) {
 		super(title);
 		this.user = user;
 		this.month = month;
 		this.year = year;
 		nbError = 0;
 	}
-	
+
 
 	private XYDataset createDataset() {
-		
-		XYSeries waistSizeSeries = new XYSeries("Tour de taille");
+
+		XYSeries joggingSeries = new XYSeries("Performance jogging");
 		Profile profile = user.getProfile();
-		
-		int nbPractices = profile.getPhysicalDataList().size();
+
+		List<Practice> practicesList = profile.getPracticesList();
+		ArrayList<Practice> joggingPracticesList = new ArrayList<Practice>();
+		for(int i = 0; i < practicesList.size(); i++) {
+			if(practicesList.get(i).getSport().getName().equals("Jogging"));
+				joggingPracticesList.add(practicesList.get(i));
+		}
+		int nbPractices = joggingPracticesList.size();
 		int currentMonth, currentYear, i=nbPractices-1;
 
 		Calendar cal = Calendar.getInstance();
 
-		if (!profile.getPhysicalDataList().isEmpty()){
-			cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
+		if (!joggingPracticesList.isEmpty()){
+			cal.setTime(joggingPracticesList.get(i).getDate());
 			currentMonth = cal.get(Calendar.MONTH)+1;
 			currentYear = cal.get(Calendar.YEAR);	
 			while ((currentMonth!=month || currentYear!=year) && i>0 && i<nbPractices){	
 				if (currentYear > year){
 					i--;
-					cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
+					cal.setTime(joggingPracticesList.get(i).getDate());
 					currentYear = cal.get(Calendar.YEAR);
 				}else{
 					if (currentYear < year){
 						i++;
 						if (i<nbPractices){
-							cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
+							cal.setTime(joggingPracticesList.get(i).getDate());
 							currentYear = cal.get(Calendar.YEAR);
 						}
 						else{
@@ -67,13 +77,13 @@ public class WaistSizeChart extends ApplicationFrame {
 					else{
 						if (currentMonth > month){
 							i--;
-							cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
+							cal.setTime(joggingPracticesList.get(i).getDate());
 							currentMonth = cal.get(Calendar.MONTH)+1;
 						}else{
 							if (currentMonth < month){
 								i++;
 								if (i<nbPractices){
-									cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
+									cal.setTime(joggingPracticesList.get(i).getDate());
 									currentMonth = cal.get(Calendar.MONTH)+1;
 								}
 								else{
@@ -87,15 +97,16 @@ public class WaistSizeChart extends ApplicationFrame {
 
 			monthName = DataUtility.convertMonth(month);
 			if (i>=0 && i<nbPractices){		
-				waistSizeSeries.add(0.9, null);
-				waistSizeSeries.add(31.9, null);
+				joggingSeries.add(0.9, null);
+				joggingSeries.add(31.1, null);
+
 				do {
-					cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
+					cal.setTime(joggingPracticesList.get(i).getDate());
 					currentMonth = cal.get(Calendar.MONTH)+1;
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
-						waistSizeSeries.add(cal.get(Calendar.DAY_OF_MONTH), profile.getPhysicalDataList().get(i).getWaistSize());
-						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" tour de taille = "+profile.getPhysicalDataList().get(i).getWaistSize());
+						joggingSeries.add(cal.get(Calendar.DAY_OF_MONTH), Float.parseFloat(joggingPracticesList.get(i).getPerformance()));
+						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" perf = "+Float.parseFloat(joggingPracticesList.get(i).getPerformance()));
 					}
 					i--;
 				}while (currentMonth==month && currentYear==year && i>=0);
@@ -106,18 +117,19 @@ public class WaistSizeChart extends ApplicationFrame {
 		}
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(waistSizeSeries);
+		dataset.addSeries(joggingSeries);
 
 		return dataset;
 
 	}
 
 	private JFreeChart createChart(XYDataset dataset) {
-		return ChartFactory.createXYLineChart("Courbe de tour de taille", monthName, "cm", dataset, PlotOrientation.VERTICAL, true, true, false);
+		return ChartFactory.createXYLineChart("Performances en jogging", monthName, "minutes", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}	
 
-	
-	public ChartPanel showWaistSizePanel(){
+
+
+	public ChartPanel showJoggingPerfPanel(){
 		XYDataset dataset = createDataset();
 		JFreeChart chart = createChart(dataset);
 		ChartPanel chartPanel = new ChartPanel(chart);
@@ -134,4 +146,6 @@ public class WaistSizeChart extends ApplicationFrame {
 	public void setNbError(int nbError) {
 		this.nbError = nbError;
 	}
+
+
 }

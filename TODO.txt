@@ -1,10 +1,6 @@
--Régler dupplication des sports
--PhysicalData
+-modif/suppression séances
+-Confidentialité
 -Plusieurs exercices pour une séance
 -Plusieurs area of effect pour un exercice
--Ajout d'une séance=activité
--Créer la liste des exercices
--Ajout profil amis
 -Courbe évolution performance selon le sport
--Courbe évolution des PhysicalData
 -Calculer l'âge d'un utilisateur

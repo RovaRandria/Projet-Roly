@@ -60,7 +60,7 @@ public class ProfilePanel extends JPanel {
 		
 		List<PhysicalData> physicalDataList = user.getProfile().getPhysicalDataList();
 		if (physicalDataList.size()==0){
-			physicalDataDateLabel = new JLabel("Vous n'avez pas encore renseigné vos données physiques.");	
+			physicalDataDateLabel = new JLabel("Données physiques inconnues.");	
 			physicalDataBox.add(physicalDataDateLabel);
 			physicalDataPanel.add(physicalDataBox);
 		}

@@ -39,7 +39,8 @@ public class SportManagerPanel extends JPanel {
 	private JButton addSportButton = new JButton("Ajouter");	
 	private JButton removeSportButton = new JButton("Retirer");
 	private JButton addPracticeButton = new JButton("Ajouter une séance");
-	private JButton showChartButton = new JButton("Voir sa progression");
+	private JButton showPhysicDataChartButton = new JButton("Voir évolution physique");
+	private JButton showJoggingPerfChartButton = new JButton("Voir évolution jogging");
 	
 	private JScrollPane practicesJScrollPane = new JScrollPane();
 	
@@ -72,7 +73,10 @@ public class SportManagerPanel extends JPanel {
 		sportsLabel.setText("Vous pratiquez : " + user.getProfile().displaySport());
 		frameConstraints.gridx = 1; 
 		frameConstraints.gridy = 0; 
-		sportPanel.add(showChartButton, frameConstraints);
+		sportPanel.add(showPhysicDataChartButton, frameConstraints);
+		frameConstraints.gridx = 2; 
+		frameConstraints.gridy = 0; 
+		sportPanel.add(showJoggingPerfChartButton, frameConstraints);
 		frameConstraints.gridx = 0; 
 		frameConstraints.gridy = 1; 
 		sportPanel.add(addSportLabel, frameConstraints);
@@ -101,7 +105,7 @@ public class SportManagerPanel extends JPanel {
 		practicesJScrollPane = new JScrollPane(practicesTextArea);
 
 		sportPanel.setPreferredSize(new Dimension(700,100));
-		practicesJScrollPane.setPreferredSize(new Dimension(700,100));
+		practicesJScrollPane.setMinimumSize(new Dimension(500,100));
 
 		frameConstraints.gridx = 0; 
 		frameConstraints.gridy = 1; 
@@ -120,7 +124,8 @@ public class SportManagerPanel extends JPanel {
 		addSportButton.addActionListener(new addSportAction());
 		removeSportButton.addActionListener(new removeSportAction());
 		addPracticeButton.addActionListener(new addPracticeAction());
-		showChartButton.addActionListener(new showChartAction());
+		showPhysicDataChartButton.addActionListener(new showChartAction());
+		showJoggingPerfChartButton.addActionListener(new showJoggingPerfChartAction());
 	}
 	
 	class addSportAction implements ActionListener {
@@ -154,8 +159,8 @@ public class SportManagerPanel extends JPanel {
 			for (int i = 0; i < profile.getSportsList().size(); i++) {
 				if(profile.getSportsList().get(i).getName().equals(sport.getName())) {
 					profile.getSportsList().remove(profile.getSportsList().get(i));
-					JOptionPane.showMessageDialog(instance, "Le sport " + sport.getName() + " a bien été retiré !", "Sport retiré", JOptionPane.INFORMATION_MESSAGE);
 					session.merge(profile);
+					JOptionPane.showMessageDialog(instance, "Le sport " + sport.getName() + " a bien été retiré !", "Sport retiré", JOptionPane.INFORMATION_MESSAGE);
 					practiced = true;
 				}										
 			}
@@ -176,7 +181,13 @@ public class SportManagerPanel extends JPanel {
 	
 	class showChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new ChartGUI(user);
+			new ChartGUI(user, 0);
+		}
+	}
+	
+	class showJoggingPerfChartAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			new ChartGUI(user, 1);
 		}
 	}
 	
