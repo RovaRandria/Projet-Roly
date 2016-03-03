@@ -1,54 +1,45 @@
 package gui;
 
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Insets;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import org.hibernate.Session;
 
 import utils.AvailableSports;
 import data.DBConnection;
-import data.Profile;
-import data.Sport;
 import data.User;
 
 public class SportManagerPanel extends JPanel {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-	
-	private SportManagerPanel instance = this;
-
-	private JPanel sportPanel = new JPanel();
-	
-	private JComboBox sportComboBox = new JComboBox(AvailableSports.getSportsListString().toArray());
+		
+	private JComboBox sportComboBox;
 	
 	private JButton addSportButton = new JButton("Ajouter");	
-	private JButton removeSportButton = new JButton("Retirer");
-	private JButton addPracticeButton = new JButton("Ajouter une séance");
-	private JButton showPhysicDataChartButton = new JButton("Voir évolution physique");
-	private JButton showJoggingPerfChartButton = new JButton("Voir évolution jogging");
+	private JButton removeSportButton = new JButton("Supprimer");
+	private JButton showPracticePanelButton = new JButton("Détails");
+	private JButton showPerfChartButton = new JButton("Voir mes performances");
+	private JButton backHomeButton = new JButton("Retour au profil");
 	
-	private JScrollPane practicesJScrollPane = new JScrollPane();
+//	private JScrollPane practicesJScrollPane = new JScrollPane();
+//	
+//	private JTextArea practicesTextArea = new JTextArea();
 	
-	private JTextArea practicesTextArea = new JTextArea();
-	
-	private JLabel addSportLabel = new JLabel("Ajouter/supprimer sport : ");
+	private JLabel titleLabel = new JLabel("Mes activités sportives");
 	private JLabel sportsLabel = new JLabel();
-	private JLabel practicesLabel = new JLabel();
+	
+	private JPanel addDeletePanel = new JPanel();
+	
+	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
 	
 	public SportManagerPanel() {
 	}
@@ -60,135 +51,145 @@ public class SportManagerPanel extends JPanel {
 		initActions();
 	}
 	
-	public void init() {
+	public void repaintPanel(){
+		initStyle();
+		init();
+		initActions();
+	}
+	
+	public void init() {		
 		Session session = DBConnection.getSession();
 		session.beginTransaction();
 		user = (User) session.get(User.class, user.getPseudo());
+		sportsLabel = new JLabel(user.getProfile().displaySport());
+		sportComboBox = new JComboBox(AvailableSports.getSportsListString().toArray());
+		
+		addDeletePanel.add(addSportButton);
+		addDeletePanel.add(removeSportButton);
+		
 		this.setLayout(new GridBagLayout());
-		sportPanel.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
+		
+		frameConstraints.insets = new Insets(5, 0, 40, 0);
+		frameConstraints.gridwidth = 2;
 		frameConstraints.gridx = 0; 
 		frameConstraints.gridy = 0; 
-		sportPanel.add(sportsLabel, frameConstraints);
-		sportsLabel.setText("Vous pratiquez : " + user.getProfile().displaySport());
-		frameConstraints.gridx = 1; 
-		frameConstraints.gridy = 0; 
-		sportPanel.add(showPhysicDataChartButton, frameConstraints);
-		frameConstraints.gridx = 2; 
-		frameConstraints.gridy = 0; 
-		sportPanel.add(showJoggingPerfChartButton, frameConstraints);
-		frameConstraints.gridx = 0; 
+		add(titleLabel, frameConstraints);
+		
+		frameConstraints.anchor = GridBagConstraints.WEST;
+		frameConstraints.fill = GridBagConstraints.NONE;
+		frameConstraints.insets = new Insets(20, 0, 5, 20);
+		frameConstraints.gridwidth = 1;
 		frameConstraints.gridy = 1; 
-		sportPanel.add(addSportLabel, frameConstraints);
-		frameConstraints.gridx = 1; 
-		frameConstraints.gridy = 1; 
-		sportPanel.add(sportComboBox, frameConstraints);
-		frameConstraints.gridx = 2; 
-		frameConstraints.gridy = 1; 
-		sportPanel.add(addSportButton, frameConstraints);
-		frameConstraints.gridx = 3; 
-		frameConstraints.gridy = 1; 
-		sportPanel.add(removeSportButton, frameConstraints);
-		frameConstraints.gridx = 0; 
-		frameConstraints.gridy = 2; 
-		sportPanel.add(practicesLabel, frameConstraints);
-		practicesLabel.setText("Vos dernières séances : ");
-		frameConstraints.gridx = 1; 
-		frameConstraints.gridy = 2; 
-		sportPanel.add(addPracticeButton, frameConstraints);
-		frameConstraints.gridx = 0; 
+		add(new JLabel("Sport(s) pratiqué(s) : "), frameConstraints);
 		frameConstraints.gridy = 3; 
-		for(int i = 0; i < user.getProfile().getPracticesList().size(); i++) {
-			practicesTextArea.append(user.getProfile().getPracticesList().get(i).toString()+"\n");
-		}
-		practicesTextArea.setEditable(false);
-		practicesJScrollPane = new JScrollPane(practicesTextArea);
+		add(new JLabel("Gérer mes sports : "), frameConstraints);
+		frameConstraints.gridy = 5; 
+		add(new JLabel("Dernière séance : "), frameConstraints);
+		
 
-		sportPanel.setPreferredSize(new Dimension(700,100));
-		practicesJScrollPane.setMinimumSize(new Dimension(500,100));
-
-		frameConstraints.gridx = 0; 
+		frameConstraints.gridx = 1;
 		frameConstraints.gridy = 1; 
-		this.add(practicesJScrollPane, frameConstraints);
-		frameConstraints.gridx = 0; 
-		frameConstraints.gridy = 0; 
-		this.add(sportPanel, frameConstraints);
+		frameConstraints.insets = new Insets(20, 20, 5, 0);
+		add(sportsLabel, frameConstraints);
+		frameConstraints.gridy = GridBagConstraints.RELATIVE; 
+		frameConstraints.insets = new Insets(5, 20, 20, 0);
+		add(showPerfChartButton, frameConstraints);
+		frameConstraints.insets = new Insets(20, 20, 5, 0);
+		add(sportComboBox, frameConstraints);
+		frameConstraints.insets = new Insets(5, 20, 20, 0);
+		add(addDeletePanel, frameConstraints);
+		
+		frameConstraints.insets = new Insets(20, 20, 5, 0);
+		frameConstraints.gridy = GridBagConstraints.RELATIVE; 
+		for(int i = 0; i < user.getProfile().getPracticesList().size(); i++) {
+			add(new JLabel(user.getProfile().getPracticesList().get(i).toString()), frameConstraints);
+		}
+		frameConstraints.insets = new Insets(10, 20, 10, 0);
+		add(showPracticePanelButton, frameConstraints);
+
+		frameConstraints.gridx = 0;
+		frameConstraints.gridwidth = 2;
+		frameConstraints.anchor = GridBagConstraints.CENTER;
+		frameConstraints.fill = GridBagConstraints.CENTER;
+		frameConstraints.insets = new Insets(30, 0, 5, 0);
+		add(backHomeButton, frameConstraints);
+
+
+//		practicesTextArea.setEditable(false);
+//		practicesJScrollPane = new JScrollPane(practicesTextArea);
+//
+//		practicesJScrollPane.setMinimumSize(new Dimension(500,100));
+//
+//		frameConstraints.gridx = 0; 
+//		frameConstraints.gridy = 1; 
+//		this.add(practicesJScrollPane, frameConstraints);
 		session.getTransaction().commit();
 	}
 	
 	public void initStyle() {
-		//Font & Backgrounds Settings
+		titleLabel.setFont(TITLE_FONT);
 	}
 		
 	public void initActions() {		
-		addSportButton.addActionListener(new addSportAction());
-		removeSportButton.addActionListener(new removeSportAction());
-		addPracticeButton.addActionListener(new addPracticeAction());
-		showPhysicDataChartButton.addActionListener(new showChartAction());
-		showJoggingPerfChartButton.addActionListener(new showJoggingPerfChartAction());
-	}
-	
-	class addSportAction implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		Session session = DBConnection.getSession();
-		session.beginTransaction();
-		Profile profile = (Profile) session.get(Profile.class, user.getProfile().getId());			  
-		Sport sport = (Sport) session.get(Sport.class, sportComboBox.getSelectedItem().toString());
-		if(!profile.getSportsList().contains(sport)) {
-			profile.getSportsList().add(sport);			  
-			JOptionPane.showMessageDialog(instance, "Le sport " + sport.getName() + " a bien été ajouté !", "Sport ajouté", JOptionPane.INFORMATION_MESSAGE);
-			session.merge(profile);
-		}
-		else
-			JOptionPane.showMessageDialog(instance, "Vous avez déjà indiqué " + sport.getName() + " !", "Erreur", JOptionPane.ERROR_MESSAGE);
-		session.getTransaction().commit();
-		init();
-		instance.repaint();
-		}	
-	}
-	
-	class removeSportAction implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			Session session = DBConnection.getSession();
-			session.beginTransaction();
-			Profile profile = (Profile) session.get(Profile.class, user.getProfile().getId());			  
-			Sport sport = (Sport) session.get(Sport.class, sportComboBox.getSelectedItem().toString());
-			Boolean practiced = false;
-			for (int i = 0; i < profile.getSportsList().size(); i++) {
-				if(profile.getSportsList().get(i).getName().equals(sport.getName())) {
-					profile.getSportsList().remove(profile.getSportsList().get(i));
-					session.merge(profile);
-					JOptionPane.showMessageDialog(instance, "Le sport " + sport.getName() + " a bien été retiré !", "Sport retiré", JOptionPane.INFORMATION_MESSAGE);
-					practiced = true;
-				}										
-			}
-			if (practiced.equals(false))
-				JOptionPane.showMessageDialog(instance, "Vous ne pratiquez pas " + sport.getName() + " !", "Erreur", JOptionPane.ERROR_MESSAGE);
-			session.getTransaction().commit();
-			init();
-			instance.repaint();
-		}
-	}
-	
 
-	class addPracticeAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			new PracticeManagerFrame(user);
-		}
 	}
-	
-	class showChartAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			new ChartGUI(user, 0);
-		}
+
+	public JComboBox getSportComboBox() {
+		return sportComboBox;
 	}
-	
-	class showJoggingPerfChartAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			new ChartGUI(user, 1);
-		}
+
+	public void setSportComboBox(JComboBox sportComboBox) {
+		this.sportComboBox = sportComboBox;
 	}
+
+	public JButton getAddSportButton() {
+		return addSportButton;
+	}
+
+	public void setAddSportButton(JButton addSportButton) {
+		this.addSportButton = addSportButton;
+	}
+
+	public JButton getRemoveSportButton() {
+		return removeSportButton;
+	}
+
+	public void setRemoveSportButton(JButton removeSportButton) {
+		this.removeSportButton = removeSportButton;
+	}
+
+	public JButton getShowPracticePanelButton() {
+		return showPracticePanelButton;
+	}
+
+	public void setShowPracticePanelButton(JButton showPracticePanelButton) {
+		this.showPracticePanelButton = showPracticePanelButton;
+	}
+
+	public JButton getShowPerfChartButton() {
+		return showPerfChartButton;
+	}
+
+	public void setShowPerfChartButton(JButton showPerfChartButton) {
+		this.showPerfChartButton = showPerfChartButton;
+	}
+
+	public JButton getBackHomeButton() {
+		return backHomeButton;
+	}
+
+	public void setBackHomeButton(JButton backHomeButton) {
+		this.backHomeButton = backHomeButton;
+	}
+
+	public JLabel getSportsLabel() {
+		return sportsLabel;
+	}
+
+	public void setSportsLabel(JLabel sportsLabel) {
+		this.sportsLabel = sportsLabel;
+	}
+
 	
 }

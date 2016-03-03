@@ -14,14 +14,7 @@ public class Login {
 	
 	private Session session;
 	
-	public Login() {
-		//TABLES CREATION
-		//DataInit.createTables();
-	}
-	
 	public Login (boolean coState) {
-		//TABLES CREATION
-		//DataInit.createTables();
 		this.coState = coState;
 	}
 	
@@ -34,7 +27,7 @@ public class Login {
 	public int connect(String pseudo, String password, User retrievedUser, Session session) {		
 		if(retrievedUser != null) {
 			if(retrievedUser.getPassword().equals(password)) {
-				System.out.println(retrievedUser.getPseudo() + " est bien connecté !");
+				System.out.println("L'utilisateur "+retrievedUser.getPseudo() + " est bien connecté !");
 				currentUser = retrievedUser;
 				coState = true;
 				return 1;

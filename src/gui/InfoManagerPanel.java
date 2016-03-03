@@ -1,53 +1,42 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Insets;
 import java.util.Calendar;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import org.hibernate.Session;
-
-import utils.DataUtility;
 import utils.DateNumbersList;
 
-import data.DBConnection;
 import data.Gender;
-import data.Profile;
 import data.User;
 
 public class InfoManagerPanel extends JPanel {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-	
-	private InfoManagerPanel instance = this;
-	
+		
 	private JButton updateInfoButton = new JButton("Modifier");
+	private JButton backButton = new JButton("Retour au profil");
 	
-	private JLabel passwordLabel = new JLabel("Mot de passe : ");
-	private JLabel firstNameLabel = new JLabel("Prénom : ");
-	private JLabel lastNameLabel = new JLabel("Nom : ");
-	private JLabel genderLabel = new JLabel("Sexe : ");
-	private JLabel birthdayLabel = new JLabel("Date de naissance : ");
-	private JLabel userInfoLabel = new JLabel();
+	private JLabel titleLabel = new JLabel("Modifier mes informations");
+	private JLabel pseudoLabel;
+	private JLabel errorLabel = new JLabel(" ");
 	
-	private JPasswordField  passwordField = new JPasswordField(10);
-	private JTextField  firstNameTextField  = new JTextField(10);
-	private JTextField  lastNameTextField  = new JTextField(10);
+	private JPasswordField  passwordField = new JPasswordField(15);
+	private JTextField  firstNameTextField  = new JTextField(15);
+	private JTextField  lastNameTextField  = new JTextField(15);
 	
 	private ButtonGroup genderButtonGroup = new ButtonGroup();
 	private JRadioButton maleRadioButton = new JRadioButton("Homme");
@@ -57,6 +46,10 @@ public class InfoManagerPanel extends JPanel {
 	private JComboBox birthdayMonthComboBox = new JComboBox(DateNumbersList.month().toArray());
 	private JComboBox birthdayYearComboBox = new JComboBox(DateNumbersList.year().toArray());
 	
+	private JPanel datePanel = new JPanel();
+	private JPanel radioButtonPanel = new JPanel();
+	
+	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
 	
 	public InfoManagerPanel() {
 	}
@@ -69,51 +62,22 @@ public class InfoManagerPanel extends JPanel {
 	}
 	
 	public void init() {
-		this.setLayout(new GridBagLayout());
-		GridBagConstraints frameConstraints = new GridBagConstraints();
-		frameConstraints.gridx = 0;
-		frameConstraints.gridy = 0;
-		this.add(passwordLabel, frameConstraints);
-		frameConstraints.gridx = 1;
-		frameConstraints.gridy = 0;
-		passwordField.setText(user.getPassword());
-		this.add(passwordField, frameConstraints);
-		frameConstraints.gridx = 0;
-		frameConstraints.gridy = 1;
-		this.add(firstNameLabel, frameConstraints);
-		frameConstraints.gridx = 1;
-		frameConstraints.gridy = 1;
-		firstNameTextField.setText(user.getProfile().getFirstName());
-		this.add(firstNameTextField, frameConstraints);
-		frameConstraints.gridx = 0;
-		frameConstraints.gridy = 2;
-		this.add(lastNameLabel, frameConstraints);
-		frameConstraints.gridx = 1;
-		frameConstraints.gridy = 2;
-		lastNameTextField.setText(user.getProfile().getLastName());
-		this.add(lastNameTextField, frameConstraints);
-		frameConstraints.gridx = 0;
-		frameConstraints.gridy = 3;
-		this.add(genderLabel, frameConstraints);
-		genderButtonGroup.add(maleRadioButton);
-		genderButtonGroup.add(femaleRadioButton);
-		frameConstraints.gridx = 1;
-		frameConstraints.gridy = 3;
-		this.add(maleRadioButton, frameConstraints);
-		frameConstraints.gridx = 2;
-		frameConstraints.gridy = 3;
-		this.add(femaleRadioButton, frameConstraints);
+		pseudoLabel = new JLabel(user.getPseudo());
+	
 		if(user.getProfile().getGender() != null) {
 			if(user.getProfile().getGender().equals(Gender.Femme))
 				femaleRadioButton.setSelected(true);
 			else
 				maleRadioButton.setSelected(true);
 		}
-		frameConstraints.gridx = 0;
-		frameConstraints.gridy = 4;
-		this.add(birthdayLabel, frameConstraints);
-		frameConstraints.gridx = 1;
-		frameConstraints.gridy = 4;
+		passwordField.setText(user.getPassword());
+		firstNameTextField.setText(user.getProfile().getFirstName());
+		lastNameTextField.setText(user.getProfile().getLastName());
+		genderButtonGroup.add(maleRadioButton);
+		genderButtonGroup.add(femaleRadioButton);
+		radioButtonPanel.add(maleRadioButton);
+		radioButtonPanel.add(femaleRadioButton);
+		
 		Calendar cal = Calendar.getInstance();
 		if(user.getProfile().getBirthdate() != null) {
 			cal.setTime(user.getProfile().getBirthdate());
@@ -121,60 +85,169 @@ public class InfoManagerPanel extends JPanel {
 			birthdayMonthComboBox.setSelectedItem(cal.get(Calendar.MONTH)+1);
 			birthdayYearComboBox.setSelectedItem(cal.get(Calendar.YEAR));
 		}
-		this.add(birthdayDayComboBox, frameConstraints);
-		frameConstraints.gridx = 2;
-		frameConstraints.gridy = 4;
-		this.add(birthdayMonthComboBox, frameConstraints);
-		frameConstraints.gridx = 3;
-		frameConstraints.gridy = 4;
-		this.add(birthdayYearComboBox, frameConstraints);
-		frameConstraints.gridx = 1;
-		frameConstraints.gridy = 5;
-		this.add(updateInfoButton, frameConstraints);
+		else{
+			birthdayDayComboBox.setSelectedItem(cal.get(Calendar.DAY_OF_MONTH));
+			birthdayMonthComboBox.setSelectedItem(cal.get(Calendar.MONTH)+1);
+			birthdayYearComboBox.setSelectedItem(cal.get(Calendar.YEAR));
+		}
+		datePanel.add(birthdayDayComboBox);
+		datePanel.add(birthdayMonthComboBox);
+		datePanel.add(birthdayYearComboBox);
+
+
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints frameConstraints = new GridBagConstraints();
+		
+		frameConstraints.insets = new Insets(5, 0, 40, 0);
+		frameConstraints.gridwidth = 2;
 		frameConstraints.gridx = 0;
-		frameConstraints.gridy = 6;
-		this.add(userInfoLabel, frameConstraints);
+		frameConstraints.gridy = 0;
+		this.add(titleLabel, frameConstraints);
+		
+		frameConstraints.insets = new Insets(5, 10, 5, 30);
+		frameConstraints.gridwidth = 1;
+		frameConstraints.gridx = 0;
+		frameConstraints.gridy = 1;
+		frameConstraints.anchor = GridBagConstraints.WEST;
+		frameConstraints.fill = GridBagConstraints.NONE;
+		this.add(new JLabel("Pseudo : "), frameConstraints);
+		frameConstraints.gridy = GridBagConstraints.RELATIVE;
+		this.add(new JLabel("Mot de passe : "), frameConstraints);
+		this.add(new JLabel("Prénom : "), frameConstraints);
+		this.add(new JLabel("Nom : "), frameConstraints);
+		this.add(new JLabel("Sexe : "), frameConstraints);
+		this.add(new JLabel("Date de naissance : "), frameConstraints);
+
+		
+		frameConstraints.anchor = GridBagConstraints.CENTER;
+		frameConstraints.fill = GridBagConstraints.CENTER;
+		frameConstraints.gridx = 1;
+		frameConstraints.gridy = 1;
+		this.add(pseudoLabel, frameConstraints);
+		frameConstraints.gridy = GridBagConstraints.RELATIVE;
+		this.add(passwordField, frameConstraints);
+		this.add(firstNameTextField, frameConstraints);
+		this.add(lastNameTextField, frameConstraints);
+		this.add(radioButtonPanel, frameConstraints);
+		this.add(datePanel, frameConstraints);
+
+
+		frameConstraints.gridwidth = 2;
+		frameConstraints.gridx = 0;
+		frameConstraints.gridy = GridBagConstraints.RELATIVE;
+		frameConstraints.insets = new Insets(20, 0, 5, 0);
+		this.add(updateInfoButton, frameConstraints);
+		this.add(errorLabel, frameConstraints);
+		frameConstraints.insets = new Insets(40, 0, 5, 0);
+		this.add(backButton, frameConstraints);
 		
 	}
 	
 	public void initStyle() {
-		//Font & Backgrounds Settings
+		titleLabel.setFont(TITLE_FONT);
+		errorLabel.setForeground(new Color(255, 0, 0));
 	}
 		
 	public void initActions() {		
-		updateInfoButton.addActionListener(new UpdateInfo());
+
+	}
+
+	public JButton getUpdateInfoButton() {
+		return updateInfoButton;
+	}
+
+	public void setUpdateInfoButton(JButton updateInfoButton) {
+		this.updateInfoButton = updateInfoButton;
+	}
+
+	public JButton getBackButton() {
+		return backButton;
+	}
+
+	public void setBackButton(JButton backButton) {
+		this.backButton = backButton;
+	}
+
+	public JLabel getErrorLabel() {
+		return errorLabel;
+	}
+
+	public void setErrorLabel(JLabel errorLabel) {
+		this.errorLabel = errorLabel;
+	}
+
+	public JPasswordField getPasswordField() {
+		return passwordField;
+	}
+
+	public void setPasswordField(JPasswordField passwordField) {
+		this.passwordField = passwordField;
+	}
+
+	public JTextField getFirstNameTextField() {
+		return firstNameTextField;
+	}
+
+	public void setFirstNameTextField(JTextField firstNameTextField) {
+		this.firstNameTextField = firstNameTextField;
+	}
+
+	public JTextField getLastNameTextField() {
+		return lastNameTextField;
+	}
+
+	public void setLastNameTextField(JTextField lastNameTextField) {
+		this.lastNameTextField = lastNameTextField;
+	}
+
+	public ButtonGroup getGenderButtonGroup() {
+		return genderButtonGroup;
+	}
+
+	public void setGenderButtonGroup(ButtonGroup genderButtonGroup) {
+		this.genderButtonGroup = genderButtonGroup;
+	}
+
+	public JRadioButton getMaleRadioButton() {
+		return maleRadioButton;
+	}
+
+	public void setMaleRadioButton(JRadioButton maleRadioButton) {
+		this.maleRadioButton = maleRadioButton;
+	}
+
+	public JRadioButton getFemaleRadioButton() {
+		return femaleRadioButton;
+	}
+
+	public void setFemaleRadioButton(JRadioButton femaleRadioButton) {
+		this.femaleRadioButton = femaleRadioButton;
+	}
+
+	public JComboBox getBirthdayDayComboBox() {
+		return birthdayDayComboBox;
+	}
+
+	public void setBirthdayDayComboBox(JComboBox birthdayDayComboBox) {
+		this.birthdayDayComboBox = birthdayDayComboBox;
+	}
+
+	public JComboBox getBirthdayMonthComboBox() {
+		return birthdayMonthComboBox;
+	}
+
+	public void setBirthdayMonthComboBox(JComboBox birthdayMonthComboBox) {
+		this.birthdayMonthComboBox = birthdayMonthComboBox;
+	}
+
+	public JComboBox getBirthdayYearComboBox() {
+		return birthdayYearComboBox;
+	}
+
+	public void setBirthdayYearComboBox(JComboBox birthdayYearComboBox) {
+		this.birthdayYearComboBox = birthdayYearComboBox;
 	}
 	
-	class UpdateInfo implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		Session session = DBConnection.getSession();
-		System.out.println("BEGIN TRANSACTION");
-		session.beginTransaction();
-		Profile retrievedProfile = (Profile) session.get(Profile.class, user.getProfile().getId());
-			
-		if (String.valueOf(passwordField.getPassword()).isEmpty()||(String.valueOf(passwordField.getPassword()).length()<6)){
-				userInfoLabel.setText("Veuillez saisir un mot de passe de 6 caractères minimum.");
-		}
-		
-		else user.setPassword(String.valueOf(passwordField.getPassword()));
-		
-		retrievedProfile.setFirstName(firstNameTextField.getText());
-		
-		retrievedProfile.setLastName(lastNameTextField.getText());
-		
-		if(maleRadioButton.isSelected())
-			retrievedProfile.setGender(Gender.Homme);
-		else if (femaleRadioButton.isSelected())
-			retrievedProfile.setGender(Gender.Femme);
-		
-		retrievedProfile.setBirthdate(DataUtility.createDate((Integer)birthdayDayComboBox.getSelectedItem(), (Integer)birthdayMonthComboBox.getSelectedItem(), (Integer)birthdayYearComboBox.getSelectedItem()));
-		JOptionPane.showMessageDialog(instance, "Vos informations ont bien été mises à jour !", "Informations à jour", JOptionPane.INFORMATION_MESSAGE);
-		session.merge(retrievedProfile);
-		
-		session.getTransaction().commit();
-		instance.repaint();
-		}
-	}	
+
 	
 }

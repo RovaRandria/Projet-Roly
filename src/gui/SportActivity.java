@@ -18,15 +18,11 @@ import data.DBConnection;
 import data.User;
 
 public class SportActivity extends JPanel {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private User user;
 	
-	private SportActivity instance = this;
-
 	private JPanel sportPanel = new JPanel();
 	
 	private JButton showPhysicDataChartButton = new JButton("Voir évolution physique");
@@ -96,7 +92,7 @@ public class SportActivity extends JPanel {
 	
 	class showChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new ChartGUI(user, 0);
+			new ShowChartsPanel(user, 0);
 		}
 	}
 	

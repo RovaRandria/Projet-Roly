@@ -136,7 +136,7 @@ public class Profile {
 	public String displaySport() {
 		String sportsStr = "";
 		for(int i = 0; i< this.sportsList.size(); i++) {
-			sportsStr += sportsList.get(i).getName()+ " ";
+			sportsStr += sportsList.get(i).getName()+ ", ";
 		}
 		return sportsStr;
 	}	

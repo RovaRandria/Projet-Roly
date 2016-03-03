@@ -1,7 +1,5 @@
 package gui;
 
-import gui.SportManagerPanel.showChartAction;
-import gui.SportManagerPanel.showJoggingPerfChartAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +23,7 @@ import data.User;
 public class SearchProfileGUI extends JFrame{
 	private SearchProfileGUI instance = this;
 	private static final long serialVersionUID = 1L;
-	private ProfilePanel profilePanel = new ProfilePanel();
+	private ProfilePanel profilePanel;
 	private JPanel searchPanel = new JPanel();
 	private JPanel resultPanel = new JPanel();
 
@@ -90,7 +88,7 @@ public class SearchProfileGUI extends JFrame{
 				resultPanel.add(resultLabel);
 			}
 			else{
-				profilePanel = new ProfilePanel(retrievedUser);
+				profilePanel = new ProfilePanel(retrievedUser, false);
 				Boolean isFriend = false;
 				for (int i = 0; i < user.getProfile().getFriends().size(); i++) {
 					if(user.getProfile().getFriends().get(i).getId().equals(retrievedUser.getProfile().getId())) {
@@ -129,7 +127,7 @@ public class SearchProfileGUI extends JFrame{
 			resultPanel.add(friendsLabel);
 			resultPanel.add(showJoggingPerfChartButton);
 			resultPanel.add(showPhysicDataChartButton);
-			profilePanel = new ProfilePanel(retrievedUser);
+			profilePanel = new ProfilePanel(retrievedUser, false);
 			resultPanel.add(profilePanel);
 
 		}
@@ -146,13 +144,13 @@ public class SearchProfileGUI extends JFrame{
 
 	class showChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new ChartGUI(retrievedUser, 0);
+			new ShowChartsPanel(retrievedUser, 0);
 		}
 	}
 
 	class showJoggingPerfChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new ChartGUI(retrievedUser, 1);
+			new ShowChartsPanel(retrievedUser, 1);
 		}
 	}
 }

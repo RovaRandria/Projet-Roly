@@ -48,42 +48,42 @@ public class WeightChart extends ApplicationFrame {
 			cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
 			currentMonth = cal.get(Calendar.MONTH)+1;
 			currentYear = cal.get(Calendar.YEAR);	
-			while ((currentMonth!=month || currentYear!=year) && i>0 && i<nbPractices){	
+
+			while ((currentMonth!=month || currentYear!=year) && i>=0 && i<nbPractices){	
+				cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
+				currentYear = cal.get(Calendar.YEAR);
+				currentMonth = cal.get(Calendar.MONTH)+1;
+				
 				if (currentYear > year){
 					i--;
-					cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
-					currentYear = cal.get(Calendar.YEAR);
 				}else{
 					if (currentYear < year){
 						i++;
-						if (i<nbPractices){
-							cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
-							currentYear = cal.get(Calendar.YEAR);
+						if (i>=nbPractices){
+							nbError = 2;
 						}
 						else{
-							nbError = 2;
+							nbError = 0;
 						}
 					}
 					else{
 						if (currentMonth > month){
 							i--;
-							cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
-							currentMonth = cal.get(Calendar.MONTH)+1;
 						}else{
 							if (currentMonth < month){
 								i++;
-								if (i<nbPractices){
-									cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
-									currentMonth = cal.get(Calendar.MONTH)+1;
+								if (i>=nbPractices){
+									nbError = 2;
 								}
 								else{
-									nbError = 2;
+									nbError = 0;
 								}
 							}
 						}
 					}
 				}
 			}
+			
 			monthName = DataUtility.convertMonth(month);
 			if (i>=0 && i<nbPractices){		
 				weightSeries.add(0.9, null);
@@ -101,10 +101,7 @@ public class WeightChart extends ApplicationFrame {
 				}while (currentMonth==month && currentYear==year && i>=0);
 			}
 		}
-		else{
-			nbError = 1;
-		}
-
+		
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(weightSeries);
 
