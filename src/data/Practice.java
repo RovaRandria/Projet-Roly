@@ -44,10 +44,6 @@ public class Practice {
     @JoinColumn(name="sport_id", nullable = false)
 	private Sport sport;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Profile.class)
-	@JoinColumn(name = "profile_id", nullable = false)
-	private Profile profile;
-	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Exercise.class)
 	@JoinTable(name = "practice_exercise", joinColumns = @JoinColumn(name = "practice_id"), inverseJoinColumns = @JoinColumn(name = "exercise_id"))
 	private List<Exercise> exercisesList = new ArrayList<Exercise>();
@@ -63,7 +59,6 @@ public class Practice {
 		this.place = place;
 		this.duration = duration;
 		this.performance = performance;
-		this.profile = profile; 
 	}
 
 	public String getId() {
@@ -80,14 +75,6 @@ public class Practice {
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-	
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
 	}
 
 	public String getPlace() {

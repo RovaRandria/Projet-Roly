@@ -2,8 +2,10 @@ package utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class DataUtility {
 	public static Date createDate(int day, int month, int year) {
@@ -21,7 +23,7 @@ public class DataUtility {
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("null")
 	public static int[] parseDate(Calendar cal) {
 		int[] parsedDate = null;	
@@ -30,12 +32,62 @@ public class DataUtility {
 		parsedDate[2] = cal.get(Calendar.YEAR);
 		return parsedDate;
 	}
-	
+
+	public static List<String> getSportsListString (){
+		List<String> sportsList = new ArrayList<String>();
+		sportsList.add("Escalade");
+		sportsList.add("Jogging");
+		return sportsList;
+	}
+
 	public static String convertMonth (int month){
 		String[] monthName = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" };
-	    return monthName[month-1];
+		return monthName[month-1];
 	}
-	
-	
+
+	public static List<String> getExercisesListString (){
+		List<String> exercisesList = new ArrayList<String>();
+		exercisesList.add("Pompes");
+		exercisesList.add("Abdominaux");
+		return exercisesList;
+	}
+
+	public static List<String> getClimbingColorsString (){
+		List<String> climbingColorsList = new ArrayList<String>();
+		climbingColorsList.add("Jaune");
+		climbingColorsList.add("Orange");
+		climbingColorsList.add("Bleu");
+		climbingColorsList.add("Rouge");
+		climbingColorsList.add("Blanc");
+		climbingColorsList.add("Noir");
+		climbingColorsList.add("Vert");
+		return climbingColorsList;
+	}
+
+	public static List<Integer> day() {
+		List <Integer> day = new ArrayList<Integer>();
+		for (int i = 1; i <= 31; i++) {
+			day.add(i);
+		}
+		return day;
+	}
+
+	public static List<Integer> month() {
+		List <Integer> month = new ArrayList<Integer>();
+		for (int i = 1; i <= 12; i++) {
+			month.add(i);
+		}
+		return month;
+	}
+
+	public static List<Integer> year() {
+		List <Integer> year = new ArrayList<Integer>();
+		for (int i = 1900; i <= 2016; i++) {
+			year.add(i);
+		}
+		return year;
+	}
+
+
 
 }

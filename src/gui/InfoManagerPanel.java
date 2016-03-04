@@ -16,7 +16,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import utils.DateNumbersList;
+import utils.DataUtility;
 
 import data.Gender;
 import data.User;
@@ -42,9 +42,9 @@ public class InfoManagerPanel extends JPanel {
 	private JRadioButton maleRadioButton = new JRadioButton("Homme");
 	private JRadioButton femaleRadioButton = new JRadioButton("Femme");
 	
-	private JComboBox birthdayDayComboBox = new JComboBox(DateNumbersList.day().toArray());
-	private JComboBox birthdayMonthComboBox = new JComboBox(DateNumbersList.month().toArray());
-	private JComboBox birthdayYearComboBox = new JComboBox(DateNumbersList.year().toArray());
+	private JComboBox birthdayDayComboBox = new JComboBox(DataUtility.day().toArray());
+	private JComboBox birthdayMonthComboBox = new JComboBox(DataUtility.month().toArray());
+	private JComboBox birthdayYearComboBox = new JComboBox(DataUtility.year().toArray());
 	
 	private JPanel datePanel = new JPanel();
 	private JPanel radioButtonPanel = new JPanel();

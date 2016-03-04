@@ -42,9 +42,11 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 	private XYDataset createDataset() {
 
 		XYSeries joggingSeries = new XYSeries("Performance jogging");
-		Profile profile = user.getProfile();
+
 		Session session = DBConnection.getSession();
 		session.beginTransaction();
+		user = (User) session.get(User.class, user.getPseudo());
+		Profile profile = user.getProfile();
 		
 		List<Practice> practicesList = profile.getPracticesList();
 		ArrayList<Practice> joggingPracticesList = new ArrayList<Practice>();
@@ -53,7 +55,6 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 				joggingPracticesList.add(practicesList.get(i));
 		}
 		session.getTransaction().commit();
-		session.close();
 		int nbPractices = joggingPracticesList.size();
 		int currentMonth, currentYear, i=nbPractices-1;
 

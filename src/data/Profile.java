@@ -54,7 +54,8 @@ public class Profile {
 	@JoinTable(name = "profile_sport", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "sport_id"))
 	private List<Sport> sportsList = new ArrayList<Sport>();
 	
-	@OneToMany(mappedBy="profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Practice.class)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Practice.class)
+	@JoinColumn(name = "profil_id", nullable = false)
 	private List<Practice> practicesList = new ArrayList<Practice>();
 
 	@OneToOne(mappedBy="profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = User.class)

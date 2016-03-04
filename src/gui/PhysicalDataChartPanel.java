@@ -37,7 +37,6 @@ public class PhysicalDataChartPanel extends JPanel {
 	private Box hipSizeButtonBox = Box.createHorizontalBox();
 	private Box weightMainBox = Box.createVerticalBox();
 	private Box waistSizeMainBox = Box.createVerticalBox();
-	private Box joggingPerfMainBox = Box.createVerticalBox();
 	private Box hipSizeMainBox = Box.createVerticalBox();
 
 	private ChartPanel currentWeightChartPanel;
@@ -206,12 +205,6 @@ public class PhysicalDataChartPanel extends JPanel {
 	}
 	public void setWaistSizeMainBox(Box waistSizeMainBox) {
 		this.waistSizeMainBox = waistSizeMainBox;
-	}
-	public Box getJoggingPerfMainBox() {
-		return joggingPerfMainBox;
-	}
-	public void setJoggingPerfMainBox(Box joggingPerfMainBox) {
-		this.joggingPerfMainBox = joggingPerfMainBox;
 	}
 
 	public HipSizeChart getHipSizeChart() {

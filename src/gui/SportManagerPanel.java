@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import org.hibernate.Session;
 
-import utils.AvailableSports;
+import utils.DataUtility;
 import data.DBConnection;
 import data.Practice;
 import data.User;
@@ -70,7 +70,7 @@ public class SportManagerPanel extends JPanel {
 		else{
 			sportsLabel = new JLabel("Non renseigné");
 		}
-		sportComboBox = new JComboBox(AvailableSports.getSportsListString().toArray());
+		sportComboBox = new JComboBox(DataUtility.getSportsListString().toArray());
 		
 		addDeletePanel.add(addSportButton);
 		addDeletePanel.add(removeSportButton);

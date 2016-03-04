@@ -18,6 +18,7 @@ import chart.JoggingPerformancesChart;
 import chart.WaistSizeChart;
 import chart.WeightChart;
 import data.DBConnection;
+import data.DataInit;
 import data.Exercise;
 import data.Gender;
 import data.Login;
@@ -35,10 +36,10 @@ public class MainGUI extends JFrame{
 		DataInit.insertExercises();*/
 		new MainGUI("Pass'Sport");
 	}
-	
-	
-	
-	
+
+
+
+
 	private static final long serialVersionUID = -6508626185123863757L;
 	private Login login;
 	private LoginPanel loginPanel;
@@ -54,22 +55,22 @@ public class MainGUI extends JFrame{
 	private PerformanceChartPanel performanceChartPanel;
 	private PracticePanel practicePanel;
 
-	
+
 	public MainGUI(String title) {
 		super(title);
 		login = new  Login(false);
 		repaintFrame();
 	}
-	
+
 	public void repaintFrame(){
 		initStyle();
 		init();
 		initActions();
 	}
-	
-	
+
+
 	public void init() {
-		
+
 		if (!login.isCoState()) {
 			if (registrationPanel==null){
 				loginPanel = new LoginPanel();
@@ -98,9 +99,14 @@ public class MainGUI extends JFrame{
 								this.add(practicePanel);
 							}
 							else{
-								profilePanel = new ProfilePanel(user, true);
-								remove(loginPanel);
-								this.add(profilePanel);		
+								if (performanceChartPanel!=null){
+									this.add(performanceChartPanel);
+								}
+								else {
+									profilePanel = new ProfilePanel(user, true);
+									remove(loginPanel);
+									this.add(profilePanel);
+								}
 							}
 						}
 					}
@@ -113,11 +119,11 @@ public class MainGUI extends JFrame{
 		setVisible(true);
 		setResizable(false);
 	}
-	
+
 	public void initStyle() {
 
 	}
-	
+
 	public void initActions() {		
 		if (loginPanel!=null && loginPanel.isVisible()){
 			loginPanel.getConnectionButton().addActionListener(new connectionAction());
@@ -164,7 +170,7 @@ public class MainGUI extends JFrame{
 		}
 
 	}
-	
+
 	class backHomeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (profilePanel!=null)
@@ -208,7 +214,7 @@ public class MainGUI extends JFrame{
 			repaintFrame();
 		}
 	}
-	
+
 	class showRegistrationAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -218,7 +224,7 @@ public class MainGUI extends JFrame{
 			repaintFrame();
 		}
 	}
-	
+
 	class showUpdateInfoAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -230,7 +236,7 @@ public class MainGUI extends JFrame{
 			repaintFrame();
 		}
 	}
-	
+
 	class showPhysicalDataAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			physicalDataChartPanel = new PhysicalDataChartPanel(user);
@@ -245,7 +251,7 @@ public class MainGUI extends JFrame{
 			repaintFrame();
 		}
 	}
-	
+
 	class showSportManagerAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			sportManagerPanel = new SportManagerPanel(user);
@@ -256,7 +262,7 @@ public class MainGUI extends JFrame{
 			repaintFrame();
 		}
 	}
-	
+
 	class showPerfChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel = new PerformanceChartPanel(user);
@@ -267,7 +273,7 @@ public class MainGUI extends JFrame{
 			repaintFrame();
 		}
 	}
-	
+
 	class showPracticePanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			practicePanel = new PracticePanel(user);
@@ -275,18 +281,18 @@ public class MainGUI extends JFrame{
 				profilePanel.setVisible(false);
 			if (sportManagerPanel!=null)
 				sportManagerPanel.setVisible(false);
-			
+
 			profilePanel = null;
 			sportManagerPanel = null;
 			practicePanel.setVisible(true);
 			repaintFrame();
 		}
 	}
-	
+
 	class registrationAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			if (registrationPanel.getPseudoTextField().getText().isEmpty()) {
 				registrationPanel.getErrorLabel().setText("Veuillez saisir un pseudo.");
 			}
@@ -312,7 +318,7 @@ public class MainGUI extends JFrame{
 			}
 		}
 	}
-	
+
 	class connectionAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -320,33 +326,33 @@ public class MainGUI extends JFrame{
 			session.beginTransaction();
 			User retrievedUser = (User) session.get(User.class, loginPanel.getPseudoTextField().getText());
 			switch(login.connect(loginPanel.getPseudoTextField().getText(), loginPanel.getPasswordTextField().getText(), retrievedUser, session)) {
-				case 0 :
-					loginPanel.getErrorLabel().setText("Cet utilisateur n'existe pas.");
-					loginPanel.getMainBox().repaint();
-					loginPanel.repaint();
-					instance.repaint();
-					break;
-				case 1 :
-					loginPanel.getErrorLabel().setText(" ");
-					login.setCurrentUser(retrievedUser);
-					login.setCoState(true);
-					user = retrievedUser;
-					loginPanel.getMainBox().repaint();
-					loginPanel.repaint();
-					profilePanel = new ProfilePanel(user, true);
-					loginPanel.setVisible(false);
-					repaintFrame();
-					JOptionPane.showMessageDialog(instance, "Connexion réussie ! Bienvenue " + login.getCurrentUser().getPseudo() + " !", "Connexion réussie", JOptionPane.INFORMATION_MESSAGE);
-					break;
-				case 2 :
-					loginPanel.getErrorLabel().setText("Mot de passe incorrect");
-					loginPanel.getMainBox().repaint();
-					loginPanel.repaint();
-					instance.repaint();
-					break;
+			case 0 :
+				loginPanel.getErrorLabel().setText("Cet utilisateur n'existe pas.");
+				loginPanel.getMainBox().repaint();
+				loginPanel.repaint();
+				instance.repaint();
+				break;
+			case 1 :
+				loginPanel.getErrorLabel().setText(" ");
+				login.setCurrentUser(retrievedUser);
+				login.setCoState(true);
+				user = retrievedUser;
+				loginPanel.getMainBox().repaint();
+				loginPanel.repaint();
+				profilePanel = new ProfilePanel(user, true);
+				loginPanel.setVisible(false);
+				repaintFrame();
+				JOptionPane.showMessageDialog(instance, "Connexion réussie ! Bienvenue " + login.getCurrentUser().getPseudo() + " !", "Connexion réussie", JOptionPane.INFORMATION_MESSAGE);
+				break;
+			case 2 :
+				loginPanel.getErrorLabel().setText("Mot de passe incorrect");
+				loginPanel.getMainBox().repaint();
+				loginPanel.repaint();
+				instance.repaint();
+				break;
 			}
 
-			
+
 			session.getTransaction().commit();
 			session.close();
 		}
@@ -368,42 +374,42 @@ public class MainGUI extends JFrame{
 			JOptionPane.showMessageDialog(instance, this.user.getPseudo() + " a bien été déconnecté !", "Déconnexion réussie", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
-	
+
 	class updateInfoAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		Session session = DBConnection.getSession();
-		session.beginTransaction();
-		Profile retrievedProfile = (Profile) session.get(Profile.class, user.getProfile().getId());
-			
-		if (String.valueOf(infoManagerPanel.getPasswordField().getPassword()).isEmpty()||(String.valueOf(infoManagerPanel.getPasswordField().getPassword()).length()<6)){
-			infoManagerPanel.getErrorLabel().setText("Veuillez saisir un mot de passe de 6 caractères minimum.");
-		}
-		
-		else user.setPassword(String.valueOf(infoManagerPanel.getPasswordField().getPassword()));
-		
-		retrievedProfile.setFirstName(infoManagerPanel.getFirstNameTextField().getText());
-		
-		retrievedProfile.setLastName(infoManagerPanel.getLastNameTextField().getText());
-		
-		if(infoManagerPanel.getMaleRadioButton().isSelected())
-			retrievedProfile.setGender(Gender.Homme);
-		else if (infoManagerPanel.getFemaleRadioButton().isSelected())
-			retrievedProfile.setGender(Gender.Femme);
-		
-		retrievedProfile.setBirthdate(DataUtility.createDate((Integer)infoManagerPanel.getBirthdayDayComboBox().getSelectedItem(), (Integer)infoManagerPanel.getBirthdayMonthComboBox().getSelectedItem(), (Integer)infoManagerPanel.getBirthdayYearComboBox().getSelectedItem()));
-		JOptionPane.showMessageDialog(instance, "Vos informations ont bien été mises à jour !", "Informations à jour", JOptionPane.INFORMATION_MESSAGE);
-		session.merge(retrievedProfile);
-		
-		session.getTransaction().commit();
-		instance.repaint();
-		
-		
-		
+			Session session = DBConnection.getSession();
+			session.beginTransaction();
+			Profile retrievedProfile = (Profile) session.get(Profile.class, user.getProfile().getId());
+
+			if (String.valueOf(infoManagerPanel.getPasswordField().getPassword()).isEmpty()||(String.valueOf(infoManagerPanel.getPasswordField().getPassword()).length()<6)){
+				infoManagerPanel.getErrorLabel().setText("Veuillez saisir un mot de passe de 6 caractères minimum.");
+			}
+
+			else user.setPassword(String.valueOf(infoManagerPanel.getPasswordField().getPassword()));
+
+			retrievedProfile.setFirstName(infoManagerPanel.getFirstNameTextField().getText());
+
+			retrievedProfile.setLastName(infoManagerPanel.getLastNameTextField().getText());
+
+			if(infoManagerPanel.getMaleRadioButton().isSelected())
+				retrievedProfile.setGender(Gender.Homme);
+			else if (infoManagerPanel.getFemaleRadioButton().isSelected())
+				retrievedProfile.setGender(Gender.Femme);
+
+			retrievedProfile.setBirthdate(DataUtility.createDate((Integer)infoManagerPanel.getBirthdayDayComboBox().getSelectedItem(), (Integer)infoManagerPanel.getBirthdayMonthComboBox().getSelectedItem(), (Integer)infoManagerPanel.getBirthdayYearComboBox().getSelectedItem()));
+			JOptionPane.showMessageDialog(instance, "Vos informations ont bien été mises à jour !", "Informations à jour", JOptionPane.INFORMATION_MESSAGE);
+			session.merge(retrievedProfile);
+
+			session.getTransaction().commit();
+			instance.repaint();
+
+
+
 
 		}
 	}	
-		
+
 	class addSportAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -419,17 +425,17 @@ public class MainGUI extends JFrame{
 			}
 			else
 				JOptionPane.showMessageDialog(instance, "Erreur : vous avez déjà indiqué " + sport.getName() + " !", "Erreur", JOptionPane.ERROR_MESSAGE);
-			
+
 			session.getTransaction().commit();
 			System.out.println("pppppppppppp "+user.getProfile().displaySport());
 
 			sportManagerPanel.setSportsLabel(new JLabel(user.getProfile().displaySport()));
-//			sportManagerPanel.repaint();	
-//			sportManagerPanel.repaintPanel();
+			//			sportManagerPanel.repaint();	
+			//			sportManagerPanel.repaintPanel();
 			instance.repaint();
 		}	
 	}
-	
+
 	class removeSportAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -451,14 +457,14 @@ public class MainGUI extends JFrame{
 			if (practiced.equals(false))
 				JOptionPane.showMessageDialog(instance, "Erreur : vous ne pratiquez pas " + sport.getName() + " !", "Erreur", JOptionPane.ERROR_MESSAGE);
 			session.getTransaction().commit();
-System.out.println("pppppppppppp "+user.getProfile().displaySport());
+			System.out.println("pppppppppppp "+user.getProfile().displaySport());
 			sportManagerPanel.setSportsLabel(new JLabel(user.getProfile().displaySport()));
-//			sportManagerPanel.repaint();
-//			sportManagerPanel.repaintPanel();
+			//			sportManagerPanel.repaint();
+			//			sportManagerPanel.repaintPanel();
 			instance.repaint();
 		}
 	}
-	
+
 	class addPracticeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			Session session = DBConnection.getSession();
@@ -468,7 +474,7 @@ System.out.println("pppppppppppp "+user.getProfile().displaySport());
 			Practice practice = null;
 			Date date = DataUtility.createDate((Integer)practicePanel.getDayComboBox().getSelectedItem(), (Integer)practicePanel.getMonthComboBox().getSelectedItem(), (Integer)practicePanel.getYearComboBox().getSelectedItem());
 			if(practicePanel.getSportComboBox().getSelectedItem().toString().equals("Jogging"))
-					practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), practicePanel.getPerformanceTextField().getText(), profile);
+				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), practicePanel.getPerformanceTextField().getText(), profile);
 			else if(practicePanel.getSportComboBox().getSelectedItem().toString().equals("Escalade"))				
 				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), practicePanel.getColorComboBox().getSelectedItem().toString(), profile);
 			Exercise exercise = (Exercise) session.get(Exercise.class, practicePanel.getExercisesComboBox().getSelectedItem().toString());	
@@ -480,7 +486,7 @@ System.out.println("pppppppppppp "+user.getProfile().displaySport());
 			practicePanel.repaint();
 		}
 	}
-		
+
 	class updatePhysicalDataAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -511,7 +517,7 @@ System.out.println("pppppppppppp "+user.getProfile().displaySport());
 			repaintFrame();
 		}
 	}	
-	
+
 	class previousMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("previous -----------------");
@@ -598,7 +604,7 @@ System.out.println("pppppppppppp "+user.getProfile().displaySport());
 			physicalDataChartPanel.repaint();
 		}
 	}
-	
+
 	class previousMonthHipSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			physicalDataChartPanel.getNextMonthHipSizeButton().setVisible(true);
@@ -640,7 +646,7 @@ System.out.println("pppppppppppp "+user.getProfile().displaySport());
 			physicalDataChartPanel.repaint();
 		}
 	}
-	
+
 	class previousMonthJoggingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel.getNextMonthJoggingPerfButton().setVisible(true);
@@ -659,7 +665,7 @@ System.out.println("pppppppppppp "+user.getProfile().displaySport());
 			performanceChartPanel.repaint();
 		}
 	}
-	
+
 	class nextMonthJoggingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (performanceChartPanel.getCurrentMonth()==12){

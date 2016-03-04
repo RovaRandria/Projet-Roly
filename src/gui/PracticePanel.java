@@ -15,9 +15,7 @@ import javax.swing.JTextField;
 
 import org.hibernate.Session;
 
-import utils.AvailableExercises;
-import utils.ClimbingColors;
-import utils.DateNumbersList;
+import utils.DataUtility;
 import data.DBConnection;
 import data.User;
 
@@ -27,12 +25,12 @@ public class PracticePanel extends JPanel {
 
 	private User user;
 
-	private JComboBox dayComboBox = new JComboBox(DateNumbersList.day().toArray());
-	private JComboBox monthComboBox = new JComboBox(DateNumbersList.month().toArray());
-	private JComboBox yearComboBox = new JComboBox(DateNumbersList.year().toArray());
+	private JComboBox dayComboBox = new JComboBox(DataUtility.day().toArray());
+	private JComboBox monthComboBox = new JComboBox(DataUtility.month().toArray());
+	private JComboBox yearComboBox = new JComboBox(DataUtility.year().toArray());
 	private JComboBox sportComboBox = new JComboBox();	
-	private JComboBox exercisesComboBox = new JComboBox(AvailableExercises.getExercisesListString().toArray());
-	private JComboBox colorComboBox = new JComboBox(ClimbingColors.getClimbingColorsString().toArray());
+	private JComboBox exercisesComboBox = new JComboBox(DataUtility.getExercisesListString().toArray());
+	private JComboBox colorComboBox = new JComboBox(DataUtility.getClimbingColorsString().toArray());
 
 	private JButton addPracticeButton = new JButton("Ajouter");
 	private JButton backButton = new JButton("Retour aux sports");

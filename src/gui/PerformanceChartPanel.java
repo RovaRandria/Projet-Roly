@@ -38,13 +38,13 @@ public class PerformanceChartPanel extends JPanel {
 		currentMonth = cal.get(Calendar.MONTH)+1;
 		currentYear = cal.get(Calendar.YEAR);
 
-		initStyle();
+		initStyle();		
 		init();
 		initActions();
 	}
 	
 	public void init() {
-		joggingPerfChart = new JoggingPerformancesChart("Performances jogging", currentMonth, currentYear, user);	
+		joggingPerfChart = new JoggingPerformancesChart("Performances jogging", currentMonth, currentYear, user);
 		currentJoggingPerfChartPanel = joggingPerfChart.showJoggingPerfPanel();
 
 		nextMonthJoggingPerfPanel.add(nextMonthJoggingPerfButton);
