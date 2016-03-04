@@ -7,9 +7,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "sport")
 public class Sport {
-		/*@Id
-		@GeneratedValue(strategy = GenerationType.AUTO)
-		private String id;*/
 		
 		@Id
 		@Column(name = "name", length = 50, nullable = false)
@@ -19,6 +16,13 @@ public class Sport {
 		private String description;
 
 		public Sport() {
+		}
+		public Sport(String name) {
+			this.name = name;
+		}
+		public Sport(String name, String description) {
+			this.name = name;
+			this.description = description;
 		}
 		
 		public String getDescription() {
@@ -30,9 +34,7 @@ public class Sport {
 		}
 
 
-		public Sport(String name) {
-			this.name = name;
-		}
+
 		
 		/*
 		public String getId() {

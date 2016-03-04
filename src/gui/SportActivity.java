@@ -92,7 +92,7 @@ public class SportActivity extends JPanel {
 	
 	class showChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new ShowChartsPanel(user, 0);
+			new PhysicalDataChartPanel(user);
 		}
 	}
 	

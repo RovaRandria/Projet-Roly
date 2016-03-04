@@ -11,13 +11,12 @@ import javax.swing.JTabbedPane;
 import org.jfree.chart.ChartPanel;
 
 import chart.HipSizeChart;
-import chart.JoggingPerformancesChart;
 import chart.WaistSizeChart;
 import chart.WeightChart;
 import data.User;
 
 
-public class ShowChartsPanel extends JPanel {
+public class PhysicalDataChartPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
@@ -29,16 +28,12 @@ public class ShowChartsPanel extends JPanel {
 	private JButton previousMonthWaistSizeButton = new JButton("Précédent");
 	private JButton nextMonthHipSizeButton = new JButton("Suivant");
 	private JButton previousMonthHipSizeButton = new JButton("Précédent");
-	private JButton nextMonthJoggingPerfButton = new JButton("Suivant");
-	private JButton previousMonthJoggingPerfButton = new JButton("Précédent");
 	private WeightChart weightChart;
 	private WaistSizeChart waistSizeChart;
-	private JoggingPerformancesChart joggingPerfChart;
 	private HipSizeChart hipSizeChart;
 
 	private Box weightButtonBox = Box.createHorizontalBox();
 	private Box waistSizeButtonBox = Box.createHorizontalBox();
-	private Box joggingPerfButtonBox = Box.createHorizontalBox();
 	private Box hipSizeButtonBox = Box.createHorizontalBox();
 	private Box weightMainBox = Box.createVerticalBox();
 	private Box waistSizeMainBox = Box.createVerticalBox();
@@ -48,7 +43,6 @@ public class ShowChartsPanel extends JPanel {
 	private ChartPanel currentWeightChartPanel;
 	private ChartPanel currentWaistSizeChartPanel;
 	private ChartPanel currentHipSizeChartPanel;
-	private ChartPanel currentJoggingPerfChartPanel;
 
 	private JTabbedPane choiceTabbedPane = new JTabbedPane();
 
@@ -58,15 +52,10 @@ public class ShowChartsPanel extends JPanel {
 	private JPanel previousMonthWaistSizePanel = new JPanel();
 	private JPanel nextMonthHipSizePanel = new JPanel();
 	private JPanel previousMonthHipSizePanel = new JPanel();
-	private JPanel nextMonthJoggingPerfPanel = new JPanel();
-	private JPanel previousMonthJoggingPerfPanel = new JPanel();
 
-	private int mode;
-
-	public ShowChartsPanel(User user, int mode) {
+	public PhysicalDataChartPanel(User user) {
 		super();
 		this.user = user;
-		this.mode = mode;
 		Calendar cal = Calendar.getInstance();
 		currentMonth = cal.get(Calendar.MONTH)+1;
 		currentYear = cal.get(Calendar.YEAR);
@@ -78,79 +67,65 @@ public class ShowChartsPanel extends JPanel {
 	
 	public void init() {
 
-		if(mode == 0) {
-			/*
-			 * Weight chart
-			 */
-			weightChart = new WeightChart("Courbe de poids", currentMonth, currentYear, user);	
-			currentWeightChartPanel = weightChart.showWeightPanel();
+		/*
+		 * Weight chart
+		 */
+		weightChart = new WeightChart("Courbe de poids", currentMonth, currentYear, user);	
+		currentWeightChartPanel = weightChart.showWeightPanel();
 
-			nextMonthWeightPanel.add(nextMonthWeightButton);
-			previousMonthWeightPanel.add(previousMonthWeightButton);
-			weightButtonBox.add(previousMonthWeightPanel);
-			weightButtonBox.add(nextMonthWeightPanel);
+		nextMonthWeightPanel.add(nextMonthWeightButton);
+		previousMonthWeightPanel.add(previousMonthWeightButton);
+		weightButtonBox.add(previousMonthWeightPanel);
+		weightButtonBox.add(nextMonthWeightPanel);
 
-			weightMainBox.add(currentWeightChartPanel);
-			weightMainBox.add(weightButtonBox);
+		weightMainBox.add(currentWeightChartPanel);
+		weightMainBox.add(weightButtonBox);
 
 
-			/*
-			 * Waist size chart
-			 */
-			waistSizeChart = new WaistSizeChart("Courbe du tour de taille", currentMonth, currentYear, user);	
-			currentWaistSizeChartPanel = waistSizeChart.showWaistSizePanel();
+		/*
+		 * Waist size chart
+		 */
+		waistSizeChart = new WaistSizeChart("Courbe du tour de taille", currentMonth, currentYear, user);	
+		currentWaistSizeChartPanel = waistSizeChart.showWaistSizePanel();
 
-			nextMonthWaistSizePanel.add(nextMonthWaistSizeButton);
-			previousMonthWaistSizePanel.add(previousMonthWaistSizeButton);
-			waistSizeButtonBox.add(previousMonthWaistSizePanel);
-			waistSizeButtonBox.add(nextMonthWaistSizePanel);
+		nextMonthWaistSizePanel.add(nextMonthWaistSizeButton);
+		previousMonthWaistSizePanel.add(previousMonthWaistSizeButton);
+		waistSizeButtonBox.add(previousMonthWaistSizePanel);
+		waistSizeButtonBox.add(nextMonthWaistSizePanel);
 
-			waistSizeMainBox.add(currentWaistSizeChartPanel);
-			waistSizeMainBox.add(waistSizeButtonBox);
+		waistSizeMainBox.add(currentWaistSizeChartPanel);
+		waistSizeMainBox.add(waistSizeButtonBox);
 
 			
-			/*
-			 * Weight chart
-			 */
-			hipSizeChart = new HipSizeChart("Courbe du tour de hanche", currentMonth, currentYear, user);	
-			currentHipSizeChartPanel = hipSizeChart.showHipSizePanel();
+		/*
+		 * Weight chart
+		 */
+		hipSizeChart = new HipSizeChart("Courbe du tour de hanche", currentMonth, currentYear, user);	
+		currentHipSizeChartPanel = hipSizeChart.showHipSizePanel();
 
-			nextMonthHipSizePanel.add(nextMonthHipSizeButton);
-			previousMonthHipSizePanel.add(previousMonthHipSizeButton);
-			hipSizeButtonBox.add(previousMonthHipSizePanel);
-			hipSizeButtonBox.add(nextMonthHipSizePanel);
+		nextMonthHipSizePanel.add(nextMonthHipSizeButton);
+		previousMonthHipSizePanel.add(previousMonthHipSizeButton);
+		hipSizeButtonBox.add(previousMonthHipSizePanel);
+		hipSizeButtonBox.add(nextMonthHipSizePanel);
 
-			hipSizeMainBox.add(currentHipSizeChartPanel);
-			hipSizeMainBox.add(hipSizeButtonBox);
+		hipSizeMainBox.add(currentHipSizeChartPanel);
+		hipSizeMainBox.add(hipSizeButtonBox);
 			
 
-			/*
-			 * Tab with different chart's choices
-			 */
-			choiceTabbedPane.addTab("Poids", weightMainBox);
-			choiceTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+		/*
+		 * Tab with different chart's choices
+		 */
+		choiceTabbedPane.addTab("Poids", weightMainBox);
+		choiceTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
-			choiceTabbedPane.addTab("Tour de taille", waistSizeMainBox);
-			choiceTabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+		choiceTabbedPane.addTab("Tour de taille", waistSizeMainBox);
+		choiceTabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-			choiceTabbedPane.addTab("Tour de hanche", hipSizeMainBox);
-			choiceTabbedPane.setMnemonicAt(2, KeyEvent.VK_2);
+		choiceTabbedPane.addTab("Tour de hanche", hipSizeMainBox);
+		choiceTabbedPane.setMnemonicAt(2, KeyEvent.VK_2);
 			
-			add(choiceTabbedPane);
-		}
-		if(mode == 1) {
-			joggingPerfChart = new JoggingPerformancesChart("Performances jogging", currentMonth, currentYear, user);	
-			currentJoggingPerfChartPanel = joggingPerfChart.showJoggingPerfPanel();
+		add(choiceTabbedPane);
 
-			nextMonthJoggingPerfPanel.add(nextMonthJoggingPerfButton);
-			previousMonthWaistSizePanel.add(previousMonthJoggingPerfButton);
-			joggingPerfButtonBox.add(previousMonthJoggingPerfPanel);
-			joggingPerfButtonBox.add(nextMonthJoggingPerfPanel);
-
-			joggingPerfMainBox.add(currentJoggingPerfChartPanel);
-			joggingPerfMainBox.add(joggingPerfButtonBox);
-			add(joggingPerfMainBox);
-		}
 	}
 
 	public void initStyle(){
@@ -196,19 +171,6 @@ public class ShowChartsPanel extends JPanel {
 	public void setPreviousMonthWaistSizeButton(JButton previousMonthWaistSizeButton) {
 		this.previousMonthWaistSizeButton = previousMonthWaistSizeButton;
 	}
-	public JButton getNextMonthJoggingPerfButton() {
-		return nextMonthJoggingPerfButton;
-	}
-	public void setNextMonthJoggingPerfButton(JButton nextMonthJoggingPerfButton) {
-		this.nextMonthJoggingPerfButton = nextMonthJoggingPerfButton;
-	}
-	public JButton getPreviousMonthJoggingPerfButton() {
-		return previousMonthJoggingPerfButton;
-	}
-	public void setPreviousMonthJoggingPerfButton(
-			JButton previousMonthJoggingPerfButton) {
-		this.previousMonthJoggingPerfButton = previousMonthJoggingPerfButton;
-	}
 	public WeightChart getWeightChart() {
 		return weightChart;
 	}
@@ -221,12 +183,6 @@ public class ShowChartsPanel extends JPanel {
 	public void setWaistSizeChart(WaistSizeChart waistSizeChart) {
 		this.waistSizeChart = waistSizeChart;
 	}
-	public JoggingPerformancesChart getJoggingPerfChart() {
-		return joggingPerfChart;
-	}
-	public void setJoggingPerfChart(JoggingPerformancesChart joggingPerfChart) {
-		this.joggingPerfChart = joggingPerfChart;
-	}
 	public ChartPanel getCurrentWeightChartPanel() {
 		return currentWeightChartPanel;
 	}
@@ -238,13 +194,6 @@ public class ShowChartsPanel extends JPanel {
 	}
 	public void setCurrentWaistSizeChartPanel(ChartPanel currentWaistSizeChartPanel) {
 		this.currentWaistSizeChartPanel = currentWaistSizeChartPanel;
-	}
-	public ChartPanel getCurrentJoggingPerfChartPanel() {
-		return currentJoggingPerfChartPanel;
-	}
-	public void setCurrentJoggingPerfChartPanel(
-			ChartPanel currentJoggingPerfChartPanel) {
-		this.currentJoggingPerfChartPanel = currentJoggingPerfChartPanel;
 	}
 	public Box getWeightMainBox() {
 		return weightMainBox;

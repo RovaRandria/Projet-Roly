@@ -38,7 +38,6 @@ public class ProfilePanel extends JPanel {
 	private JLabel physicalDataWeightLabel;
 	private JLabel physicalDataHipLabel;
 	private JLabel physicalDataWaistLabel;
-		
 	
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 20);
 

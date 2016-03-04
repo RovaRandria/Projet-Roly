@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.hibernate.Session;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -15,7 +16,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 
 import utils.DataUtility;
-
+import data.DBConnection;
 import data.Practice;
 import data.Profile;
 import data.User;
@@ -42,13 +43,17 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 
 		XYSeries joggingSeries = new XYSeries("Performance jogging");
 		Profile profile = user.getProfile();
-
+		Session session = DBConnection.getSession();
+		session.beginTransaction();
+		
 		List<Practice> practicesList = profile.getPracticesList();
 		ArrayList<Practice> joggingPracticesList = new ArrayList<Practice>();
 		for(int i = 0; i < practicesList.size(); i++) {
 			if(practicesList.get(i).getSport().getName().equals("Jogging"));
 				joggingPracticesList.add(practicesList.get(i));
 		}
+		session.getTransaction().commit();
+		session.close();
 		int nbPractices = joggingPracticesList.size();
 		int currentMonth, currentYear, i=nbPractices-1;
 
@@ -59,41 +64,40 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 			currentMonth = cal.get(Calendar.MONTH)+1;
 			currentYear = cal.get(Calendar.YEAR);	
 			while ((currentMonth!=month || currentYear!=year) && i>0 && i<nbPractices){	
+				cal.setTime(joggingPracticesList.get(i).getDate());
+				currentYear = cal.get(Calendar.YEAR);
+				currentMonth = cal.get(Calendar.MONTH)+1;
+				
 				if (currentYear > year){
 					i--;
-					cal.setTime(joggingPracticesList.get(i).getDate());
-					currentYear = cal.get(Calendar.YEAR);
 				}else{
 					if (currentYear < year){
 						i++;
-						if (i<nbPractices){
-							cal.setTime(joggingPracticesList.get(i).getDate());
-							currentYear = cal.get(Calendar.YEAR);
+						if (i>=nbPractices){
+							nbError = 2;
 						}
 						else{
-							nbError = 2;
+							nbError = 0;
 						}
 					}
 					else{
 						if (currentMonth > month){
 							i--;
-							cal.setTime(joggingPracticesList.get(i).getDate());
-							currentMonth = cal.get(Calendar.MONTH)+1;
 						}else{
 							if (currentMonth < month){
 								i++;
-								if (i<nbPractices){
-									cal.setTime(joggingPracticesList.get(i).getDate());
-									currentMonth = cal.get(Calendar.MONTH)+1;
+								if (i>=nbPractices){
+									nbError = 2;
 								}
 								else{
-									nbError = 2;
+									nbError = 0;
 								}
 							}
 						}
 					}
 				}
 			}
+			
 
 			monthName = DataUtility.convertMonth(month);
 			if (i>=0 && i<nbPractices){		

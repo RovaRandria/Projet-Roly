@@ -14,6 +14,7 @@ import org.hibernate.Session;
 
 import utils.AvailableSports;
 import data.DBConnection;
+import data.Practice;
 import data.User;
 
 public class SportManagerPanel extends JPanel {
@@ -30,12 +31,14 @@ public class SportManagerPanel extends JPanel {
 	private JButton showPerfChartButton = new JButton("Voir mes performances");
 	private JButton backHomeButton = new JButton("Retour au profil");
 	
-//	private JScrollPane practicesJScrollPane = new JScrollPane();
-//	
-//	private JTextArea practicesTextArea = new JTextArea();
-	
 	private JLabel titleLabel = new JLabel("Mes activités sportives");
 	private JLabel sportsLabel = new JLabel();
+	private JLabel sportLastPracticeLabel;
+	private JLabel dateLastPracticeLabel;
+	private JLabel placeLastPracticeLabel;
+	private JLabel durationLastPracticeLabel;
+	private JLabel exerciceLastPracticeLabel;
+	private JLabel performanceLastPracticeLabel;
 	
 	private JPanel addDeletePanel = new JPanel();
 	
@@ -61,11 +64,30 @@ public class SportManagerPanel extends JPanel {
 		Session session = DBConnection.getSession();
 		session.beginTransaction();
 		user = (User) session.get(User.class, user.getPseudo());
-		sportsLabel = new JLabel(user.getProfile().displaySport());
+		if (user.getProfile().getSportsList().size()>0){
+			sportsLabel = new JLabel(user.getProfile().displaySport());
+		}
+		else{
+			sportsLabel = new JLabel("Non renseigné");
+		}
 		sportComboBox = new JComboBox(AvailableSports.getSportsListString().toArray());
 		
 		addDeletePanel.add(addSportButton);
 		addDeletePanel.add(removeSportButton);
+		
+		if (user.getProfile().getPracticesList().size()>0){
+			Practice lastPractice = user.getProfile().getPracticesList().get(user.getProfile().getPracticesList().size()-1);
+			sportLastPracticeLabel = new JLabel("Sport : "+lastPractice.getSport().getName());
+			dateLastPracticeLabel = new JLabel("Date : "+lastPractice.getDate().toString());
+			placeLastPracticeLabel = new JLabel("Lieu : "+lastPractice.getPlace());
+			durationLastPracticeLabel = new JLabel("Durée : "+String.valueOf(lastPractice.getDuration()));
+			exerciceLastPracticeLabel = new JLabel("Exercice : "+lastPractice.getExercisesList().get(lastPractice.getExercisesList().size()-1).getName());
+			performanceLastPracticeLabel = new JLabel("Performance : "+lastPractice.getPerformance());
+		}
+		else{
+			sportLastPracticeLabel = new JLabel("Non renseigné");
+		}
+		
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
@@ -100,11 +122,17 @@ public class SportManagerPanel extends JPanel {
 		frameConstraints.insets = new Insets(5, 20, 20, 0);
 		add(addDeletePanel, frameConstraints);
 		
-		frameConstraints.insets = new Insets(20, 20, 5, 0);
-		frameConstraints.gridy = GridBagConstraints.RELATIVE; 
-		for(int i = 0; i < user.getProfile().getPracticesList().size(); i++) {
-			add(new JLabel(user.getProfile().getPracticesList().get(i).toString()), frameConstraints);
+		frameConstraints.insets = new Insets(3, 20, 3, 0);
+		add(sportLastPracticeLabel, frameConstraints);
+		if (user.getProfile().getPracticesList().size()>0){
+			add(dateLastPracticeLabel, frameConstraints);
+			add(placeLastPracticeLabel, frameConstraints);
+			add(durationLastPracticeLabel, frameConstraints);
+			add(exerciceLastPracticeLabel, frameConstraints);
+			add(performanceLastPracticeLabel, frameConstraints);
 		}
+
+		
 		frameConstraints.insets = new Insets(10, 20, 10, 0);
 		add(showPracticePanelButton, frameConstraints);
 

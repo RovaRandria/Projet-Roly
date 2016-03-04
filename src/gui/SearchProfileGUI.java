@@ -144,13 +144,13 @@ public class SearchProfileGUI extends JFrame{
 
 	class showChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new ShowChartsPanel(retrievedUser, 0);
+			new PhysicalDataChartPanel(retrievedUser);
 		}
 	}
 
 	class showJoggingPerfChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new ShowChartsPanel(retrievedUser, 1);
+			new PerformanceChartPanel(retrievedUser);
 		}
 	}
 }

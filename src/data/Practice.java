@@ -129,14 +129,6 @@ public class Practice {
 	public void setExercisesList(List<Exercise> exercisesList) {
 		this.exercisesList = exercisesList;
 	}
-
-	public void setExercises(List<Exercise> exercisesList) {
-		this.exercisesList = exercisesList;
-	}
-
-	public List<Exercise> getExercises() {
-		return exercisesList;
-	}
 	public String displayExercise() {
 		String exercisesStr = "";
 		for(int i = 0; i< this.exercisesList.size(); i++) {
