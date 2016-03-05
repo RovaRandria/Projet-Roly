@@ -27,7 +27,7 @@ public class PerformanceChartPanel extends JPanel {
 
 	private ChartPanel currentJoggingPerfChartPanel;
 
-	private JPanel previousMonthWaistSizePanel = new JPanel();
+	private JPanel previousJoggingPerfPanel = new JPanel();
 	private JPanel nextMonthJoggingPerfPanel = new JPanel();
 	private JPanel previousMonthJoggingPerfPanel = new JPanel();
 
@@ -42,13 +42,13 @@ public class PerformanceChartPanel extends JPanel {
 		init();
 		initActions();
 	}
-	
+
 	public void init() {
 		joggingPerfChart = new JoggingPerformancesChart("Performances jogging", currentMonth, currentYear, user);
 		currentJoggingPerfChartPanel = joggingPerfChart.showJoggingPerfPanel();
 
 		nextMonthJoggingPerfPanel.add(nextMonthJoggingPerfButton);
-		previousMonthWaistSizePanel.add(previousMonthJoggingPerfButton);
+		previousJoggingPerfPanel.add(previousMonthJoggingPerfButton);
 		joggingPerfButtonBox.add(previousMonthJoggingPerfPanel);
 		joggingPerfButtonBox.add(nextMonthJoggingPerfPanel);
 
@@ -58,7 +58,13 @@ public class PerformanceChartPanel extends JPanel {
 	}
 
 	public void initStyle(){
-
+		nextMonthJoggingPerfButton.setOpaque(false);
+		previousMonthJoggingPerfButton.setOpaque(false);
+		joggingPerfButtonBox.setOpaque(false);
+		joggingPerfMainBox.setOpaque(false);
+		//		if (currentJoggingPerfChartPanel!=null)
+		//			currentJoggingPerfChartPanel.setOpaque(false);
+		this.setOpaque(false);
 	}
 
 	public void initActions(){
@@ -131,12 +137,12 @@ public class PerformanceChartPanel extends JPanel {
 		this.currentJoggingPerfChartPanel = currentJoggingPerfChartPanel;
 	}
 
-	public JPanel getPreviousMonthWaistSizePanel() {
-		return previousMonthWaistSizePanel;
+	public JPanel getPreviousJoggingPerfPanel() {
+		return previousJoggingPerfPanel;
 	}
 
-	public void setPreviousMonthWaistSizePanel(JPanel previousMonthWaistSizePanel) {
-		this.previousMonthWaistSizePanel = previousMonthWaistSizePanel;
+	public void setPreviousMonthWaistSizePanel(JPanel previousJoggingPerfPanel) {
+		this.previousJoggingPerfPanel = previousJoggingPerfPanel;
 	}
 
 	public JPanel getNextMonthJoggingPerfPanel() {

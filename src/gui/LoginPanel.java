@@ -70,6 +70,15 @@ public class LoginPanel extends JPanel {
 	public void initStyle() {
 		homeLabel.setFont(TITLE_FONT);
 		errorLabel.setForeground(new Color(255, 0, 0));
+		
+		homeLabel.setOpaque(false);
+		pseudoLabel.setOpaque(false);
+		passwordLabel.setOpaque(false);
+		errorLabel.setOpaque(false);
+		registrationLabel.setOpaque(false);
+		connectionButton.setOpaque(false);
+		registrationButton.setOpaque(false);
+		this.setOpaque(false);
 	}
 	
 	public void initActions() {		

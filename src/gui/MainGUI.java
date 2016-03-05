@@ -1,10 +1,14 @@
 package gui;
 
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -51,10 +55,11 @@ public class MainGUI extends JFrame{
 	private SportManagerPanel sportManagerPanel;
 	private UpdatePhysicalDataPanel updatePhysicalDataPanel;
 	private PhysicalDataChartPanel physicalDataChartPanel;
-	private JPanel physicalDataPanel;
+	private Box physicalDataBox;
 	private PerformanceChartPanel performanceChartPanel;
 	private PracticePanel practicePanel;
 
+	private JLabel background = new JLabel(new ImageIcon("./images/background.jpeg"));
 
 	public MainGUI(String title) {
 		super(title);
@@ -74,38 +79,38 @@ public class MainGUI extends JFrame{
 		if (!login.isCoState()) {
 			if (registrationPanel==null){
 				loginPanel = new LoginPanel();
-				this.add(loginPanel);
+				background.add(loginPanel);
 			}
 			else{
 				loginPanel.setVisible(false);
-				this.add(registrationPanel);
+				background.add(registrationPanel);
 			}
 		}
 		else{
 			if (user!=null){
 				if (infoManagerPanel!=null){
-					this.add(infoManagerPanel);
+					background.add(infoManagerPanel);
 				}
 				else{
-					if (physicalDataPanel!=null){
-						this.add(physicalDataPanel);
+					if (physicalDataBox!=null){
+						background.add(physicalDataBox);
 					}
 					else{
 						if (sportManagerPanel!=null){
-							this.add(sportManagerPanel);
+							background.add(sportManagerPanel);
 						}
 						else{
 							if (practicePanel!=null){
-								this.add(practicePanel);
+								background.add(practicePanel);
 							}
 							else{
 								if (performanceChartPanel!=null){
-									this.add(performanceChartPanel);
+									background.add(performanceChartPanel);
 								}
 								else {
 									profilePanel = new ProfilePanel(user, true);
 									remove(loginPanel);
-									this.add(profilePanel);
+									background.add(profilePanel);
 								}
 							}
 						}
@@ -113,7 +118,7 @@ public class MainGUI extends JFrame{
 				}
 			}
 		}
-
+		this.setContentPane(background);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(530, 630);
 		setVisible(true);
@@ -121,7 +126,7 @@ public class MainGUI extends JFrame{
 	}
 
 	public void initStyle() {
-
+		background.setLayout(new GridBagLayout());
 	}
 
 	public void initActions() {		
@@ -143,7 +148,7 @@ public class MainGUI extends JFrame{
 			infoManagerPanel.getUpdateInfoButton().addActionListener(new updateInfoAction());
 			infoManagerPanel.getBackButton().addActionListener(new backHomeAction());
 		}
-		if (physicalDataPanel!=null&& physicalDataPanel.isVisible()){
+		if (physicalDataBox!=null&& physicalDataBox.isVisible()){
 			physicalDataChartPanel.getPreviousMonthWeightButton().addActionListener(new previousMonthWeightAction());
 			physicalDataChartPanel.getNextMonthWeightButton().addActionListener(new nextMonthWeightAction());
 			physicalDataChartPanel.getNextMonthWaistSizeButton().addActionListener(new nextMonthWaistSizeAction());
@@ -179,8 +184,8 @@ public class MainGUI extends JFrame{
 				registrationPanel.setVisible(false);
 			if (infoManagerPanel!=null)
 				infoManagerPanel.setVisible(false);
-			if (physicalDataPanel!=null)
-				physicalDataPanel.setVisible(false);
+			if (physicalDataBox!=null)
+				physicalDataBox.setVisible(false);
 			if (sportManagerPanel!=null)
 				sportManagerPanel.setVisible(false);
 			if (performanceChartPanel!=null)
@@ -190,7 +195,7 @@ public class MainGUI extends JFrame{
 
 			registrationPanel = null;
 			infoManagerPanel = null;
-			physicalDataPanel = null;
+			physicalDataBox = null;
 			sportManagerPanel = null;
 			performanceChartPanel = null;
 			practicePanel = null;
@@ -244,10 +249,11 @@ public class MainGUI extends JFrame{
 			if (profilePanel!=null)
 				profilePanel.setVisible(false);
 			profilePanel = null;			
-			physicalDataPanel = new JPanel();
-			physicalDataPanel.add(physicalDataChartPanel);
-			physicalDataPanel.add(updatePhysicalDataPanel);
-			physicalDataPanel.setVisible(true);
+			physicalDataBox = Box.createVerticalBox();
+			physicalDataBox.add(physicalDataChartPanel);
+			physicalDataBox.add(updatePhysicalDataPanel);
+			physicalDataBox.setVisible(true);
+			physicalDataBox.setOpaque(false);
 			repaintFrame();
 		}
 	}
@@ -266,9 +272,9 @@ public class MainGUI extends JFrame{
 	class showPerfChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel = new PerformanceChartPanel(user);
-			if (profilePanel!=null)
-				profilePanel.setVisible(false);
-			profilePanel = null;
+			if (sportManagerPanel!=null)
+				sportManagerPanel.setVisible(false);
+			sportManagerPanel = null;
 			performanceChartPanel.setVisible(true);
 			repaintFrame();
 		}
@@ -276,7 +282,9 @@ public class MainGUI extends JFrame{
 
 	class showPracticePanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			practicePanel = new PracticePanel(user);
+			String sportName = sportManagerPanel.getSportComboBox2().getSelectedItem().toString();
+			System.out.println(sportName);
+			practicePanel = new PracticePanel(user, sportName);
 			if (profilePanel!=null)
 				profilePanel.setVisible(false);
 			if (sportManagerPanel!=null)
@@ -307,9 +315,12 @@ public class MainGUI extends JFrame{
 					login.setCurrentUser(user);
 					login.setCoState(true);
 					registrationPanel.setVisible(false);
-					JOptionPane.showMessageDialog(instance, "L'utilisateur " + user.getPseudo() + " a bien été créé ! Vous pouvez maintenant renseigner vos informations personnelles.", "Inscription réussie", JOptionPane.INFORMATION_MESSAGE);
 					profilePanel = new ProfilePanel(user, true);
+					registrationPanel = null;
 					repaintFrame();
+					JOptionPane.showMessageDialog(instance, "L'utilisateur " + user.getPseudo() + " a bien été créé ! Vous pouvez maintenant renseigner vos informations personnelles.", "Inscription réussie", JOptionPane.INFORMATION_MESSAGE);
+
+	 				
 				}
 				else {
 					registrationPanel.getErrorLabel().setText("Ce pseudo existe déjà.");
@@ -427,8 +438,7 @@ public class MainGUI extends JFrame{
 				JOptionPane.showMessageDialog(instance, "Erreur : vous avez déjà indiqué " + sport.getName() + " !", "Erreur", JOptionPane.ERROR_MESSAGE);
 
 			session.getTransaction().commit();
-			System.out.println("pppppppppppp "+user.getProfile().displaySport());
-
+		
 			sportManagerPanel.setSportsLabel(new JLabel(user.getProfile().displaySport()));
 			//			sportManagerPanel.repaint();	
 			//			sportManagerPanel.repaintPanel();
@@ -470,15 +480,29 @@ public class MainGUI extends JFrame{
 			Session session = DBConnection.getSession();
 			session.beginTransaction();
 			Profile profile = (Profile) session.get(Profile.class, user.getProfile().getId());				  
-			Sport sport = (Sport) session.get(Sport.class, practicePanel.getSportComboBox().getSelectedItem().toString());
+			Sport sport = (Sport) session.get(Sport.class, practicePanel.getSportName());
 			Practice practice = null;
 			Date date = DataUtility.createDate((Integer)practicePanel.getDayComboBox().getSelectedItem(), (Integer)practicePanel.getMonthComboBox().getSelectedItem(), (Integer)practicePanel.getYearComboBox().getSelectedItem());
-			if(practicePanel.getSportComboBox().getSelectedItem().toString().equals("Jogging"))
+			if(practicePanel.getSportName().equals("Jogging")||practicePanel.getSportName().equals("Vélo"))
 				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), practicePanel.getPerformanceTextField().getText(), profile);
-			else if(practicePanel.getSportComboBox().getSelectedItem().toString().equals("Escalade"))				
-				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), practicePanel.getColorComboBox().getSelectedItem().toString(), profile);
-			Exercise exercise = (Exercise) session.get(Exercise.class, practicePanel.getExercisesComboBox().getSelectedItem().toString());	
-			practice.getExercisesList().add(exercise);
+			else if(practicePanel.getSportName().equals("Escalade")) {				
+				ArrayList<Exercise> exercisesList = new ArrayList<Exercise>();
+				Exercise yellowClimbingRoute = new Exercise("Voie jaune", (Integer)practicePanel.getYellowClimbingRouteComboBox().getSelectedItem());
+				Exercise orangeClimbingRoute = new Exercise("Voie orange", (Integer)practicePanel.getOrangeClimbingRouteComboBox().getSelectedItem());
+				Exercise blueClimbingRoute = new Exercise("Voie bleue", (Integer)practicePanel.getBlueClimbingRouteComboBox().getSelectedItem());
+				Exercise redClimbingRoute = new Exercise("Voie rouge", (Integer)practicePanel.getRedClimbingRouteComboBox().getSelectedItem());
+				Exercise whiteClimbingRoute = new Exercise("Voie blanche", (Integer)practicePanel.getWhiteClimbingRouteComboBox().getSelectedItem());
+				Exercise blackClimbingRoute = new Exercise("Voie noire", (Integer)practicePanel.getBlackClimbingRouteComboBox().getSelectedItem());
+				Exercise greenClimbingRoute = new Exercise("Voie verte", (Integer)practicePanel.getGreenClimbingRouteComboBox().getSelectedItem());
+				exercisesList.add(yellowClimbingRoute);
+				exercisesList.add(orangeClimbingRoute);
+				exercisesList.add(blueClimbingRoute);
+				exercisesList.add(redClimbingRoute);
+				exercisesList.add(whiteClimbingRoute);
+				exercisesList.add(blackClimbingRoute);
+				exercisesList.add(greenClimbingRoute);
+				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), exercisesList, profile);
+			}
 			profile.getPracticesList().add(practice);			  
 			JOptionPane.showMessageDialog(instance, "Votre séance a bien été ajoutée !", "Séance ajoutée", JOptionPane.INFORMATION_MESSAGE);
 			session.persist(profile);

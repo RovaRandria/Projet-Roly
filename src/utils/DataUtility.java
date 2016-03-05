@@ -37,31 +37,15 @@ public class DataUtility {
 		List<String> sportsList = new ArrayList<String>();
 		sportsList.add("Escalade");
 		sportsList.add("Jogging");
+		sportsList.add("Ski");
+		sportsList.add("Vélo");
+		sportsList.add("Musculation");
 		return sportsList;
 	}
 
 	public static String convertMonth (int month){
 		String[] monthName = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" };
 		return monthName[month-1];
-	}
-
-	public static List<String> getExercisesListString (){
-		List<String> exercisesList = new ArrayList<String>();
-		exercisesList.add("Pompes");
-		exercisesList.add("Abdominaux");
-		return exercisesList;
-	}
-
-	public static List<String> getClimbingColorsString (){
-		List<String> climbingColorsList = new ArrayList<String>();
-		climbingColorsList.add("Jaune");
-		climbingColorsList.add("Orange");
-		climbingColorsList.add("Bleu");
-		climbingColorsList.add("Rouge");
-		climbingColorsList.add("Blanc");
-		climbingColorsList.add("Noir");
-		climbingColorsList.add("Vert");
-		return climbingColorsList;
 	}
 
 	public static List<Integer> day() {
@@ -88,6 +72,13 @@ public class DataUtility {
 		return year;
 	}
 
+	public static List<Integer> numberOfSeries() {
+		List <Integer> year = new ArrayList<Integer>();
+		for (int i = 1; i <= 100; i++) {
+			year.add(i);
+		}
+		return year;
+	}
 
 
 }

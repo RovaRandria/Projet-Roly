@@ -58,7 +58,7 @@ public class PhysicalDataChartPanel extends JPanel {
 		Calendar cal = Calendar.getInstance();
 		currentMonth = cal.get(Calendar.MONTH)+1;
 		currentYear = cal.get(Calendar.YEAR);
-
+		
 		initStyle();
 		init();
 		initActions();
@@ -128,7 +128,25 @@ public class PhysicalDataChartPanel extends JPanel {
 	}
 
 	public void initStyle(){
-
+		nextMonthWeightButton.setOpaque(false);
+		previousMonthWeightButton.setOpaque(false);
+		nextMonthWaistSizeButton.setOpaque(false);
+		previousMonthWaistSizeButton.setOpaque(false);
+		nextMonthHipSizeButton.setOpaque(false);
+		previousMonthHipSizeButton.setOpaque(false);
+		weightButtonBox.setOpaque(false);
+		waistSizeButtonBox.setOpaque(false);
+		hipSizeButtonBox.setOpaque(false);
+		weightMainBox.setOpaque(false);
+		waistSizeMainBox.setOpaque(false);
+		hipSizeMainBox.setOpaque(false);
+//		if (currentWeightChartPanel!=null)
+//			currentWeightChartPanel.setOpaque(false);
+//		if (currentWaistSizeChartPanel!=null)
+//			currentWaistSizeChartPanel.setOpaque(false);
+//		if (currentHipSizeChartPanel!=null)
+//			currentHipSizeChartPanel.setOpaque(false);
+		this.setOpaque(false);
 	}
 
 	public void initActions(){

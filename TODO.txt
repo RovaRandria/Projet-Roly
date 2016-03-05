@@ -1,18 +1,20 @@
 A faire : 
 -modif/suppression sÃ©ances
+-Affichage des exercices dans la derniÃ¨re sÃ©ance
+-Exception pour durÃ©e en float
 -ConfidentialitÃ©
 -Courbe Ã©volution performance selon le sport
 -Ajout de dates pour l'ajout de Physical Datas + ajout contrainte "1 physical data par date pour un user"
--Màj automatique des courbes, à l'ajout d'un physical data
+-Mï¿½j automatique des courbes, ï¿½ l'ajout d'un physical data
 -JTabbedPane pour la recherche d'utilisateur par pseudo/sport
--Màj automatique de la liste des sports (SportManagerPanel), lors de l'ajout d'un sport
+-Mï¿½j automatique de la liste des sports (SportManagerPanel), lors de l'ajout d'un sport
 -Afficher un panel avec le nom des sports et leurs descriptions (accessible depuis les JLabel de SportManagerPanel)
 -Ajouter plus de sports, exercices
--Diagramme en camembert pour le temps consacré à chaque sport
+-Diagramme en camembert pour le temps consacrï¿½ ï¿½ chaque sport
 -Enlever l'exception lors de l'affichage de la courbe de performance
 -Changer fond/icone
--Afficher les exercices par sports, durant l'ajout d'une séance
--Ajouter l'affichage de l'historique des séances pratiquées (practicePanel)
+-Afficher les exercices par sports, durant l'ajout d'une sï¿½ance
+-Ajouter l'affichage de l'historique des sï¿½ances pratiquï¿½es (practicePanel)
 
 Extra : 
 -Calculer l'Ã¢ge d'un utilisateur

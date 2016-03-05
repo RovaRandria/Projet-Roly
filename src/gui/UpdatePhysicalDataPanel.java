@@ -84,6 +84,13 @@ public class UpdatePhysicalDataPanel extends JPanel {
 
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
+		updatePhysicalDataButton.setOpaque(false);
+		backHomeButton.setOpaque(false);
+		titleLabel.setOpaque(false);
+		weightLabel.setOpaque(false);
+		waistSizeLabel.setOpaque(false);
+		hipSizeLabel.setOpaque(false);
+		this.setOpaque(false);
 	}
 
 	public void initActions() {		

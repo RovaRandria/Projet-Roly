@@ -60,6 +60,15 @@ public class Practice {
 		this.duration = duration;
 		this.performance = performance;
 	}
+	
+	public Practice(Sport sport, Date date, String place,
+			float duration, List<Exercise> exercisesList, Profile profile) {
+		this.sport = sport;
+		this.date = date;
+		this.place = place;
+		this.duration = duration;
+		this.exercisesList = exercisesList;
+	}
 
 	public String getId() {
 		return id;

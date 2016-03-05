@@ -26,44 +26,44 @@ public class InfoManagerPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-		
+
 	private JButton updateInfoButton = new JButton("Modifier");
 	private JButton backButton = new JButton("Retour au profil");
-	
+
 	private JLabel titleLabel = new JLabel("Modifier mes informations");
-	private JLabel pseudoLabel;
+	private JLabel pseudoLabel = new JLabel("");
 	private JLabel errorLabel = new JLabel(" ");
-	
+
 	private JPasswordField  passwordField = new JPasswordField(15);
 	private JTextField  firstNameTextField  = new JTextField(15);
 	private JTextField  lastNameTextField  = new JTextField(15);
-	
+
 	private ButtonGroup genderButtonGroup = new ButtonGroup();
 	private JRadioButton maleRadioButton = new JRadioButton("Homme");
 	private JRadioButton femaleRadioButton = new JRadioButton("Femme");
-	
+
 	private JComboBox birthdayDayComboBox = new JComboBox(DataUtility.day().toArray());
 	private JComboBox birthdayMonthComboBox = new JComboBox(DataUtility.month().toArray());
 	private JComboBox birthdayYearComboBox = new JComboBox(DataUtility.year().toArray());
-	
+
 	private JPanel datePanel = new JPanel();
 	private JPanel radioButtonPanel = new JPanel();
-	
+
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
-	
+
 	public InfoManagerPanel() {
 	}
-	
+
 	public InfoManagerPanel(User user) {
 		this.user = user;
 		initStyle();
 		init();
 		initActions();
 	}
-	
+
 	public void init() {
 		pseudoLabel = new JLabel(user.getPseudo());
-	
+
 		if(user.getProfile().getGender() != null) {
 			if(user.getProfile().getGender().equals(Gender.Femme))
 				femaleRadioButton.setSelected(true);
@@ -77,7 +77,7 @@ public class InfoManagerPanel extends JPanel {
 		genderButtonGroup.add(femaleRadioButton);
 		radioButtonPanel.add(maleRadioButton);
 		radioButtonPanel.add(femaleRadioButton);
-		
+
 		Calendar cal = Calendar.getInstance();
 		if(user.getProfile().getBirthdate() != null) {
 			cal.setTime(user.getProfile().getBirthdate());
@@ -97,13 +97,13 @@ public class InfoManagerPanel extends JPanel {
 
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
-		
+
 		frameConstraints.insets = new Insets(5, 0, 40, 0);
 		frameConstraints.gridwidth = 2;
 		frameConstraints.gridx = 0;
 		frameConstraints.gridy = 0;
 		this.add(titleLabel, frameConstraints);
-		
+
 		frameConstraints.insets = new Insets(5, 10, 5, 30);
 		frameConstraints.gridwidth = 1;
 		frameConstraints.gridx = 0;
@@ -118,7 +118,7 @@ public class InfoManagerPanel extends JPanel {
 		this.add(new JLabel("Sexe : "), frameConstraints);
 		this.add(new JLabel("Date de naissance : "), frameConstraints);
 
-		
+
 		frameConstraints.anchor = GridBagConstraints.CENTER;
 		frameConstraints.fill = GridBagConstraints.CENTER;
 		frameConstraints.gridx = 1;
@@ -140,14 +140,31 @@ public class InfoManagerPanel extends JPanel {
 		this.add(errorLabel, frameConstraints);
 		frameConstraints.insets = new Insets(40, 0, 5, 0);
 		this.add(backButton, frameConstraints);
-		
+
 	}
-	
+
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
 		errorLabel.setForeground(new Color(255, 0, 0));
-	}
+
+		titleLabel.setFont(TITLE_FONT);
+		errorLabel.setForeground(new Color(255, 0, 0));
 		
+		updateInfoButton.setOpaque(false);
+		backButton.setOpaque(false);
+		titleLabel.setOpaque(false);
+		pseudoLabel.setOpaque(false);
+		errorLabel.setOpaque(false);
+		maleRadioButton.setOpaque(false);
+		femaleRadioButton.setOpaque(false);
+		birthdayDayComboBox.setOpaque(false);
+		birthdayMonthComboBox.setOpaque(false);
+		birthdayYearComboBox.setOpaque(false);
+		datePanel.setOpaque(false);
+		radioButtonPanel.setOpaque(false);
+		this.setOpaque(false);
+	}
+
 	public void initActions() {		
 
 	}
@@ -247,7 +264,7 @@ public class InfoManagerPanel extends JPanel {
 	public void setBirthdayYearComboBox(JComboBox birthdayYearComboBox) {
 		this.birthdayYearComboBox = birthdayYearComboBox;
 	}
-	
 
-	
+
+
 }
