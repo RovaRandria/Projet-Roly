@@ -41,7 +41,7 @@ public class SportManagerPanel extends JPanel {
 	private JLabel durationLastPracticeLabel = new JLabel();
 	private JLabel exerciceLastPracticeLabel = new JLabel();
 	private JLabel performanceLastPracticeLabel = new JLabel();
-
+	private JLabel noSportsLabel = new JLabel("Pour pouvoir ajouter une séance, ajoutez un sport.");
 	private JLabel sportsTitleLabel1;
 	private JLabel sportsTitleLabel2;
 	private JLabel sportsTitleLabel3;
@@ -170,14 +170,25 @@ public class SportManagerPanel extends JPanel {
 				sportComboBox2 = new JComboBox(sportString.toArray());
 			else{
 				DefaultComboBoxModel model = new DefaultComboBoxModel(sportString.toArray());
-				sportComboBox.setModel(model);
+				sportComboBox2.setModel(model);
 			}
-			
+			if (sportComboBox2!=null)
+				sportComboBox2.setVisible(true);
+			if (showPracticePanelButton!=null)
+				showPracticePanelButton.setVisible(true);
+			if (noSportsLabel!=null)
+				noSportsLabel.setVisible(false);
 			add(sportComboBox2, frameConstraints);
 			add(showPracticePanelButton, frameConstraints);
 		}
 		else{
-			add(new JLabel("Pour pouvoir ajouter une séance, ajoutez un sport."), frameConstraints);
+			if (sportComboBox2!=null)
+				sportComboBox2.setVisible(false);
+			if (showPracticePanelButton!=null)
+				showPracticePanelButton.setVisible(false);
+			if (noSportsLabel!=null)
+				noSportsLabel.setVisible(true);
+			add(noSportsLabel, frameConstraints);
 		}
 
 

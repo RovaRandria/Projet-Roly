@@ -49,7 +49,6 @@ public class ProfilePanel extends JPanel {
 		initActions();
 	}
 	
-	
 	private void init() {
 		if (isMine){
 			pseudoLabel = new JLabel(user.getPseudo());
@@ -234,6 +233,16 @@ public class ProfilePanel extends JPanel {
 
 	public void setDisconnectionButton(JButton disconnectionButton) {
 		this.disconnectionButton = disconnectionButton;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

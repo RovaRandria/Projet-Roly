@@ -14,7 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import org.hibernate.Session;
 
@@ -25,7 +24,6 @@ import chart.JoggingPerformancesChart;
 import chart.WaistSizeChart;
 import chart.WeightChart;
 import data.DBConnection;
-import data.DataInit;
 import data.Exercise;
 import data.Gender;
 import data.Login;
@@ -61,6 +59,7 @@ public class MainGUI extends JFrame{
 	private Box physicalDataBox;
 	private PerformanceChartPanel performanceChartPanel;
 	private PracticePanel practicePanel;
+	private boolean loginUpdate=false, profileUpdate=false;
 
 	private JLabel background = new JLabel(new ImageIcon("./images/background.jpeg"));
 
@@ -126,8 +125,9 @@ public class MainGUI extends JFrame{
 		}
 		this.setContentPane(background);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(530, 630);
+		setSize(540, 640);
 		setVisible(true);
+		setLocationRelativeTo(null);
 		//setResizable(false);
 	}
 
@@ -139,7 +139,9 @@ public class MainGUI extends JFrame{
 	}
 
 	public void initActions() {		
-		if (loginPanel!=null && loginPanel.isVisible()){
+		if (loginPanel!=null && loginPanel.isVisible() && !loginUpdate){
+			loginUpdate = true;
+			System.out.println("aaaaaaaaaaaaaaaaaaaaaa");
 			loginPanel.getConnectionButton().addActionListener(new connectionAction());
 			loginPanel.getRegistrationButton().addActionListener(new showRegistrationAction());
 		}
@@ -218,6 +220,10 @@ public class MainGUI extends JFrame{
 			practicePanel = null;
 			if (profilePanel==null)
 				profilePanel = new ProfilePanel(user, true);
+			else{
+				profilePanel=null;
+				profilePanel = new ProfilePanel(user, true);
+			}
 
 			repaintFrame();
 		}
@@ -374,8 +380,6 @@ public class MainGUI extends JFrame{
 					registrationPanel = null;
 					repaintFrame();
 					JOptionPane.showMessageDialog(instance, "L'utilisateur " + user.getPseudo() + " a bien été créé ! Vous pouvez maintenant renseigner vos informations personnelles.", "Inscription réussie", JOptionPane.INFORMATION_MESSAGE);
-
-	 				
 				}
 				else {
 					registrationPanel.getErrorLabel().setText("Ce pseudo existe déjà.");
@@ -405,7 +409,8 @@ public class MainGUI extends JFrame{
 				user = retrievedUser;
 				loginPanel.getMainBox().repaint();
 				loginPanel.repaint();
-				profilePanel = new ProfilePanel(user, true);
+				if (practicePanel==null)
+					profilePanel = new ProfilePanel(user, true);
 				loginPanel.setVisible(false);
 				repaintFrame();
 				JOptionPane.showMessageDialog(instance, "Connexion réussie ! Bienvenue " + login.getCurrentUser().getPseudo() + " !", "Connexion réussie", JOptionPane.INFORMATION_MESSAGE);

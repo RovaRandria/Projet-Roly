@@ -85,10 +85,9 @@ public class WeightChart extends ApplicationFrame {
 			}
 			
 			monthName = DataUtility.convertMonth(month);
+			weightSeries.add(0.9, null);
+			weightSeries.add(31.1, null);
 			if (i>=0 && i<nbPractices){		
-				weightSeries.add(0.9, null);
-				weightSeries.add(31.1, null);
-
 				do {
 					cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
 					currentMonth = cal.get(Calendar.MONTH)+1;

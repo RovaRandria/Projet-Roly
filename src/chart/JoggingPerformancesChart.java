@@ -51,7 +51,7 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 		List<Practice> practicesList = profile.getPracticesList();
 		ArrayList<Practice> joggingPracticesList = new ArrayList<Practice>();
 		for(int i = 0; i < practicesList.size(); i++) {
-			if(practicesList.get(i).getSport().getName().equals("Jogging"));
+			if(practicesList.get(i).getSport().getName().equals("Jogging"))
 				joggingPracticesList.add(practicesList.get(i));
 		}
 		session.getTransaction().commit();
@@ -151,6 +151,8 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 	public void setNbError(int nbError) {
 		this.nbError = nbError;
 	}
+	
+	
 
 
 }
