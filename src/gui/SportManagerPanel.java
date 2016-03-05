@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,15 +23,15 @@ public class SportManagerPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-		
-	private JComboBox sportComboBox = new JComboBox();
-	
+
+	private JComboBox sportComboBox, sportComboBox2 = new JComboBox();
+
 	private JButton addSportButton = new JButton("Ajouter");	
 	private JButton removeSportButton = new JButton("Supprimer");
 	private JButton showPracticePanelButton = new JButton("Détails");
 	private JButton showPerfChartButton = new JButton("Voir mes performances");
 	private JButton backHomeButton = new JButton("Retour au profil");
-	
+
 	private JLabel titleLabel = new JLabel("Mes activités sportives");
 	private JLabel sportsLabel = new JLabel();
 	private JLabel sportLastPracticeLabel = new JLabel();
@@ -39,27 +40,27 @@ public class SportManagerPanel extends JPanel {
 	private JLabel durationLastPracticeLabel = new JLabel();
 	private JLabel exerciceLastPracticeLabel = new JLabel();
 	private JLabel performanceLastPracticeLabel = new JLabel();
-	
+
 	private JPanel addDeletePanel = new JPanel();
-	
-	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 18);
-	
+
+	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
+
 	public SportManagerPanel() {
 	}
-	
+
 	public SportManagerPanel(User user) {
 		this.user = user;
-		initStyle();
 		init();
+		initStyle();
 		initActions();
 	}
-	
+
 	public void repaintPanel(){
 		initStyle();
 		init();
 		initActions();
 	}
-	
+
 	public void init() {		
 		Session session = DBConnection.getSession();
 		session.beginTransaction();
@@ -71,33 +72,31 @@ public class SportManagerPanel extends JPanel {
 			sportsLabel = new JLabel("Non renseigné");
 		}
 		sportComboBox = new JComboBox(DataUtility.getSportsListString().toArray());
-		
+
 		addDeletePanel.add(addSportButton);
 		addDeletePanel.add(removeSportButton);
-		
+
 		if (user.getProfile().getPracticesList().size()>0){
 			Practice lastPractice = user.getProfile().getPracticesList().get(user.getProfile().getPracticesList().size()-1);
 			sportLastPracticeLabel = new JLabel("Sport : "+lastPractice.getSport().getName());
 			dateLastPracticeLabel = new JLabel("Date : "+lastPractice.getDate().toString());
 			placeLastPracticeLabel = new JLabel("Lieu : "+lastPractice.getPlace());
 			durationLastPracticeLabel = new JLabel("Durée : "+String.valueOf(lastPractice.getDuration()));
-			exerciceLastPracticeLabel = new JLabel("Exercice : "+lastPractice.getExercisesList().get(lastPractice.getExercisesList().size()-1).getName());
 			performanceLastPracticeLabel = new JLabel("Performance : "+lastPractice.getPerformance());
 		}
 		else{
 			sportLastPracticeLabel = new JLabel("Non renseigné");
 		}
-		
-		
+
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
-		
+
 		frameConstraints.insets = new Insets(5, 0, 40, 0);
 		frameConstraints.gridwidth = 2;
 		frameConstraints.gridx = 0; 
 		frameConstraints.gridy = 0; 
 		add(titleLabel, frameConstraints);
-		
+
 		frameConstraints.anchor = GridBagConstraints.WEST;
 		frameConstraints.fill = GridBagConstraints.NONE;
 		frameConstraints.insets = new Insets(20, 0, 5, 20);
@@ -108,7 +107,7 @@ public class SportManagerPanel extends JPanel {
 		add(new JLabel("Gérer mes sports : "), frameConstraints);
 		frameConstraints.gridy = 5; 
 		add(new JLabel("Dernière séance : "), frameConstraints);
-		
+
 
 		frameConstraints.gridx = 1;
 		frameConstraints.gridy = 1; 
@@ -121,7 +120,7 @@ public class SportManagerPanel extends JPanel {
 		add(sportComboBox, frameConstraints);
 		frameConstraints.insets = new Insets(5, 20, 20, 0);
 		add(addDeletePanel, frameConstraints);
-		
+
 		frameConstraints.insets = new Insets(3, 20, 3, 0);
 		add(sportLastPracticeLabel, frameConstraints);
 		if (user.getProfile().getPracticesList().size()>0){
@@ -132,32 +131,39 @@ public class SportManagerPanel extends JPanel {
 			add(performanceLastPracticeLabel, frameConstraints);
 		}
 
-		
+		ArrayList<String> sportString = new ArrayList<String>();
+		for(int i = 0; i < user.getProfile().getSportsList().size(); i++) {
+			sportString.add(user.getProfile().getSportsList().get(i).getName());
+		}
+		sportComboBox2 = new JComboBox(sportString.toArray());
+
 		frameConstraints.insets = new Insets(10, 20, 10, 0);
+		frameConstraints.gridx = 0;
+		frameConstraints.gridwidth = 2;
+		add(sportComboBox2, frameConstraints);
 		add(showPracticePanelButton, frameConstraints);
 
 		frameConstraints.gridx = 0;
-		frameConstraints.gridwidth = 2;
+		frameConstraints.gridwidth = 3;
 		frameConstraints.anchor = GridBagConstraints.CENTER;
 		frameConstraints.fill = GridBagConstraints.CENTER;
 		frameConstraints.insets = new Insets(30, 0, 5, 0);
 		add(backHomeButton, frameConstraints);
 
 
-//		practicesTextArea.setEditable(false);
-//		practicesJScrollPane = new JScrollPane(practicesTextArea);
-//
-//		practicesJScrollPane.setMinimumSize(new Dimension(500,100));
-//
-//		frameConstraints.gridx = 0; 
-//		frameConstraints.gridy = 1; 
-//		this.add(practicesJScrollPane, frameConstraints);
+		//		practicesTextArea.setEditable(false);
+		//		practicesJScrollPane = new JScrollPane(practicesTextArea);
+		//
+		//		practicesJScrollPane.setMinimumSize(new Dimension(500,100));
+		//
+		//		frameConstraints.gridx = 0; 
+		//		frameConstraints.gridy = 1; 
+		//		this.add(practicesJScrollPane, frameConstraints);
 		session.getTransaction().commit();
 	}
-	
+
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
-		
 		sportComboBox.setOpaque(false);
 		addSportButton.setOpaque(false);
 		removeSportButton.setOpaque(false);
@@ -175,7 +181,7 @@ public class SportManagerPanel extends JPanel {
 		addDeletePanel.setOpaque(false);
 		this.setOpaque(false);
 	}
-		
+
 	public void initActions() {		
 
 	}
@@ -236,5 +242,87 @@ public class SportManagerPanel extends JPanel {
 		this.sportsLabel = sportsLabel;
 	}
 
-	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public JComboBox getSportComboBox2() {
+		return sportComboBox2;
+	}
+
+	public void setSportComboBox2(JComboBox sportComboBox2) {
+		this.sportComboBox2 = sportComboBox2;
+	}
+
+	public JLabel getTitleLabel() {
+		return titleLabel;
+	}
+
+	public void setTitleLabel(JLabel titleLabel) {
+		this.titleLabel = titleLabel;
+	}
+
+	public JLabel getSportLastPracticeLabel() {
+		return sportLastPracticeLabel;
+	}
+
+	public void setSportLastPracticeLabel(JLabel sportLastPracticeLabel) {
+		this.sportLastPracticeLabel = sportLastPracticeLabel;
+	}
+
+	public JLabel getDateLastPracticeLabel() {
+		return dateLastPracticeLabel;
+	}
+
+	public void setDateLastPracticeLabel(JLabel dateLastPracticeLabel) {
+		this.dateLastPracticeLabel = dateLastPracticeLabel;
+	}
+
+	public JLabel getPlaceLastPracticeLabel() {
+		return placeLastPracticeLabel;
+	}
+
+	public void setPlaceLastPracticeLabel(JLabel placeLastPracticeLabel) {
+		this.placeLastPracticeLabel = placeLastPracticeLabel;
+	}
+
+	public JLabel getDurationLastPracticeLabel() {
+		return durationLastPracticeLabel;
+	}
+
+	public void setDurationLastPracticeLabel(JLabel durationLastPracticeLabel) {
+		this.durationLastPracticeLabel = durationLastPracticeLabel;
+	}
+
+	public JLabel getExerciceLastPracticeLabel() {
+		return exerciceLastPracticeLabel;
+	}
+
+	public void setExerciceLastPracticeLabel(JLabel exerciceLastPracticeLabel) {
+		this.exerciceLastPracticeLabel = exerciceLastPracticeLabel;
+	}
+
+	public JLabel getPerformanceLastPracticeLabel() {
+		return performanceLastPracticeLabel;
+	}
+
+	public void setPerformanceLastPracticeLabel(JLabel performanceLastPracticeLabel) {
+		this.performanceLastPracticeLabel = performanceLastPracticeLabel;
+	}
+
+	public JPanel getAddDeletePanel() {
+		return addDeletePanel;
+	}
+
+	public void setAddDeletePanel(JPanel addDeletePanel) {
+		this.addDeletePanel = addDeletePanel;
+	}
+
+
+
+
 }

@@ -27,6 +27,7 @@ public class PerformanceChartPanel extends JPanel {
 
 	private ChartPanel currentJoggingPerfChartPanel;
 
+	private JPanel previousJoggingPerfPanel = new JPanel();
 	private JPanel nextMonthJoggingPerfPanel = new JPanel();
 	private JPanel previousMonthJoggingPerfPanel = new JPanel();
 
@@ -36,18 +37,18 @@ public class PerformanceChartPanel extends JPanel {
 		Calendar cal = Calendar.getInstance();
 		currentMonth = cal.get(Calendar.MONTH)+1;
 		currentYear = cal.get(Calendar.YEAR);
-		
+
 		initStyle();		
 		init();
 		initActions();
 	}
-	
+
 	public void init() {
 		joggingPerfChart = new JoggingPerformancesChart("Performances jogging", currentMonth, currentYear, user);
 		currentJoggingPerfChartPanel = joggingPerfChart.showJoggingPerfPanel();
 
 		nextMonthJoggingPerfPanel.add(nextMonthJoggingPerfButton);
-		previousMonthJoggingPerfPanel.add(previousMonthJoggingPerfButton);
+		previousJoggingPerfPanel.add(previousMonthJoggingPerfButton);
 		joggingPerfButtonBox.add(previousMonthJoggingPerfPanel);
 		joggingPerfButtonBox.add(nextMonthJoggingPerfPanel);
 
@@ -61,8 +62,8 @@ public class PerformanceChartPanel extends JPanel {
 		previousMonthJoggingPerfButton.setOpaque(false);
 		joggingPerfButtonBox.setOpaque(false);
 		joggingPerfMainBox.setOpaque(false);
-//		if (currentJoggingPerfChartPanel!=null)
-//			currentJoggingPerfChartPanel.setOpaque(false);
+		//		if (currentJoggingPerfChartPanel!=null)
+		//			currentJoggingPerfChartPanel.setOpaque(false);
 		this.setOpaque(false);
 	}
 
@@ -134,6 +135,14 @@ public class PerformanceChartPanel extends JPanel {
 	public void setCurrentJoggingPerfChartPanel(
 			ChartPanel currentJoggingPerfChartPanel) {
 		this.currentJoggingPerfChartPanel = currentJoggingPerfChartPanel;
+	}
+
+	public JPanel getPreviousJoggingPerfPanel() {
+		return previousJoggingPerfPanel;
+	}
+
+	public void setPreviousMonthWaistSizePanel(JPanel previousJoggingPerfPanel) {
+		this.previousJoggingPerfPanel = previousJoggingPerfPanel;
 	}
 
 	public JPanel getNextMonthJoggingPerfPanel() {
