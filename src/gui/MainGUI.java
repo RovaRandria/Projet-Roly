@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,7 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import org.hibernate.Session;
 
@@ -22,7 +23,6 @@ import chart.JoggingPerformancesChart;
 import chart.WaistSizeChart;
 import chart.WeightChart;
 import data.DBConnection;
-import data.DataInit;
 import data.Exercise;
 import data.Gender;
 import data.Login;
@@ -78,7 +78,8 @@ public class MainGUI extends JFrame{
 
 		if (!login.isCoState()) {
 			if (registrationPanel==null){
-				loginPanel = new LoginPanel();
+				if(loginPanel==null)
+					loginPanel = new LoginPanel();
 				background.add(loginPanel);
 			}
 			else{
@@ -108,8 +109,10 @@ public class MainGUI extends JFrame{
 									background.add(performanceChartPanel);
 								}
 								else {
-									profilePanel = new ProfilePanel(user, true);
-									remove(loginPanel);
+									if (profilePanel==null)
+										profilePanel = new ProfilePanel(user, true);
+									if (loginPanel!=null)
+										loginPanel.setVisible(false);
 									background.add(profilePanel);
 								}
 							}
@@ -122,11 +125,15 @@ public class MainGUI extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(530, 630);
 		setVisible(true);
-		setResizable(false);
+		//setResizable(false);
 	}
 
 	public void initStyle() {
 		background.setLayout(new GridBagLayout());
+		
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		Image img = kit.getImage("./images/icon.png");
+		instance.setIconImage(img);
 	}
 
 	public void initActions() {		
@@ -135,7 +142,7 @@ public class MainGUI extends JFrame{
 			loginPanel.getRegistrationButton().addActionListener(new showRegistrationAction());
 		}
 		if (registrationPanel!=null && registrationPanel.isVisible()){
-			registrationPanel.getBackButton().addActionListener(new backHomeAction());
+			registrationPanel.getBackButton().addActionListener(new backLoginPanelAction());
 			registrationPanel.getSubmitButton().addActionListener(new registrationAction());
 		}
 		if (profilePanel!=null && profilePanel.isVisible()){
@@ -173,7 +180,6 @@ public class MainGUI extends JFrame{
 			practicePanel.getAddPracticeButton().addActionListener(new addPracticeAction());
 			practicePanel.getBackButton().addActionListener(new backSportsPanelAction());
 		}
-
 	}
 
 	class backHomeAction implements ActionListener {
@@ -199,7 +205,8 @@ public class MainGUI extends JFrame{
 			sportManagerPanel = null;
 			performanceChartPanel = null;
 			practicePanel = null;
-			profilePanel = new ProfilePanel(user, true);
+			if (profilePanel==null)
+				profilePanel = new ProfilePanel(user, true);
 
 			repaintFrame();
 		}
@@ -219,11 +226,42 @@ public class MainGUI extends JFrame{
 			repaintFrame();
 		}
 	}
+	
+	class backLoginPanelAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (profilePanel!=null)
+				profilePanel.setVisible(false);
+			if (registrationPanel!=null)
+				registrationPanel.setVisible(false);
+			if (infoManagerPanel!=null)
+				infoManagerPanel.setVisible(false);
+			if (physicalDataBox!=null)
+				physicalDataBox.setVisible(false);
+			if (sportManagerPanel!=null)
+				sportManagerPanel.setVisible(false);
+			if (performanceChartPanel!=null)
+				performanceChartPanel.setVisible(false);
+			if (practicePanel!=null)
+				practicePanel.setVisible(false);
+
+			registrationPanel = null;
+			infoManagerPanel = null;
+			physicalDataBox = null;
+			sportManagerPanel = null;
+			performanceChartPanel = null;
+			practicePanel = null;
+
+			loginPanel.setVisible(true);
+			
+			repaintFrame();
+		}
+	}
 
 	class showRegistrationAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			registrationPanel = new RegistrationPanel();
+			if (registrationPanel==null)
+				registrationPanel = new RegistrationPanel();
 			registrationPanel.setVisible(true);
 			loginPanel.setVisible(false);
 			repaintFrame();
@@ -233,7 +271,8 @@ public class MainGUI extends JFrame{
 	class showUpdateInfoAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			infoManagerPanel = new InfoManagerPanel(user);
+			if (infoManagerPanel==null)	
+				infoManagerPanel = new InfoManagerPanel(user);
 			if (profilePanel!=null)
 				profilePanel.setVisible(false);
 			profilePanel = null;
@@ -244,8 +283,10 @@ public class MainGUI extends JFrame{
 
 	class showPhysicalDataAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			physicalDataChartPanel = new PhysicalDataChartPanel(user);
-			updatePhysicalDataPanel = new UpdatePhysicalDataPanel(user);
+			if (physicalDataChartPanel==null)
+				physicalDataChartPanel = new PhysicalDataChartPanel(user);
+			if (updatePhysicalDataPanel==null)
+				updatePhysicalDataPanel = new UpdatePhysicalDataPanel(user);
 			if (profilePanel!=null)
 				profilePanel.setVisible(false);
 			profilePanel = null;			
@@ -260,7 +301,8 @@ public class MainGUI extends JFrame{
 
 	class showSportManagerAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			sportManagerPanel = new SportManagerPanel(user);
+			if (sportManagerPanel==null)
+				sportManagerPanel = new SportManagerPanel(user);
 			if (profilePanel!=null)
 				profilePanel.setVisible(false);
 			profilePanel = null;
@@ -271,7 +313,8 @@ public class MainGUI extends JFrame{
 
 	class showPerfChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			performanceChartPanel = new PerformanceChartPanel(user);
+			if (performanceChartPanel==null)
+				performanceChartPanel = new PerformanceChartPanel(user);
 			if (sportManagerPanel!=null)
 				sportManagerPanel.setVisible(false);
 			sportManagerPanel = null;
@@ -283,17 +326,17 @@ public class MainGUI extends JFrame{
 	class showPracticePanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(sportManagerPanel.getSportComboBox2().getSelectedItem() != null) {
-			String sportName = sportManagerPanel.getSportComboBox2().getSelectedItem().toString();			
-			practicePanel = new PracticePanel(user, sportName);
-			if (profilePanel!=null)
-				profilePanel.setVisible(false);
-			if (sportManagerPanel!=null)
-				sportManagerPanel.setVisible(false);
-
-			profilePanel = null;
-			sportManagerPanel = null;
-			practicePanel.setVisible(true);
-			repaintFrame();
+				String sportName = sportManagerPanel.getSportComboBox2().getSelectedItem().toString();			
+				practicePanel = new PracticePanel(user, sportName);
+				if (profilePanel!=null)
+					profilePanel.setVisible(false);
+				if (sportManagerPanel!=null)
+					sportManagerPanel.setVisible(false);
+	
+				profilePanel = null;
+				sportManagerPanel = null;
+				practicePanel.setVisible(true);
+				repaintFrame();
 			}
 			else
 				JOptionPane.showMessageDialog(instance, "Vous devez ajoutez des sports à votre liste de sports pratiqués !", "Aucun sport sélecionné", JOptionPane.ERROR_MESSAGE);
@@ -442,10 +485,7 @@ public class MainGUI extends JFrame{
 
 			session.getTransaction().commit();
 		
-			sportManagerPanel.setSportsLabel(new JLabel(user.getProfile().displaySport()));
-			//			sportManagerPanel.repaint();	
-			//			sportManagerPanel.repaintPanel();
-			instance.repaint();
+			sportManagerPanel.repaintPanel();
 		}	
 	}
 
@@ -470,11 +510,7 @@ public class MainGUI extends JFrame{
 			if (practiced.equals(false))
 				JOptionPane.showMessageDialog(instance, "Erreur : vous ne pratiquez pas " + sport.getName() + " !", "Erreur", JOptionPane.ERROR_MESSAGE);
 			session.getTransaction().commit();
-			System.out.println("pppppppppppp "+user.getProfile().displaySport());
-			sportManagerPanel.setSportsLabel(new JLabel(user.getProfile().displaySport()));
-			//			sportManagerPanel.repaint();
-			//			sportManagerPanel.repaintPanel();
-			instance.repaint();
+			sportManagerPanel.repaintPanel();
 		}
 	}
 

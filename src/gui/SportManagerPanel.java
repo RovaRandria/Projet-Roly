@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -23,17 +24,17 @@ public class SportManagerPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-
-	private JComboBox sportComboBox, sportComboBox2 = new JComboBox();
+	
+	private JComboBox sportComboBox, sportComboBox2;
 
 	private JButton addSportButton = new JButton("Ajouter");	
 	private JButton removeSportButton = new JButton("Supprimer");
-	private JButton showPracticePanelButton = new JButton("Détails");
+	private JButton showPracticePanelButton = new JButton("Ajouter une séance");
 	private JButton showPerfChartButton = new JButton("Voir mes performances");
 	private JButton backHomeButton = new JButton("Retour au profil");
 
 	private JLabel titleLabel = new JLabel("Mes activités sportives");
-	private JLabel sportsLabel = new JLabel();
+	private JLabel sportsLabel = new JLabel("Non renseigné");
 	private JLabel sportLastPracticeLabel = new JLabel();
 	private JLabel dateLastPracticeLabel = new JLabel();
 	private JLabel placeLastPracticeLabel = new JLabel();
@@ -41,6 +42,10 @@ public class SportManagerPanel extends JPanel {
 	private JLabel exerciceLastPracticeLabel = new JLabel();
 	private JLabel performanceLastPracticeLabel = new JLabel();
 
+	private JLabel sportsTitleLabel1;
+	private JLabel sportsTitleLabel2;
+	private JLabel sportsTitleLabel3;
+	
 	private JPanel addDeletePanel = new JPanel();
 
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
@@ -56,8 +61,8 @@ public class SportManagerPanel extends JPanel {
 	}
 
 	public void repaintPanel(){
-		initStyle();
 		init();
+		initStyle();
 		initActions();
 	}
 
@@ -66,26 +71,39 @@ public class SportManagerPanel extends JPanel {
 		session.beginTransaction();
 		user = (User) session.get(User.class, user.getPseudo());
 		if (user.getProfile().getSportsList().size()>0){
-			sportsLabel = new JLabel(user.getProfile().displaySport());
+			sportsLabel.setText(user.getProfile().displaySport());
 		}
 		else{
-			sportsLabel = new JLabel("Non renseigné");
+			sportsLabel.setText("Non renseigné");
 		}
-		sportComboBox = new JComboBox(DataUtility.getSportsListString().toArray());
+		if (sportComboBox==null)
+			sportComboBox = new JComboBox(DataUtility.getSportsListString().toArray());
+		else{
+			DefaultComboBoxModel model = new DefaultComboBoxModel(DataUtility.getSportsListString().toArray());
+			sportComboBox.setModel(model);
+		}
+			
+
 
 		addDeletePanel.add(addSportButton);
 		addDeletePanel.add(removeSportButton);
 
 		if (user.getProfile().getPracticesList().size()>0){
 			Practice lastPractice = user.getProfile().getPracticesList().get(user.getProfile().getPracticesList().size()-1);
-			sportLastPracticeLabel = new JLabel("Sport : "+lastPractice.getSport().getName());
-			dateLastPracticeLabel = new JLabel("Date : "+lastPractice.getDate().toString());
-			placeLastPracticeLabel = new JLabel("Lieu : "+lastPractice.getPlace());
-			durationLastPracticeLabel = new JLabel("Durée : "+String.valueOf(lastPractice.getDuration()));
-			performanceLastPracticeLabel = new JLabel("Performance : "+lastPractice.getPerformance());
+			if (sportLastPracticeLabel.getText().equals(""))
+				sportLastPracticeLabel = new JLabel("Sport : "+lastPractice.getSport().getName());
+			if (dateLastPracticeLabel.getText().equals(""))
+				dateLastPracticeLabel = new JLabel("Date : "+lastPractice.getDate().toString());
+			if (placeLastPracticeLabel.getText().equals(""))
+				placeLastPracticeLabel = new JLabel("Lieu : "+lastPractice.getPlace());
+			if (durationLastPracticeLabel.getText().equals(""))
+				durationLastPracticeLabel = new JLabel("Durée : "+String.valueOf(lastPractice.getDuration()));
+			if (performanceLastPracticeLabel.getText().equals(""))
+				performanceLastPracticeLabel = new JLabel("Performance : "+lastPractice.getPerformance());
 		}
 		else{
-			sportLastPracticeLabel = new JLabel("Non renseigné");
+			if (sportLastPracticeLabel.getText().equals(""))
+				sportLastPracticeLabel = new JLabel("Non renseigné");
 		}
 
 		this.setLayout(new GridBagLayout());
@@ -101,13 +119,21 @@ public class SportManagerPanel extends JPanel {
 		frameConstraints.fill = GridBagConstraints.NONE;
 		frameConstraints.insets = new Insets(20, 0, 5, 20);
 		frameConstraints.gridwidth = 1;
+		if (sportsTitleLabel1==null)
+			sportsTitleLabel1 = new JLabel("Sport(s) pratiqué(s) : ");
 		frameConstraints.gridy = 1; 
-		add(new JLabel("Sport(s) pratiqué(s) : "), frameConstraints);
+		add(sportsTitleLabel1, frameConstraints);
+		
+		if (sportsTitleLabel2==null)
+			sportsTitleLabel2 = new JLabel("Gérer mes sports : ");
 		frameConstraints.gridy = 3; 
-		add(new JLabel("Gérer mes sports : "), frameConstraints);
+		add(sportsTitleLabel2, frameConstraints);
+		
+		if (sportsTitleLabel3==null)
+			sportsTitleLabel3 = new JLabel("Dernière séance : ");
 		frameConstraints.gridy = 5; 
-		add(new JLabel("Dernière séance : "), frameConstraints);
-
+		add(sportsTitleLabel3, frameConstraints);
+		
 
 		frameConstraints.gridx = 1;
 		frameConstraints.gridy = 1; 
@@ -130,18 +156,30 @@ public class SportManagerPanel extends JPanel {
 			add(exerciceLastPracticeLabel, frameConstraints);
 			add(performanceLastPracticeLabel, frameConstraints);
 		}
-
-		ArrayList<String> sportString = new ArrayList<String>();
-		for(int i = 0; i < user.getProfile().getSportsList().size(); i++) {
-			sportString.add(user.getProfile().getSportsList().get(i).getName());
-		}
-		sportComboBox2 = new JComboBox(sportString.toArray());
-
+		
+		
 		frameConstraints.insets = new Insets(10, 20, 10, 0);
-		frameConstraints.gridx = 0;
-		frameConstraints.gridwidth = 2;
-		add(sportComboBox2, frameConstraints);
-		add(showPracticePanelButton, frameConstraints);
+		frameConstraints.gridx = 1;
+		
+		if (user.getProfile().getSportsList().size()>0){
+			ArrayList<String> sportString = new ArrayList<String>();
+			for(int i = 0; i < user.getProfile().getSportsList().size(); i++) {
+				sportString.add(user.getProfile().getSportsList().get(i).getName());
+			}
+			if (sportComboBox2==null)
+				sportComboBox2 = new JComboBox(sportString.toArray());
+			else{
+				DefaultComboBoxModel model = new DefaultComboBoxModel(sportString.toArray());
+				sportComboBox.setModel(model);
+			}
+			
+			add(sportComboBox2, frameConstraints);
+			add(showPracticePanelButton, frameConstraints);
+		}
+		else{
+			add(new JLabel("Pour pouvoir ajouter une séance, ajoutez un sport."), frameConstraints);
+		}
+
 
 		frameConstraints.gridx = 0;
 		frameConstraints.gridwidth = 3;
@@ -149,22 +187,13 @@ public class SportManagerPanel extends JPanel {
 		frameConstraints.fill = GridBagConstraints.CENTER;
 		frameConstraints.insets = new Insets(30, 0, 5, 0);
 		add(backHomeButton, frameConstraints);
-
-
-		//		practicesTextArea.setEditable(false);
-		//		practicesJScrollPane = new JScrollPane(practicesTextArea);
-		//
-		//		practicesJScrollPane.setMinimumSize(new Dimension(500,100));
-		//
-		//		frameConstraints.gridx = 0; 
-		//		frameConstraints.gridy = 1; 
-		//		this.add(practicesJScrollPane, frameConstraints);
+		
 		session.getTransaction().commit();
 	}
 
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
-		sportComboBox.setOpaque(false);
+		//sportComboBox.setOpaque(false);
 		addSportButton.setOpaque(false);
 		removeSportButton.setOpaque(false);
 		showPracticePanelButton.setOpaque(false);
@@ -179,6 +208,9 @@ public class SportManagerPanel extends JPanel {
 		exerciceLastPracticeLabel.setOpaque(false);
 		performanceLastPracticeLabel.setOpaque(false);
 		addDeletePanel.setOpaque(false);
+		sportsTitleLabel1.setOpaque(false);
+		sportsTitleLabel2.setOpaque(false);
+		sportsTitleLabel3.setOpaque(false);
 		this.setOpaque(false);
 	}
 
@@ -321,8 +353,4 @@ public class SportManagerPanel extends JPanel {
 	public void setAddDeletePanel(JPanel addDeletePanel) {
 		this.addDeletePanel = addDeletePanel;
 	}
-
-
-
-
 }
