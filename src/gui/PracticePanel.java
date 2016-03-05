@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.hibernate.Session;
@@ -54,7 +56,13 @@ public class PracticePanel extends JPanel {
 	private JButton backButton = new JButton("Retour aux sports");
 
 	private JLabel titleLabel = new JLabel("Mes séances de sports");
-
+	
+	private JLabel historyLabel = new JLabel("Historique des séances ");
+	
+	private JTextArea practicesListTextArea = new JTextArea();
+	
+	private JScrollPane jScrollPracticesList = new JScrollPane();
+	
 	private JTextField durationTextField;
 	private JTextField performanceTextField;
 	private JTextField placeTextField;
@@ -99,13 +107,20 @@ public class PracticePanel extends JPanel {
 		frameConstraints.gridwidth = 2;
 		frameConstraints.gridx = 0;
 		frameConstraints.gridy = 0;
+		titleLabel.setText("Mes séances de sports : "+ sportName);
 		add(titleLabel, frameConstraints);
 		
-		frameConstraints.insets = new Insets(5, 10, 5, 40);
+		frameConstraints.insets = new Insets(2, 10, 2, 40);
 		frameConstraints.gridwidth = 1;
 		frameConstraints.anchor = GridBagConstraints.WEST;
 		frameConstraints.fill = GridBagConstraints.NONE;
 		frameConstraints.gridy = GridBagConstraints.RELATIVE;
+
+		add(historyLabel, frameConstraints);
+		/*practicesListTextArea.setText(user.getProfile().practicesListtoString(sportName));
+		jScrollPracticesList = new JScrollPane(practicesListTextArea);*/
+		add(jScrollPracticesList, frameConstraints);
+		
 		add(new JLabel("Date : "), frameConstraints);
 		add(new JLabel("Lieu : "), frameConstraints);
 		add(new JLabel("Durée : "), frameConstraints);
@@ -166,8 +181,7 @@ public class PracticePanel extends JPanel {
 			this.add(dipsComboBox, frameConstraints);
 			this.add(squatComboBox, frameConstraints);
 			this.add(benchPressComboBox, frameConstraints);			
-		}
-		add(new JLabel("/* Affichage de toutes les séances */"), frameConstraints);	
+		}	
 		frameConstraints.gridwidth = 2;
 		frameConstraints.gridx = 0;
 		frameConstraints.insets = new Insets(30, 0, 5, 0);

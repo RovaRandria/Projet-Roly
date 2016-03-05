@@ -282,8 +282,8 @@ public class MainGUI extends JFrame{
 
 	class showPracticePanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			String sportName = sportManagerPanel.getSportComboBox2().getSelectedItem().toString();
-			System.out.println(sportName);
+			if(sportManagerPanel.getSportComboBox2().getSelectedItem() != null) {
+			String sportName = sportManagerPanel.getSportComboBox2().getSelectedItem().toString();			
 			practicePanel = new PracticePanel(user, sportName);
 			if (profilePanel!=null)
 				profilePanel.setVisible(false);
@@ -294,6 +294,9 @@ public class MainGUI extends JFrame{
 			sportManagerPanel = null;
 			practicePanel.setVisible(true);
 			repaintFrame();
+			}
+			else
+				JOptionPane.showMessageDialog(instance, "Vous devez ajoutez des sports à votre liste de sports pratiqués !", "Aucun sport sélecionné", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -502,6 +505,35 @@ public class MainGUI extends JFrame{
 				exercisesList.add(blackClimbingRoute);
 				exercisesList.add(greenClimbingRoute);
 				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), exercisesList, profile);
+			}
+			else if(practicePanel.getSportName().equals("Ski")) {				
+				ArrayList<Exercise> exercisesList = new ArrayList<Exercise>();
+				Exercise greenTrack = new Exercise("Piste verte", (Integer)practicePanel.getGreenTrackComboBox().getSelectedItem());
+				Exercise blueTrack = new Exercise("Piste bleue", (Integer)practicePanel.getBlueTrackComboBox().getSelectedItem());
+				Exercise redTrack = new Exercise("Piste rouge", (Integer)practicePanel.getRedTrackComboBox().getSelectedItem());
+				Exercise blackTrack = new Exercise("Piste noire", (Integer)practicePanel.getBlackTrackComboBox().getSelectedItem());
+				exercisesList.add(greenTrack);
+				exercisesList.add(blueTrack);
+				exercisesList.add(redTrack);
+				exercisesList.add(blackTrack);
+				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), exercisesList, profile);
+				
+			}
+			else if(practicePanel.getSportName().equals("Musculation")) {	
+				ArrayList<Exercise> exercisesList = new ArrayList<Exercise>();
+				Exercise pushup = new Exercise("Pompes", (Integer)practicePanel.getPushupComboBox().getSelectedItem());
+				Exercise situp = new Exercise("Abdominaux", (Integer)practicePanel.getSitupComboBox().getSelectedItem());
+				Exercise pullup = new Exercise("Tractions", (Integer)practicePanel.getPullupComboBox().getSelectedItem());
+				Exercise dips = new Exercise("Dips", (Integer)practicePanel.getDipsComboBox().getSelectedItem());
+				Exercise squat = new Exercise("Squat", (Integer)practicePanel.getSquatComboBox().getSelectedItem());
+				Exercise benchPress = new Exercise("Développés-couchés", (Integer)practicePanel.getBenchPressComboBox().getSelectedItem());
+				exercisesList.add(pushup);
+				exercisesList.add(situp);
+				exercisesList.add(pullup);
+				exercisesList.add(dips);
+				exercisesList.add(squat);
+				exercisesList.add(benchPress);
+				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), exercisesList, profile);			
 			}
 			profile.getPracticesList().add(practice);			  
 			JOptionPane.showMessageDialog(instance, "Votre séance a bien été ajoutée !", "Séance ajoutée", JOptionPane.INFORMATION_MESSAGE);

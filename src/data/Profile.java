@@ -193,5 +193,13 @@ public class Profile {
 		this.friends = friends;
 	}
 	
+	public String practicesListtoString(String sportName) {
+		String practicesListStr = "";
+		for(int i = 0; i< this.practicesList.size(); i++) {
+			if(practicesList.get(i).getSport().getName().equals(sportName))
+				practicesListStr += practicesList.get(i).toString()+ "\n";
+		}
+		return practicesListStr;
+	}
 	
 }

@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -44,8 +45,8 @@ public class Practice {
     @JoinColumn(name="sport_id", nullable = false)
 	private Sport sport;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Exercise.class)
-	@JoinTable(name = "practice_exercise", joinColumns = @JoinColumn(name = "practice_id"), inverseJoinColumns = @JoinColumn(name = "exercise_id"))
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Exercise.class)
+	@JoinColumn(name = "practice_id", nullable = true)
 	private List<Exercise> exercisesList = new ArrayList<Exercise>();
 	
 	public Practice() {
@@ -135,8 +136,8 @@ public class Practice {
 	
 	@Override
 	public String toString() {
-		return "Practice [id=" + id + ", date=" + date
-				+ ", place=" + place + ", duration=" + duration + displayExercise() + "]";
+		return "Le : " + date
+				+ "à :" + place + " durée : " + duration + displayExercise();
 	}
 	
 	/*public void addExercice(int exerciseId, String name, String description, ArrayList<AreaOfEffect> aoe) {

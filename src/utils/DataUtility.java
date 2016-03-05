@@ -74,7 +74,7 @@ public class DataUtility {
 
 	public static List<Integer> numberOfSeries() {
 		List <Integer> year = new ArrayList<Integer>();
-		for (int i = 1; i <= 100; i++) {
+		for (int i = 0; i <= 100; i++) {
 			year.add(i);
 		}
 		return year;
