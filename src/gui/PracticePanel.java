@@ -37,9 +37,9 @@ public class PracticePanel extends JPanel {
 
 	private JLabel titleLabel = new JLabel("Mes séances de sports");
 
-	private JTextField durationTextField;
-	private JTextField performanceTextField;
-	private JTextField placeTextField;
+	private JTextField durationTextField = new JTextField(25);
+	private JTextField performanceTextField = new JTextField(25);
+	private JTextField placeTextField = new JTextField(25);
 	
 	private JPanel datePanel = new JPanel();
 
@@ -59,10 +59,6 @@ public class PracticePanel extends JPanel {
 		Session session = DBConnection.getSession();
 		session.beginTransaction();
 		user = (User) session.get(User.class, user.getPseudo());
-
-		durationTextField = new JTextField(25);
-		performanceTextField = new JTextField(25);
-		placeTextField = new JTextField(25);
 		
 		ArrayList<String> sportString = new ArrayList<String>();
 		for(int i = 0; i < user.getProfile().getSportsList().size(); i++) {
@@ -125,6 +121,18 @@ public class PracticePanel extends JPanel {
 
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
+		
+		dayComboBox.setOpaque(false);
+		monthComboBox.setOpaque(false);
+		yearComboBox.setOpaque(false);
+		sportComboBox.setOpaque(false);
+		exercisesComboBox.setOpaque(false);
+		colorComboBox.setOpaque(false);
+		addPracticeButton.setOpaque(false);
+		backButton.setOpaque(false);
+		titleLabel.setOpaque(false);
+		datePanel.setOpaque(false);
+		this.setOpaque(false);
 	}
 
 	public void initActions() {		

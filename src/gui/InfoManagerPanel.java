@@ -31,7 +31,7 @@ public class InfoManagerPanel extends JPanel {
 	private JButton backButton = new JButton("Retour au profil");
 	
 	private JLabel titleLabel = new JLabel("Modifier mes informations");
-	private JLabel pseudoLabel;
+	private JLabel pseudoLabel = new JLabel("");
 	private JLabel errorLabel = new JLabel(" ");
 	
 	private JPasswordField  passwordField = new JPasswordField(15);
@@ -146,6 +146,23 @@ public class InfoManagerPanel extends JPanel {
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
 		errorLabel.setForeground(new Color(255, 0, 0));
+		
+		titleLabel.setFont(TITLE_FONT);
+		errorLabel.setForeground(new Color(255, 0, 0));
+		
+		updateInfoButton.setOpaque(false);
+		backButton.setOpaque(false);
+		titleLabel.setOpaque(false);
+		pseudoLabel.setOpaque(false);
+		errorLabel.setOpaque(false);
+		maleRadioButton.setOpaque(false);
+		femaleRadioButton.setOpaque(false);
+		birthdayDayComboBox.setOpaque(false);
+		birthdayMonthComboBox.setOpaque(false);
+		birthdayYearComboBox.setOpaque(false);
+		datePanel.setOpaque(false);
+		radioButtonPanel.setOpaque(false);
+		this.setOpaque(false);
 	}
 		
 	public void initActions() {		

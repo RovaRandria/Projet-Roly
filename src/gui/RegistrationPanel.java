@@ -73,6 +73,14 @@ public class RegistrationPanel extends JPanel{
 	private void initStyle() {
 		homeLabel.setFont(TITLE_FONT);
 		errorLabel.setForeground(new Color(255, 0, 0));
+		
+		homeLabel.setOpaque(false);
+		pseudoLabel.setOpaque(false);
+		passwordLabel.setOpaque(false);
+		errorLabel.setOpaque(false);
+		submitButton.setOpaque(false);
+		backButton.setOpaque(false);
+		this.setOpaque(false);
 	}
 	
 	private void initActions() {

@@ -21,23 +21,23 @@ public class ProfilePanel extends JPanel {
 	private JPanel physicalDataPanel = new JPanel();
 	private boolean isMine;
 
-	private JButton updateInfoButton;
-	private JButton showPhysicalDataButton;
-	private JButton sportManagerButton;
-	private JButton disconnectionButton;	
+	private JButton updateInfoButton = new JButton();
+	private JButton showPhysicalDataButton = new JButton();
+	private JButton sportManagerButton = new JButton();
+	private JButton disconnectionButton = new JButton();	
 	
-	private JLabel homeLabel;
-	private JLabel pseudoLabel;
-	private JLabel registrationDateLabel;
-	private JLabel firstNameLabel;
-	private JLabel lastNameLabel;
-	private JLabel birthdateLabel;
-	private JLabel genderLabel;
+	private JLabel homeLabel = new JLabel();
+	private JLabel pseudoLabel = new JLabel();
+	private JLabel registrationDateLabel = new JLabel();
+	private JLabel firstNameLabel = new JLabel();
+	private JLabel lastNameLabel = new JLabel();
+	private JLabel birthdateLabel = new JLabel();
+	private JLabel genderLabel = new JLabel();
 	private JLabel sportsLabel = new JLabel();
-	private JLabel physicalDataDateLabel;
-	private JLabel physicalDataWeightLabel;
-	private JLabel physicalDataHipLabel;
-	private JLabel physicalDataWaistLabel;
+	private JLabel physicalDataDateLabel = new JLabel();
+	private JLabel physicalDataWeightLabel = new JLabel();
+	private JLabel physicalDataHipLabel = new JLabel();
+	private JLabel physicalDataWaistLabel = new JLabel();
 	
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 20);
 
@@ -152,6 +152,24 @@ public class ProfilePanel extends JPanel {
 	
 	private void initStyle() {
 		homeLabel.setFont(TITLE_FONT);
+		physicalDataPanel.setOpaque(false);
+		updateInfoButton.setOpaque(false);
+		showPhysicalDataButton.setOpaque(false);
+		sportManagerButton.setOpaque(false);
+		disconnectionButton.setOpaque(false);
+		homeLabel.setOpaque(false);
+		pseudoLabel.setOpaque(false);
+		registrationDateLabel.setOpaque(false);
+		firstNameLabel.setOpaque(false);
+		lastNameLabel.setOpaque(false);
+		birthdateLabel.setOpaque(false);
+		genderLabel.setOpaque(false);
+		sportsLabel.setOpaque(false);
+		physicalDataDateLabel.setOpaque(false);
+		physicalDataWeightLabel.setOpaque(false);
+		physicalDataHipLabel.setOpaque(false);		
+		physicalDataWaistLabel.setOpaque(false);
+		this.setOpaque(false);
 	}
 	
 	public void initActions() {		

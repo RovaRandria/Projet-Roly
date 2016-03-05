@@ -27,7 +27,6 @@ public class PerformanceChartPanel extends JPanel {
 
 	private ChartPanel currentJoggingPerfChartPanel;
 
-	private JPanel previousMonthWaistSizePanel = new JPanel();
 	private JPanel nextMonthJoggingPerfPanel = new JPanel();
 	private JPanel previousMonthJoggingPerfPanel = new JPanel();
 
@@ -37,7 +36,7 @@ public class PerformanceChartPanel extends JPanel {
 		Calendar cal = Calendar.getInstance();
 		currentMonth = cal.get(Calendar.MONTH)+1;
 		currentYear = cal.get(Calendar.YEAR);
-
+		
 		initStyle();		
 		init();
 		initActions();
@@ -48,7 +47,7 @@ public class PerformanceChartPanel extends JPanel {
 		currentJoggingPerfChartPanel = joggingPerfChart.showJoggingPerfPanel();
 
 		nextMonthJoggingPerfPanel.add(nextMonthJoggingPerfButton);
-		previousMonthWaistSizePanel.add(previousMonthJoggingPerfButton);
+		previousMonthJoggingPerfPanel.add(previousMonthJoggingPerfButton);
 		joggingPerfButtonBox.add(previousMonthJoggingPerfPanel);
 		joggingPerfButtonBox.add(nextMonthJoggingPerfPanel);
 
@@ -58,7 +57,13 @@ public class PerformanceChartPanel extends JPanel {
 	}
 
 	public void initStyle(){
-
+		nextMonthJoggingPerfButton.setOpaque(false);
+		previousMonthJoggingPerfButton.setOpaque(false);
+		joggingPerfButtonBox.setOpaque(false);
+		joggingPerfMainBox.setOpaque(false);
+//		if (currentJoggingPerfChartPanel!=null)
+//			currentJoggingPerfChartPanel.setOpaque(false);
+		this.setOpaque(false);
 	}
 
 	public void initActions(){
@@ -129,14 +134,6 @@ public class PerformanceChartPanel extends JPanel {
 	public void setCurrentJoggingPerfChartPanel(
 			ChartPanel currentJoggingPerfChartPanel) {
 		this.currentJoggingPerfChartPanel = currentJoggingPerfChartPanel;
-	}
-
-	public JPanel getPreviousMonthWaistSizePanel() {
-		return previousMonthWaistSizePanel;
-	}
-
-	public void setPreviousMonthWaistSizePanel(JPanel previousMonthWaistSizePanel) {
-		this.previousMonthWaistSizePanel = previousMonthWaistSizePanel;
 	}
 
 	public JPanel getNextMonthJoggingPerfPanel() {

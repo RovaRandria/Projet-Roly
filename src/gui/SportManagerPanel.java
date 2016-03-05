@@ -23,7 +23,7 @@ public class SportManagerPanel extends JPanel {
 
 	private User user;
 		
-	private JComboBox sportComboBox;
+	private JComboBox sportComboBox = new JComboBox();
 	
 	private JButton addSportButton = new JButton("Ajouter");	
 	private JButton removeSportButton = new JButton("Supprimer");
@@ -33,16 +33,16 @@ public class SportManagerPanel extends JPanel {
 	
 	private JLabel titleLabel = new JLabel("Mes activités sportives");
 	private JLabel sportsLabel = new JLabel();
-	private JLabel sportLastPracticeLabel;
-	private JLabel dateLastPracticeLabel;
-	private JLabel placeLastPracticeLabel;
-	private JLabel durationLastPracticeLabel;
-	private JLabel exerciceLastPracticeLabel;
-	private JLabel performanceLastPracticeLabel;
+	private JLabel sportLastPracticeLabel = new JLabel();
+	private JLabel dateLastPracticeLabel = new JLabel();
+	private JLabel placeLastPracticeLabel = new JLabel();
+	private JLabel durationLastPracticeLabel = new JLabel();
+	private JLabel exerciceLastPracticeLabel = new JLabel();
+	private JLabel performanceLastPracticeLabel = new JLabel();
 	
 	private JPanel addDeletePanel = new JPanel();
 	
-	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
+	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 18);
 	
 	public SportManagerPanel() {
 	}
@@ -157,6 +157,23 @@ public class SportManagerPanel extends JPanel {
 	
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
+		
+		sportComboBox.setOpaque(false);
+		addSportButton.setOpaque(false);
+		removeSportButton.setOpaque(false);
+		showPracticePanelButton.setOpaque(false);
+		showPerfChartButton.setOpaque(false);
+		backHomeButton.setOpaque(false);
+		titleLabel.setOpaque(false);
+		sportsLabel.setOpaque(false);
+		sportLastPracticeLabel.setOpaque(false);
+		dateLastPracticeLabel.setOpaque(false);
+		placeLastPracticeLabel.setOpaque(false);
+		durationLastPracticeLabel.setOpaque(false);
+		exerciceLastPracticeLabel.setOpaque(false);
+		performanceLastPracticeLabel.setOpaque(false);
+		addDeletePanel.setOpaque(false);
+		this.setOpaque(false);
 	}
 		
 	public void initActions() {		
