@@ -14,15 +14,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.hibernate.Session;
 
 import utils.DataUtility;
+import chart.CyclingPerformancesChart;
 import chart.HipSizeChart;
 import chart.JoggingPerformancesChart;
 import chart.WaistSizeChart;
 import chart.WeightChart;
 import data.DBConnection;
+import data.DataInit;
 import data.Exercise;
 import data.Gender;
 import data.Login;
@@ -111,7 +114,7 @@ public class MainGUI extends JFrame{
 								else {
 									if (profilePanel==null)
 										profilePanel = new ProfilePanel(user, true);
-									if (loginPanel!=null)
+									if (loginPanel!=null)	
 										loginPanel.setVisible(false);
 									background.add(profilePanel);
 								}
@@ -130,7 +133,6 @@ public class MainGUI extends JFrame{
 
 	public void initStyle() {
 		background.setLayout(new GridBagLayout());
-		
 		Toolkit kit = Toolkit.getDefaultToolkit();
 		Image img = kit.getImage("./images/icon.png");
 		instance.setIconImage(img);
@@ -172,9 +174,18 @@ public class MainGUI extends JFrame{
 			sportManagerPanel.getShowPracticePanelButton().addActionListener(new showPracticePanelAction());
 			sportManagerPanel.getBackHomeButton().addActionListener(new backHomeAction());
 		}
-		if (performanceChartPanel!=null){
+		if (performanceChartPanel!=null&& performanceChartPanel.isVisible()){
 			performanceChartPanel.getPreviousMonthJoggingPerfButton().addActionListener(new previousMonthJoggingPerfAction());
 			performanceChartPanel.getNextMonthJoggingPerfButton().addActionListener(new nextMonthJoggingPerfAction());
+			//performanceChartPanel.getPreviousMonthClimbingPerfButton().addActionListener(new previousMonthClimbingPerfAction());
+			//performanceChartPanel.getNextMonthClimbingPerfButton().addActionListener(new nextMonthClimbingPerfAction());
+			performanceChartPanel.getPreviousMonthCyclingPerfButton().addActionListener(new previousMonthCyclingPerfAction());
+			performanceChartPanel.getNextMonthCyclingPerfButton().addActionListener(new nextMonthCyclingPerfAction());
+			//performanceChartPanel.getPreviousMonthSkiPerfButton().addActionListener(new previousMonthSkiPerfAction());
+			//performanceChartPanel.getNextMonthSkiPerfButton().addActionListener(new nextMonthSkiPerfAction());
+			//performanceChartPanel.getPreviousMonthBodybuildingPerfButton().addActionListener(new previousMonthBodybuildingPerfAction());
+			//performanceChartPanel.getNextMonthBodybuildingPerfButton().addActionListener(new nextMonthBodybuildingPerfAction());
+			performanceChartPanel.getBackHomeButton().addActionListener(new backHomeAction());
 		}
 		if (practicePanel!=null){
 			practicePanel.getAddPracticeButton().addActionListener(new addPracticeAction());
@@ -212,21 +223,6 @@ public class MainGUI extends JFrame{
 		}
 	}
 
-	class backSportsPanelAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (sportManagerPanel!=null)
-				sportManagerPanel.setVisible(true);
-			if (practicePanel!=null)
-				practicePanel.setVisible(false);
-
-
-			practicePanel = null;
-			sportManagerPanel = new SportManagerPanel(user);
-
-			repaintFrame();
-		}
-	}
-	
 	class backLoginPanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (profilePanel!=null)
@@ -242,17 +238,29 @@ public class MainGUI extends JFrame{
 			if (performanceChartPanel!=null)
 				performanceChartPanel.setVisible(false);
 			if (practicePanel!=null)
-				practicePanel.setVisible(false);
-
+				practicePanel.setVisible(false);		
 			registrationPanel = null;
 			infoManagerPanel = null;
 			physicalDataBox = null;
 			sportManagerPanel = null;
 			performanceChartPanel = null;
 			practicePanel = null;
-
 			loginPanel.setVisible(true);
-			
+			repaintFrame();
+		}
+	}
+	
+	class backSportsPanelAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (sportManagerPanel!=null)
+				sportManagerPanel.setVisible(true);
+			if (practicePanel!=null)
+				practicePanel.setVisible(false);
+
+
+			practicePanel = null;
+			sportManagerPanel = new SportManagerPanel(user);
+
 			repaintFrame();
 		}
 	}
@@ -271,7 +279,7 @@ public class MainGUI extends JFrame{
 	class showUpdateInfoAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (infoManagerPanel==null)	
+			if (infoManagerPanel==null)
 				infoManagerPanel = new InfoManagerPanel(user);
 			if (profilePanel!=null)
 				profilePanel.setVisible(false);
@@ -319,6 +327,7 @@ public class MainGUI extends JFrame{
 				sportManagerPanel.setVisible(false);
 			sportManagerPanel = null;
 			performanceChartPanel.setVisible(true);
+			performanceChartPanel.setOpaque(false);
 			repaintFrame();
 		}
 	}
@@ -510,6 +519,7 @@ public class MainGUI extends JFrame{
 			if (practiced.equals(false))
 				JOptionPane.showMessageDialog(instance, "Erreur : vous ne pratiquez pas " + sport.getName() + " !", "Erreur", JOptionPane.ERROR_MESSAGE);
 			session.getTransaction().commit();
+			
 			sportManagerPanel.repaintPanel();
 		}
 	}
@@ -780,5 +790,49 @@ public class MainGUI extends JFrame{
 			performanceChartPanel.repaint();
 		}
 	}
+	
+	class previousMonthCyclingPerfAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			performanceChartPanel.getNextMonthCyclingPerfButton().setVisible(true);
+			if (performanceChartPanel.getCurrentMonth()==1){
+				performanceChartPanel.setCurrentMonth(12);
+				performanceChartPanel.setCurrentYear(performanceChartPanel.getCurrentYear()-1);
+			}else
+				performanceChartPanel.setCurrentMonth(performanceChartPanel.getCurrentMonth()-1);
+
+			System.out.println("Mois précédent : "+performanceChartPanel.getCurrentMonth()+"/"+performanceChartPanel.getCurrentYear());
+
+			performanceChartPanel.setCyclingPerfChart(new CyclingPerformancesChart("Performances vélo", performanceChartPanel.getCurrentMonth(), performanceChartPanel.getCurrentYear(), user));	
+			performanceChartPanel.getCurrentCyclingPerfChartPanel().removeAll();
+			performanceChartPanel.getCurrentCyclingPerfChartPanel().add(performanceChartPanel.getCyclingPerfChart().showCyclingPerfPanel());
+			performanceChartPanel.getCyclingPerfMainBox().repaint();
+			performanceChartPanel.repaint();
+		}
+	}
+	
+	class nextMonthCyclingPerfAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (performanceChartPanel.getCurrentMonth()==12){
+				performanceChartPanel.setCurrentMonth(1);
+				performanceChartPanel.setCurrentYear(performanceChartPanel.getCurrentYear()+1);
+			}else
+				performanceChartPanel.setCurrentMonth(performanceChartPanel.getCurrentMonth()+1);
+			System.out.println("Mois suivant : "+performanceChartPanel.getCurrentMonth()+"/"+performanceChartPanel.getCurrentYear());
+			performanceChartPanel.setCyclingPerfChart(new CyclingPerformancesChart("Performances vélo", performanceChartPanel.getCurrentMonth(), performanceChartPanel.getCurrentYear(), user));	
+
+			performanceChartPanel.getCurrentCyclingPerfChartPanel().removeAll();
+			performanceChartPanel.getCurrentCyclingPerfChartPanel().add(performanceChartPanel.getCyclingPerfChart().showCyclingPerfPanel());
+			System.out.println("nb error = "+performanceChartPanel.getCyclingPerfChart().getNbError());
+			if (performanceChartPanel.getCyclingPerfChart().getNbError()==2)
+				performanceChartPanel.getNextMonthCyclingPerfButton().setVisible(false);
+			else
+				performanceChartPanel.getNextMonthCyclingPerfButton().setVisible(true);
+
+			performanceChartPanel.getCyclingPerfMainBox().repaint();
+			performanceChartPanel.repaint();
+		}
+	}
+	
+	
 
 }
