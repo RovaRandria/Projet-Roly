@@ -59,7 +59,7 @@ public class MainGUI extends JFrame{
 	private Box physicalDataBox;
 	private PerformanceChartPanel performanceChartPanel;
 	private PracticePanel practicePanel;
-	private boolean loginUpdate=false, profileUpdate=false;
+	private boolean loginUpdate=false;
 
 	private JLabel background = new JLabel(new ImageIcon("./images/background.jpeg"));
 
@@ -141,7 +141,6 @@ public class MainGUI extends JFrame{
 	public void initActions() {		
 		if (loginPanel!=null && loginPanel.isVisible() && !loginUpdate){
 			loginUpdate = true;
-			System.out.println("aaaaaaaaaaaaaaaaaaaaaa");
 			loginPanel.getConnectionButton().addActionListener(new connectionAction());
 			loginPanel.getRegistrationButton().addActionListener(new showRegistrationAction());
 		}
@@ -187,7 +186,7 @@ public class MainGUI extends JFrame{
 			//performanceChartPanel.getNextMonthSkiPerfButton().addActionListener(new nextMonthSkiPerfAction());
 			//performanceChartPanel.getPreviousMonthBodybuildingPerfButton().addActionListener(new previousMonthBodybuildingPerfAction());
 			//performanceChartPanel.getNextMonthBodybuildingPerfButton().addActionListener(new nextMonthBodybuildingPerfAction());
-			performanceChartPanel.getBackHomeButton().addActionListener(new backHomeAction());
+			performanceChartPanel.getBackHomeButton().addActionListener(new backSportsPanelAction());
 		}
 		if (practicePanel!=null){
 			practicePanel.getAddPracticeButton().addActionListener(new addPracticeAction());
@@ -220,10 +219,6 @@ public class MainGUI extends JFrame{
 			practicePanel = null;
 			if (profilePanel==null)
 				profilePanel = new ProfilePanel(user, true);
-			else{
-				profilePanel=null;
-				profilePanel = new ProfilePanel(user, true);
-			}
 
 			repaintFrame();
 		}
@@ -262,9 +257,11 @@ public class MainGUI extends JFrame{
 				sportManagerPanel.setVisible(true);
 			if (practicePanel!=null)
 				practicePanel.setVisible(false);
-
+			if (performanceChartPanel!=null)
+				performanceChartPanel.setVisible(false);
 
 			practicePanel = null;
+			performanceChartPanel = null;
 			sportManagerPanel = new SportManagerPanel(user);
 
 			repaintFrame();
@@ -341,7 +338,7 @@ public class MainGUI extends JFrame{
 	class showPracticePanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(sportManagerPanel.getSportComboBox2().getSelectedItem() != null) {
-				String sportName = sportManagerPanel.getSportComboBox2().getSelectedItem().toString();			
+				String sportName = sportManagerPanel.getSportComboBox2().getSelectedItem().toString();
 				practicePanel = new PracticePanel(user, sportName);
 				if (profilePanel!=null)
 					profilePanel.setVisible(false);
@@ -409,7 +406,7 @@ public class MainGUI extends JFrame{
 				user = retrievedUser;
 				loginPanel.getMainBox().repaint();
 				loginPanel.repaint();
-				if (practicePanel==null)
+				if (profilePanel==null)
 					profilePanel = new ProfilePanel(user, true);
 				loginPanel.setVisible(false);
 				repaintFrame();
@@ -430,19 +427,15 @@ public class MainGUI extends JFrame{
 	}
 
 	class disconnectionAction implements ActionListener {
-		private User user;
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Session session = DBConnection.getSession();
-			user = login.getCurrentUser();
 			login.disconnect();
-			session.close();
 			if (profilePanel!=null)
 				profilePanel.setVisible(false);
 			profilePanel = null;
 			loginPanel.setVisible(true);
 			repaintFrame();
-			JOptionPane.showMessageDialog(instance, this.user.getPseudo() + " a bien été déconnecté !", "Déconnexion réussie", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(instance, "Vous avez bien été déconnecté !", "Déconnexion réussie", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -471,13 +464,10 @@ public class MainGUI extends JFrame{
 			retrievedProfile.setBirthdate(DataUtility.createDate((Integer)infoManagerPanel.getBirthdayDayComboBox().getSelectedItem(), (Integer)infoManagerPanel.getBirthdayMonthComboBox().getSelectedItem(), (Integer)infoManagerPanel.getBirthdayYearComboBox().getSelectedItem()));
 			JOptionPane.showMessageDialog(instance, "Vos informations ont bien été mises à jour !", "Informations à jour", JOptionPane.INFORMATION_MESSAGE);
 			session.merge(retrievedProfile);
-
+			user.setProfile(retrievedProfile);
 			session.getTransaction().commit();
+			infoManagerPanel.repaint();
 			instance.repaint();
-
-
-
-
 		}
 	}	
 

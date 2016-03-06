@@ -44,6 +44,10 @@ public class WaistSizeChart extends ApplicationFrame {
 
 		Calendar cal = Calendar.getInstance();
 
+		monthName = DataUtility.convertMonth(month);
+		waistSizeSeries.add(0.9, null);
+		waistSizeSeries.add(31.9, null);
+		
 		if (!profile.getPhysicalDataList().isEmpty()){
 			cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
 			currentMonth = cal.get(Calendar.MONTH)+1;
@@ -84,10 +88,8 @@ public class WaistSizeChart extends ApplicationFrame {
 				}
 			}
 
-			monthName = DataUtility.convertMonth(month);
 			if (i>=0 && i<nbPractices){		
-				waistSizeSeries.add(0.9, null);
-				waistSizeSeries.add(31.9, null);
+
 				do {
 					cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
 					currentMonth = cal.get(Calendar.MONTH)+1;

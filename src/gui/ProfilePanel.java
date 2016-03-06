@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -53,12 +54,15 @@ public class ProfilePanel extends JPanel {
 		if (isMine){
 			pseudoLabel = new JLabel(user.getPseudo());
 			homeLabel = new JLabel("Mon profil");
-			registrationDateLabel = new JLabel(user.getProfile().getRegistrationDate().toString());
+			SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+			registrationDateLabel = new JLabel(sdf1.format(user.getProfile().getRegistrationDate()));
 			firstNameLabel = new JLabel(user.getProfile().getFirstName());
 			lastNameLabel = new JLabel(user.getProfile().getLastName());
 			
-			if(user.getProfile().getBirthdate() != null)
-				birthdateLabel = new JLabel(user.getProfile().getBirthdate().toString());
+			if(user.getProfile().getBirthdate() != null){
+				SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+				birthdateLabel = new JLabel(sdf2.format(user.getProfile().getBirthdate()));
+			}
 			else
 				birthdateLabel = new JLabel("Non renseigné");
 			

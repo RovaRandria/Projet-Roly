@@ -116,10 +116,10 @@ public class PracticePanel extends JPanel {
 		frameConstraints.fill = GridBagConstraints.NONE;
 		frameConstraints.gridy = GridBagConstraints.RELATIVE;
 
-		add(historyLabel, frameConstraints);
-		/*practicesListTextArea.setText(user.getProfile().practicesListtoString(sportName));
-		jScrollPracticesList = new JScrollPane(practicesListTextArea);*/
-		add(jScrollPracticesList, frameConstraints);
+		/*add(historyLabel, frameConstraints);
+		practicesListTextArea.setText(user.getProfile().practicesListtoString(sportName));
+		jScrollPracticesList = new JScrollPane(practicesListTextArea);
+		add(jScrollPracticesList, frameConstraints);*/
 		
 		add(new JLabel("Date : "), frameConstraints);
 		add(new JLabel("Lieu : "), frameConstraints);

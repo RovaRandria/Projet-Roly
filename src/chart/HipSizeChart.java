@@ -36,7 +36,7 @@ public class HipSizeChart extends ApplicationFrame {
 
 	private XYDataset createDataset() {
 		
-		XYSeries HipSizeSeries = new XYSeries("Tour de hanche");
+		XYSeries hipSizeSeries = new XYSeries("Tour de hanche");
 		Profile profile = user.getProfile();
 		
 		int nbPractices = profile.getPhysicalDataList().size();
@@ -49,6 +49,10 @@ public class HipSizeChart extends ApplicationFrame {
 			currentMonth = cal.get(Calendar.MONTH)+1;
 			currentYear = cal.get(Calendar.YEAR);	
 
+			monthName = DataUtility.convertMonth(month);
+			hipSizeSeries.add(0.9, null);
+			hipSizeSeries.add(31.1, null);
+			
 			while ((currentMonth!=month || currentYear!=year) && i>=0 && i<nbPractices){	
 				cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
 				currentYear = cal.get(Calendar.YEAR);
@@ -84,17 +88,15 @@ public class HipSizeChart extends ApplicationFrame {
 				}
 			}
 			
-			monthName = DataUtility.convertMonth(month);
 			if (i>=0 && i<nbPractices){		
-				HipSizeSeries.add(0.9, null);
-				HipSizeSeries.add(31.1, null);
+
 
 				do {
 					cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
 					currentMonth = cal.get(Calendar.MONTH)+1;
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
-						HipSizeSeries.add(cal.get(Calendar.DAY_OF_MONTH), profile.getPhysicalDataList().get(i).getHipSize());
+						hipSizeSeries.add(cal.get(Calendar.DAY_OF_MONTH), profile.getPhysicalDataList().get(i).getHipSize());
 						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" poids = "+profile.getPhysicalDataList().get(i).getHipSize());
 					}
 					i--;
@@ -103,7 +105,7 @@ public class HipSizeChart extends ApplicationFrame {
 		}
 		
 		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(HipSizeSeries);
+		dataset.addSeries(hipSizeSeries);
 
 		return dataset;
 

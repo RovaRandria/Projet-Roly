@@ -72,7 +72,7 @@ public class PerformanceChartPanel extends JPanel {
 	private JoggingPerformancesChart joggingPerfChart;
 	private CyclingPerformancesChart cyclingPerfChart;
 
-	private JButton backHomeButton = new JButton("Retour au profil");
+	private JButton backHomeButton = new JButton("Retour aux sports");
 
 	public PerformanceChartPanel(User user) {
 		super();

@@ -59,7 +59,11 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 		int currentMonth, currentYear, i=nbPractices-1;
 
 		Calendar cal = Calendar.getInstance();
-
+		
+		monthName = DataUtility.convertMonth(month);
+		joggingSeries.add(0.9, null);
+		joggingSeries.add(31.1, null);
+		
 		if (!joggingPracticesList.isEmpty()){
 			cal.setTime(joggingPracticesList.get(i).getDate());
 			currentMonth = cal.get(Calendar.MONTH)+1;
@@ -99,12 +103,7 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 				}
 			}
 			
-
-			monthName = DataUtility.convertMonth(month);
 			if (i>=0 && i<nbPractices){		
-				joggingSeries.add(0.9, null);
-				joggingSeries.add(31.1, null);
-
 				do {
 					cal.setTime(joggingPracticesList.get(i).getDate());
 					currentMonth = cal.get(Calendar.MONTH)+1;

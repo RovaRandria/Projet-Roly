@@ -61,6 +61,10 @@ public class CyclingPerformancesChart extends ApplicationFrame {
 
 		Calendar cal = Calendar.getInstance();
 
+		monthName = DataUtility.convertMonth(month);
+		cyclingSeries.add(0.9, null);
+		cyclingSeries.add(31.1, null);
+		
 		if (!cyclingPracticesList.isEmpty()){
 			cal.setTime(cyclingPracticesList.get(i).getDate());
 			currentMonth = cal.get(Calendar.MONTH)+1;
@@ -100,12 +104,7 @@ public class CyclingPerformancesChart extends ApplicationFrame {
 				}
 			}
 			
-
-			monthName = DataUtility.convertMonth(month);
-			if (i>=0 && i<nbPractices){		
-				cyclingSeries.add(0.9, null);
-				cyclingSeries.add(31.1, null);
-
+			if (i>=0 && i<nbPractices){	
 				do {
 					cal.setTime(cyclingPracticesList.get(i).getDate());
 					currentMonth = cal.get(Calendar.MONTH)+1;

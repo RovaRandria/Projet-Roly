@@ -44,6 +44,9 @@ public class WeightChart extends ApplicationFrame {
 
 		Calendar cal = Calendar.getInstance();
 
+		monthName = DataUtility.convertMonth(month);
+		weightSeries.add(0.9, null);
+		weightSeries.add(31.1, null);
 		if (!profile.getPhysicalDataList().isEmpty()){
 			cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
 			currentMonth = cal.get(Calendar.MONTH)+1;
@@ -84,9 +87,6 @@ public class WeightChart extends ApplicationFrame {
 				}
 			}
 			
-			monthName = DataUtility.convertMonth(month);
-			weightSeries.add(0.9, null);
-			weightSeries.add(31.1, null);
 			if (i>=0 && i<nbPractices){		
 				do {
 					cal.setTime(profile.getPhysicalDataList().get(i).getMeasureDate());
