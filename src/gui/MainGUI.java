@@ -631,15 +631,15 @@ public class MainGUI extends JFrame{
 	class previousMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			physicalDataChartPanel.getNextMonthWeightButton().setVisible(true);
-			if (physicalDataChartPanel.getCurrentMonth()==1){
-				physicalDataChartPanel.setCurrentMonth(12);
-				physicalDataChartPanel.setCurrentYear(physicalDataChartPanel.getCurrentYear()-1);
+			if (physicalDataChartPanel.getCurrentMonthWeight()==1){
+				physicalDataChartPanel.setCurrentMonthWeight(12);
+				physicalDataChartPanel.setCurrentYearWeight(physicalDataChartPanel.getCurrentYearWeight()-1);
 			}else
-				physicalDataChartPanel.setCurrentMonth(physicalDataChartPanel.getCurrentMonth()-1);
+				physicalDataChartPanel.setCurrentMonthWeight(physicalDataChartPanel.getCurrentMonthWeight()-1);
 
-			System.out.println("Mois précédent : "+physicalDataChartPanel.getCurrentMonth()+"/"+physicalDataChartPanel.getCurrentYear());
+			System.out.println("Mois précédent : "+physicalDataChartPanel.getCurrentMonthWeight()+"/"+physicalDataChartPanel.getCurrentYearWeight());
 
-			physicalDataChartPanel.setWeightChart(new WeightChart("Courbe de poids", physicalDataChartPanel.getCurrentMonth(), physicalDataChartPanel.getCurrentYear(), user));	
+			physicalDataChartPanel.setWeightChart(new WeightChart("Courbe de poids", physicalDataChartPanel.getCurrentMonthWeight(), physicalDataChartPanel.getCurrentYearWeight(), user));	
 			physicalDataChartPanel.getCurrentWeightChartPanel().removeAll();
 			physicalDataChartPanel.getCurrentWeightChartPanel().add(physicalDataChartPanel.getWeightChart().showWeightPanel());
 			physicalDataChartPanel.getWeightMainBox().repaint();
@@ -650,13 +650,13 @@ public class MainGUI extends JFrame{
 	class nextMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			if (physicalDataChartPanel.getCurrentMonth()==12){
-				physicalDataChartPanel.setCurrentMonth(1);
-				physicalDataChartPanel.setCurrentYear(physicalDataChartPanel.getCurrentYear()+1);
+			if (physicalDataChartPanel.getCurrentMonthWeight()==12){
+				physicalDataChartPanel.setCurrentMonthWeight(1);
+				physicalDataChartPanel.setCurrentYearWeight(physicalDataChartPanel.getCurrentYearWeight()+1);
 			}else
-				physicalDataChartPanel.setCurrentMonth(physicalDataChartPanel.getCurrentMonth()+1);
-			System.out.println("Mois suivant : "+physicalDataChartPanel.getCurrentMonth()+"/"+physicalDataChartPanel.getCurrentYear());
-			physicalDataChartPanel.setWeightChart(new WeightChart("Courbe de poids", physicalDataChartPanel.getCurrentMonth(), physicalDataChartPanel.getCurrentYear(), user));	
+				physicalDataChartPanel.setCurrentMonthWeight(physicalDataChartPanel.getCurrentMonthWeight()+1);
+			System.out.println("Mois suivant : "+physicalDataChartPanel.getCurrentMonthWeight()+"/"+physicalDataChartPanel.getCurrentYearWeight());
+			physicalDataChartPanel.setWeightChart(new WeightChart("Courbe de poids", physicalDataChartPanel.getCurrentMonthWeight(), physicalDataChartPanel.getCurrentYearWeight(), user));	
 
 			physicalDataChartPanel.getCurrentWeightChartPanel().removeAll();
 			physicalDataChartPanel.getCurrentWeightChartPanel().add(physicalDataChartPanel.getWeightChart().showWeightPanel());
@@ -673,15 +673,15 @@ public class MainGUI extends JFrame{
 	class previousMonthWaistSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			physicalDataChartPanel.getNextMonthWaistSizeButton().setVisible(true);
-			if (physicalDataChartPanel.getCurrentMonth()==1){
-				physicalDataChartPanel.setCurrentMonth(12);
-				physicalDataChartPanel.setCurrentYear(physicalDataChartPanel.getCurrentYear()-1);
+			if (physicalDataChartPanel.getCurrentMonthWaistSize()==1){
+				physicalDataChartPanel.setCurrentMonthWaistSize(12);
+				physicalDataChartPanel.setCurrentYearWaistSize(physicalDataChartPanel.getCurrentYearWaistSize()-1);
 			}else
-				physicalDataChartPanel.setCurrentMonth(physicalDataChartPanel.getCurrentMonth()-1);
+				physicalDataChartPanel.setCurrentMonthWaistSize(physicalDataChartPanel.getCurrentMonthWaistSize()-1);
 
-			System.out.println("Mois précédent : "+physicalDataChartPanel.getCurrentMonth()+"/"+physicalDataChartPanel.getCurrentYear());
+			System.out.println("Mois précédent : "+physicalDataChartPanel.getCurrentMonthWaistSize()+"/"+physicalDataChartPanel.getCurrentYearWaistSize());
 
-			physicalDataChartPanel.setWaistSizeChart(new WaistSizeChart("Courbe de tour de taille", physicalDataChartPanel.getCurrentMonth(), physicalDataChartPanel.getCurrentYear(), user));	
+			physicalDataChartPanel.setWaistSizeChart(new WaistSizeChart("Courbe de tour de taille", physicalDataChartPanel.getCurrentMonthWaistSize(), physicalDataChartPanel.getCurrentYearWaistSize(), user));	
 			physicalDataChartPanel.getCurrentWaistSizeChartPanel().removeAll();
 			physicalDataChartPanel.getCurrentWaistSizeChartPanel().add(physicalDataChartPanel.getWaistSizeChart().showWaistSizePanel());
 			physicalDataChartPanel.getWaistSizeMainBox().repaint();
@@ -691,13 +691,13 @@ public class MainGUI extends JFrame{
 
 	class nextMonthWaistSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (physicalDataChartPanel.getCurrentMonth()==12){
-				physicalDataChartPanel.setCurrentMonth(1);
-				physicalDataChartPanel.setCurrentYear(physicalDataChartPanel.getCurrentYear()+1);
+			if (physicalDataChartPanel.getCurrentMonthWaistSize()==12){
+				physicalDataChartPanel.setCurrentMonthWaistSize(1);
+				physicalDataChartPanel.setCurrentYearWaistSize(physicalDataChartPanel.getCurrentYearWaistSize()+1);
 			}else
-				physicalDataChartPanel.setCurrentMonth(physicalDataChartPanel.getCurrentMonth()+1);
-			System.out.println("Mois suivant : "+physicalDataChartPanel.getCurrentMonth()+"/"+physicalDataChartPanel.getCurrentYear());
-			physicalDataChartPanel.setWaistSizeChart(new WaistSizeChart("Courbe de tour de taille", physicalDataChartPanel.getCurrentMonth(), physicalDataChartPanel.getCurrentYear(), user));	
+				physicalDataChartPanel.setCurrentMonthWaistSize(physicalDataChartPanel.getCurrentMonthWaistSize()+1);
+			System.out.println("Mois suivant : "+physicalDataChartPanel.getCurrentMonthWaistSize()+"/"+physicalDataChartPanel.getCurrentYearWaistSize());
+			physicalDataChartPanel.setWaistSizeChart(new WaistSizeChart("Courbe de tour de taille", physicalDataChartPanel.getCurrentMonthWaistSize(), physicalDataChartPanel.getCurrentYearWaistSize(), user));	
 
 			physicalDataChartPanel.getCurrentWaistSizeChartPanel().removeAll();
 			physicalDataChartPanel.getCurrentWaistSizeChartPanel().add(physicalDataChartPanel.getWaistSizeChart().showWaistSizePanel());
@@ -715,15 +715,15 @@ public class MainGUI extends JFrame{
 	class previousMonthHipSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			physicalDataChartPanel.getNextMonthHipSizeButton().setVisible(true);
-			if (physicalDataChartPanel.getCurrentMonth()==1){
-				physicalDataChartPanel.setCurrentMonth(12);
-				physicalDataChartPanel.setCurrentYear(physicalDataChartPanel.getCurrentYear()-1);
+			if (physicalDataChartPanel.getCurrentMonthHipSize()==1){
+				physicalDataChartPanel.setCurrentMonthHipSize(12);
+				physicalDataChartPanel.setCurrentYearHipSize(physicalDataChartPanel.getCurrentYearHipSize()-1);
 			}else
-				physicalDataChartPanel.setCurrentMonth(physicalDataChartPanel.getCurrentMonth()-1);
+				physicalDataChartPanel.setCurrentMonthHipSize(physicalDataChartPanel.getCurrentMonthHipSize()-1);
 
-			System.out.println("Mois précédent : "+physicalDataChartPanel.getCurrentMonth()+"/"+physicalDataChartPanel.getCurrentYear());
+			System.out.println("Mois précédent : "+physicalDataChartPanel.getCurrentMonthHipSize()+"/"+physicalDataChartPanel.getCurrentYearHipSize());
 
-			physicalDataChartPanel.setHipSizeChart(new HipSizeChart("Courbe de tour de taille", physicalDataChartPanel.getCurrentMonth(), physicalDataChartPanel.getCurrentYear(), user));	
+			physicalDataChartPanel.setHipSizeChart(new HipSizeChart("Courbe de tour de taille", physicalDataChartPanel.getCurrentMonthHipSize(), physicalDataChartPanel.getCurrentYearHipSize(), user));	
 			physicalDataChartPanel.getCurrentHipSizeChartPanel().removeAll();
 			physicalDataChartPanel.getCurrentHipSizeChartPanel().add(physicalDataChartPanel.getHipSizeChart().showHipSizePanel());
 			physicalDataChartPanel.getHipSizeMainBox().repaint();
@@ -733,13 +733,13 @@ public class MainGUI extends JFrame{
 
 	class nextMonthHipSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (physicalDataChartPanel.getCurrentMonth()==12){
-				physicalDataChartPanel.setCurrentMonth(1);
-				physicalDataChartPanel.setCurrentYear(physicalDataChartPanel.getCurrentYear()+1);
+			if (physicalDataChartPanel.getCurrentMonthHipSize()==12){
+				physicalDataChartPanel.setCurrentMonthHipSize(1);
+				physicalDataChartPanel.setCurrentYearHipSize(physicalDataChartPanel.getCurrentYearHipSize()+1);
 			}else
-				physicalDataChartPanel.setCurrentMonth(physicalDataChartPanel.getCurrentMonth()+1);
-			System.out.println("Mois suivant : "+physicalDataChartPanel.getCurrentMonth()+"/"+physicalDataChartPanel.getCurrentYear());
-			physicalDataChartPanel.setHipSizeChart(new HipSizeChart("Courbe du tour de hanche", physicalDataChartPanel.getCurrentMonth(), physicalDataChartPanel.getCurrentYear(), user));	
+				physicalDataChartPanel.setCurrentMonthHipSize(physicalDataChartPanel.getCurrentMonthHipSize()+1);
+			System.out.println("Mois suivant : "+physicalDataChartPanel.getCurrentMonthHipSize()+"/"+physicalDataChartPanel.getCurrentYearHipSize());
+			physicalDataChartPanel.setHipSizeChart(new HipSizeChart("Courbe du tour de hanche", physicalDataChartPanel.getCurrentMonthHipSize(), physicalDataChartPanel.getCurrentYearHipSize(), user));	
 
 			physicalDataChartPanel.getCurrentHipSizeChartPanel().removeAll();
 			physicalDataChartPanel.getCurrentHipSizeChartPanel().add(physicalDataChartPanel.getHipSizeChart().showHipSizePanel());
@@ -756,15 +756,15 @@ public class MainGUI extends JFrame{
 	class previousMonthJoggingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel.getNextMonthJoggingPerfButton().setVisible(true);
-			if (performanceChartPanel.getCurrentMonth()==1){
-				performanceChartPanel.setCurrentMonth(12);
-				performanceChartPanel.setCurrentYear(performanceChartPanel.getCurrentYear()-1);
+			if (performanceChartPanel.getCurrentMonthJogging()==1){
+				performanceChartPanel.setCurrentMonthJogging(12);
+				performanceChartPanel.setCurrentYearJogging(performanceChartPanel.getCurrentYearJogging()-1);
 			}else
-				performanceChartPanel.setCurrentMonth(performanceChartPanel.getCurrentMonth()-1);
+				performanceChartPanel.setCurrentMonthJogging(performanceChartPanel.getCurrentMonthJogging()-1);
 
-			System.out.println("Mois précédent : "+performanceChartPanel.getCurrentMonth()+"/"+performanceChartPanel.getCurrentYear());
+			System.out.println("Mois précédent : "+performanceChartPanel.getCurrentMonthJogging()+"/"+performanceChartPanel.getCurrentYearJogging());
 
-			performanceChartPanel.setJoggingPerfChart(new JoggingPerformancesChart("Performances jogging", performanceChartPanel.getCurrentMonth(), performanceChartPanel.getCurrentYear(), user));	
+			performanceChartPanel.setJoggingPerfChart(new JoggingPerformancesChart("Performances jogging", performanceChartPanel.getCurrentMonthJogging(), performanceChartPanel.getCurrentYearJogging(), user));	
 			performanceChartPanel.getCurrentJoggingPerfChartPanel().removeAll();
 			performanceChartPanel.getCurrentJoggingPerfChartPanel().add(performanceChartPanel.getJoggingPerfChart().showJoggingPerfPanel());
 			performanceChartPanel.getJoggingPerfMainBox().repaint();
@@ -774,13 +774,13 @@ public class MainGUI extends JFrame{
 
 	class nextMonthJoggingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (performanceChartPanel.getCurrentMonth()==12){
-				performanceChartPanel.setCurrentMonth(1);
-				performanceChartPanel.setCurrentYear(performanceChartPanel.getCurrentYear()+1);
+			if (performanceChartPanel.getCurrentMonthJogging()==12){
+				performanceChartPanel.setCurrentMonthJogging(1);
+				performanceChartPanel.setCurrentYearJogging(performanceChartPanel.getCurrentYearJogging()+1);
 			}else
-				performanceChartPanel.setCurrentMonth(performanceChartPanel.getCurrentMonth()+1);
-			System.out.println("Mois suivant : "+performanceChartPanel.getCurrentMonth()+"/"+performanceChartPanel.getCurrentYear());
-			performanceChartPanel.setJoggingPerfChart(new JoggingPerformancesChart("Performances jogging", performanceChartPanel.getCurrentMonth(), performanceChartPanel.getCurrentYear(), user));	
+				performanceChartPanel.setCurrentMonthJogging(performanceChartPanel.getCurrentMonthJogging()+1);
+			System.out.println("Mois suivant : "+performanceChartPanel.getCurrentMonthJogging()+"/"+performanceChartPanel.getCurrentYearJogging());
+			performanceChartPanel.setJoggingPerfChart(new JoggingPerformancesChart("Performances jogging", performanceChartPanel.getCurrentMonthJogging(), performanceChartPanel.getCurrentYearJogging(), user));	
 
 			performanceChartPanel.getCurrentJoggingPerfChartPanel().removeAll();
 			performanceChartPanel.getCurrentJoggingPerfChartPanel().add(performanceChartPanel.getJoggingPerfChart().showJoggingPerfPanel());
@@ -797,15 +797,15 @@ public class MainGUI extends JFrame{
 	class previousMonthCyclingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel.getNextMonthCyclingPerfButton().setVisible(true);
-			if (performanceChartPanel.getCurrentMonth()==1){
-				performanceChartPanel.setCurrentMonth(12);
-				performanceChartPanel.setCurrentYear(performanceChartPanel.getCurrentYear()-1);
+			if (performanceChartPanel.getCurrentMonthCycling()==1){
+				performanceChartPanel.setCurrentMonthCycling(12);
+				performanceChartPanel.setCurrentYearCycling(performanceChartPanel.getCurrentYearCycling()-1);
 			}else
-				performanceChartPanel.setCurrentMonth(performanceChartPanel.getCurrentMonth()-1);
+				performanceChartPanel.setCurrentMonthCycling(performanceChartPanel.getCurrentMonthCycling()-1);
 
-			System.out.println("Mois précédent : "+performanceChartPanel.getCurrentMonth()+"/"+performanceChartPanel.getCurrentYear());
+			System.out.println("Mois précédent : "+performanceChartPanel.getCurrentMonthCycling()+"/"+performanceChartPanel.getCurrentYearCycling());
 
-			performanceChartPanel.setCyclingPerfChart(new CyclingPerformancesChart("Performances vélo", performanceChartPanel.getCurrentMonth(), performanceChartPanel.getCurrentYear(), user));	
+			performanceChartPanel.setCyclingPerfChart(new CyclingPerformancesChart("Performances vélo", performanceChartPanel.getCurrentMonthCycling(), performanceChartPanel.getCurrentYearCycling(), user));	
 			performanceChartPanel.getCurrentCyclingPerfChartPanel().removeAll();
 			performanceChartPanel.getCurrentCyclingPerfChartPanel().add(performanceChartPanel.getCyclingPerfChart().showCyclingPerfPanel());
 			performanceChartPanel.getCyclingPerfMainBox().repaint();
@@ -815,13 +815,13 @@ public class MainGUI extends JFrame{
 	
 	class nextMonthCyclingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (performanceChartPanel.getCurrentMonth()==12){
-				performanceChartPanel.setCurrentMonth(1);
-				performanceChartPanel.setCurrentYear(performanceChartPanel.getCurrentYear()+1);
+			if (performanceChartPanel.getCurrentMonthCycling()==12){
+				performanceChartPanel.setCurrentMonthCycling(1);
+				performanceChartPanel.setCurrentYearCycling(performanceChartPanel.getCurrentYearCycling()+1);
 			}else
-				performanceChartPanel.setCurrentMonth(performanceChartPanel.getCurrentMonth()+1);
-			System.out.println("Mois suivant : "+performanceChartPanel.getCurrentMonth()+"/"+performanceChartPanel.getCurrentYear());
-			performanceChartPanel.setCyclingPerfChart(new CyclingPerformancesChart("Performances vélo", performanceChartPanel.getCurrentMonth(), performanceChartPanel.getCurrentYear(), user));	
+				performanceChartPanel.setCurrentMonthCycling(performanceChartPanel.getCurrentMonthCycling()+1);
+			System.out.println("Mois suivant : "+performanceChartPanel.getCurrentMonthCycling()+"/"+performanceChartPanel.getCurrentYearCycling());
+			performanceChartPanel.setCyclingPerfChart(new CyclingPerformancesChart("Performances vélo", performanceChartPanel.getCurrentMonthCycling(), performanceChartPanel.getCurrentYearCycling(), user));	
 
 			performanceChartPanel.getCurrentCyclingPerfChartPanel().removeAll();
 			performanceChartPanel.getCurrentCyclingPerfChartPanel().add(performanceChartPanel.getCyclingPerfChart().showCyclingPerfPanel());

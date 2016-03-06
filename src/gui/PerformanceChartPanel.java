@@ -22,8 +22,8 @@ public class PerformanceChartPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-	private int currentMonth;
-	private int currentYear;
+	private int currentMonthCycling, currentMonthJogging;
+	private int currentYearCycling, currentYearJogging;
 	
 	private JButton nextMonthJoggingPerfButton = new JButton("Suivant");
 	private JButton nextMonthClimbingPerfButton = new JButton("Suivant");
@@ -78,9 +78,11 @@ public class PerformanceChartPanel extends JPanel {
 		super();
 		this.user = user;
 		Calendar cal = Calendar.getInstance();
-		currentMonth = cal.get(Calendar.MONTH)+1;
-		currentYear = cal.get(Calendar.YEAR);
-
+		currentMonthCycling = cal.get(Calendar.MONTH)+1;
+		currentYearCycling = cal.get(Calendar.YEAR);
+		currentMonthJogging = cal.get(Calendar.MONTH)+1;
+		currentYearJogging = cal.get(Calendar.YEAR);
+		
 		initStyle();		
 		init();
 		initActions();
@@ -90,7 +92,7 @@ public class PerformanceChartPanel extends JPanel {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
 		
-		joggingPerfChart = new JoggingPerformancesChart("Performances jogging", currentMonth, currentYear, user);
+		joggingPerfChart = new JoggingPerformancesChart("Performances jogging", currentMonthJogging, currentYearJogging, user);
 		currentJoggingPerfChartPanel = joggingPerfChart.showJoggingPerfPanel();
 
 		nextMonthJoggingPerfPanel.add(nextMonthJoggingPerfButton);
@@ -101,7 +103,7 @@ public class PerformanceChartPanel extends JPanel {
 		joggingPerfMainBox.add(currentJoggingPerfChartPanel);
 		joggingPerfMainBox.add(joggingPerfButtonBox);
 		
-		cyclingPerfChart = new CyclingPerformancesChart("Performances vélo", currentMonth, currentYear, user);
+		cyclingPerfChart = new CyclingPerformancesChart("Performances vélo", currentMonthCycling, currentYearCycling, user);
 		currentCyclingPerfChartPanel = cyclingPerfChart.showCyclingPerfPanel();
 
 		nextMonthCyclingPerfPanel.add(nextMonthCyclingPerfButton);
@@ -147,20 +149,37 @@ public class PerformanceChartPanel extends JPanel {
 
 	}
 
-	public int getCurrentMonth() {
-		return currentMonth;
+
+	public int getCurrentMonthCycling() {
+		return currentMonthCycling;
 	}
 
-	public void setCurrentMonth(int currentMonth) {
-		this.currentMonth = currentMonth;
+	public void setCurrentMonthCycling(int currentMonthCycling) {
+		this.currentMonthCycling = currentMonthCycling;
 	}
 
-	public int getCurrentYear() {
-		return currentYear;
+	public int getCurrentMonthJogging() {
+		return currentMonthJogging;
 	}
 
-	public void setCurrentYear(int currentYear) {
-		this.currentYear = currentYear;
+	public void setCurrentMonthJogging(int currentMonthJogging) {
+		this.currentMonthJogging = currentMonthJogging;
+	}
+
+	public int getCurrentYearCycling() {
+		return currentYearCycling;
+	}
+
+	public void setCurrentYearCycling(int currentYearCycling) {
+		this.currentYearCycling = currentYearCycling;
+	}
+
+	public int getCurrentYearJogging() {
+		return currentYearJogging;
+	}
+
+	public void setCurrentYearJogging(int currentYearJogging) {
+		this.currentYearJogging = currentYearJogging;
 	}
 
 	public JButton getNextMonthJoggingPerfButton() {

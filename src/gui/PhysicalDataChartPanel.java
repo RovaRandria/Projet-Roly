@@ -20,8 +20,8 @@ public class PhysicalDataChartPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-	private int currentMonth;
-	private int currentYear;
+	private int currentMonthWeight, currentMonthWaistSize, currentMonthHipSize;
+	private int currentYearWeight, currentYearWaistSize, currentYearHipSize;
 	private JButton nextMonthWeightButton = new JButton("Suivant");
 	private JButton previousMonthWeightButton = new JButton("Précédent");
 	private JButton nextMonthWaistSizeButton = new JButton("Suivant");
@@ -56,8 +56,12 @@ public class PhysicalDataChartPanel extends JPanel {
 		super();
 		this.user = user;
 		Calendar cal = Calendar.getInstance();
-		currentMonth = cal.get(Calendar.MONTH)+1;
-		currentYear = cal.get(Calendar.YEAR);
+		currentMonthWeight = cal.get(Calendar.MONTH)+1;
+		currentYearWeight = cal.get(Calendar.YEAR);
+		currentMonthWaistSize = cal.get(Calendar.MONTH)+1;
+		currentYearWaistSize = cal.get(Calendar.YEAR);
+		currentMonthHipSize = cal.get(Calendar.MONTH)+1;
+		currentYearHipSize = cal.get(Calendar.YEAR);
 		
 		initStyle();
 		init();
@@ -75,7 +79,7 @@ public class PhysicalDataChartPanel extends JPanel {
 		/*
 		 * Weight chart
 		 */
-		weightChart = new WeightChart("Courbe de poids", currentMonth, currentYear, user);	
+		weightChart = new WeightChart("Courbe de poids", currentMonthWeight, currentYearWeight, user);	
 		currentWeightChartPanel = weightChart.showWeightPanel();
 		
 		nextMonthWeightPanel.add(nextMonthWeightButton);
@@ -90,7 +94,7 @@ public class PhysicalDataChartPanel extends JPanel {
 		/*
 		 * Waist size chart
 		 */
-		waistSizeChart = new WaistSizeChart("Courbe du tour de taille", currentMonth, currentYear, user);	
+		waistSizeChart = new WaistSizeChart("Courbe du tour de taille", currentMonthWaistSize, currentYearWaistSize, user);	
 		currentWaistSizeChartPanel = waistSizeChart.showWaistSizePanel();
 
 		nextMonthWaistSizePanel.add(nextMonthWaistSizeButton);
@@ -105,7 +109,7 @@ public class PhysicalDataChartPanel extends JPanel {
 		/*
 		 * Weight chart
 		 */
-		hipSizeChart = new HipSizeChart("Courbe du tour de hanche", currentMonth, currentYear, user);	
+		hipSizeChart = new HipSizeChart("Courbe du tour de hanche", currentMonthHipSize, currentYearHipSize, user);	
 		currentHipSizeChartPanel = hipSizeChart.showHipSizePanel();
 
 		nextMonthHipSizePanel.add(nextMonthHipSizeButton);
@@ -158,18 +162,55 @@ public class PhysicalDataChartPanel extends JPanel {
 	public void initActions(){
 
 	}
-	public int getCurrentMonth() {
-		return currentMonth;
+	
+	public int getCurrentMonthWeight() {
+		return currentMonthWeight;
 	}
-	public void setCurrentMonth(int currentMonth) {
-		this.currentMonth = currentMonth;
+
+	public void setCurrentMonthWeight(int currentMonthWeight) {
+		this.currentMonthWeight = currentMonthWeight;
 	}
-	public int getCurrentYear() {
-		return currentYear;
+
+	public int getCurrentMonthWaistSize() {
+		return currentMonthWaistSize;
 	}
-	public void setCurrentYear(int currentYear) {
-		this.currentYear = currentYear;
+
+	public void setCurrentMonthWaistSize(int currentMonthWaistSize) {
+		this.currentMonthWaistSize = currentMonthWaistSize;
 	}
+
+	public int getCurrentMonthHipSize() {
+		return currentMonthHipSize;
+	}
+
+	public void setCurrentMonthHipSize(int currentMonthHipSize) {
+		this.currentMonthHipSize = currentMonthHipSize;
+	}
+
+	public int getCurrentYearWeight() {
+		return currentYearWeight;
+	}
+
+	public void setCurrentYearWeight(int currentYearWeight) {
+		this.currentYearWeight = currentYearWeight;
+	}
+
+	public int getCurrentYearWaistSize() {
+		return currentYearWaistSize;
+	}
+
+	public void setCurrentYearWaistSize(int currentYearWaistSize) {
+		this.currentYearWaistSize = currentYearWaistSize;
+	}
+
+	public int getCurrentYearHipSize() {
+		return currentYearHipSize;
+	}
+
+	public void setCurrentYearHipSize(int currentYearHipSize) {
+		this.currentYearHipSize = currentYearHipSize;
+	}
+
 	public JButton getNextMonthWeightButton() {
 		return nextMonthWeightButton;
 	}
