@@ -209,10 +209,16 @@ public class MainGUI extends JFrame{
 				performanceChartPanel.setVisible(false);
 			if (practicePanel!=null)
 				practicePanel.setVisible(false);
-
+			if (physicalDataChartPanel!=null)
+				physicalDataChartPanel.setVisible(false);
+			if (updatePhysicalDataPanel!=null)
+				updatePhysicalDataPanel.setVisible(false);
+			
 			registrationPanel = null;
 			infoManagerPanel = null;
 			physicalDataBox = null;
+			physicalDataChartPanel = null;
+			updatePhysicalDataPanel = null;
 			sportManagerPanel = null;
 			performanceChartPanel = null;
 			practicePanel = null;
@@ -618,7 +624,7 @@ public class MainGUI extends JFrame{
 			session.getTransaction().commit();
 			user.setProfile(retrievedProfile);
 			physicalDataChartPanel.getUser().setProfile(retrievedProfile);
-			physicalDataChartPanel.repaintPanel();
+			//physicalDataChartPanel.repaintPanel();
 		}
 	}	
 
@@ -778,7 +784,6 @@ public class MainGUI extends JFrame{
 
 			performanceChartPanel.getCurrentJoggingPerfChartPanel().removeAll();
 			performanceChartPanel.getCurrentJoggingPerfChartPanel().add(performanceChartPanel.getJoggingPerfChart().showJoggingPerfPanel());
-			System.out.println("nb error = "+performanceChartPanel.getJoggingPerfChart().getNbError());
 			if (performanceChartPanel.getJoggingPerfChart().getNbError()==2)
 				performanceChartPanel.getNextMonthJoggingPerfButton().setVisible(false);
 			else

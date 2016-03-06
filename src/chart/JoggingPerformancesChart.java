@@ -68,7 +68,7 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 			cal.setTime(joggingPracticesList.get(i).getDate());
 			currentMonth = cal.get(Calendar.MONTH)+1;
 			currentYear = cal.get(Calendar.YEAR);	
-			while ((currentMonth!=month || currentYear!=year) && i>0 && i<nbPractices){	
+			while ((currentMonth!=month || currentYear!=year) && i>=0 && i<nbPractices){	
 				cal.setTime(joggingPracticesList.get(i).getDate());
 				currentYear = cal.get(Calendar.YEAR);
 				currentMonth = cal.get(Calendar.MONTH)+1;
