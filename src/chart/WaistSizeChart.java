@@ -96,7 +96,7 @@ public class WaistSizeChart extends ApplicationFrame {
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
 						waistSizeSeries.add(cal.get(Calendar.DAY_OF_MONTH), profile.getPhysicalDataList().get(i).getWaistSize());
-						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" tour de taille = "+profile.getPhysicalDataList().get(i).getWaistSize());
+						System.out.println("Date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" -- Tour de taille = "+profile.getPhysicalDataList().get(i).getWaistSize());
 					}
 					i--;
 				}while (currentMonth==month && currentYear==year && i>=0);
@@ -114,7 +114,7 @@ public class WaistSizeChart extends ApplicationFrame {
 	}
 
 	private JFreeChart createChart(XYDataset dataset) {
-		return ChartFactory.createXYLineChart("Courbe de tour de taille", monthName, "cm", dataset, PlotOrientation.VERTICAL, true, true, false);
+		return ChartFactory.createXYLineChart("Courbe de tour de taille", monthName+" "+year, "cm", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}	
 
 	

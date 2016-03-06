@@ -94,7 +94,7 @@ public class WeightChart extends ApplicationFrame {
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
 						weightSeries.add(cal.get(Calendar.DAY_OF_MONTH), profile.getPhysicalDataList().get(i).getWeight());
-						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" poids = "+profile.getPhysicalDataList().get(i).getWeight());
+						System.out.println("Date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" -- Poids = "+profile.getPhysicalDataList().get(i).getWeight());
 					}
 					i--;
 				}while (currentMonth==month && currentYear==year && i>=0);
@@ -109,7 +109,7 @@ public class WeightChart extends ApplicationFrame {
 	}
 
 	private JFreeChart createChart(XYDataset dataset) {
-		return ChartFactory.createXYLineChart("Courbe de poids", monthName, "kilogrammes", dataset, PlotOrientation.VERTICAL, true, true, false);
+		return ChartFactory.createXYLineChart("Courbe de poids", monthName+" "+year, "kilogrammes", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}	
 
 	

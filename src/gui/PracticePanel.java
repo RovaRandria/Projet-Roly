@@ -10,8 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.hibernate.Session;
@@ -57,11 +55,11 @@ public class PracticePanel extends JPanel {
 
 	private JLabel titleLabel = new JLabel("Mes séances de sports");
 	
-	private JLabel historyLabel = new JLabel("Historique des séances ");
+	//private JLabel historyLabel = new JLabel("Historique des séances ");
 	
-	private JTextArea practicesListTextArea = new JTextArea();
+	//private JTextArea practicesListTextArea = new JTextArea();
 	
-	private JScrollPane jScrollPracticesList = new JScrollPane();
+	//private JScrollPane jScrollPracticesList = new JScrollPane();
 	
 	private JTextField durationTextField;
 	private JTextField performanceTextField;

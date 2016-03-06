@@ -60,7 +60,6 @@ public class MainGUI extends JFrame{
 	private PerformanceChartPanel performanceChartPanel;
 	private PracticePanel practicePanel;
 	private boolean loginUpdate=false;
-
 	private JLabel background = new JLabel(new ImageIcon("./images/background.jpeg"));
 
 	public MainGUI(String title) {
@@ -217,9 +216,13 @@ public class MainGUI extends JFrame{
 			sportManagerPanel = null;
 			performanceChartPanel = null;
 			practicePanel = null;
-			if (profilePanel==null)
+			if (profilePanel==null){
+				System.out.println("Listes des sports pratiqués = "+user.getProfile().displaySport());
 				profilePanel = new ProfilePanel(user, true);
-
+			}
+			else
+				profilePanel.repaint();
+			
 			repaintFrame();
 		}
 	}
@@ -296,8 +299,12 @@ public class MainGUI extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			if (physicalDataChartPanel==null)
 				physicalDataChartPanel = new PhysicalDataChartPanel(user);
+			else
+				physicalDataChartPanel.repaint();
 			if (updatePhysicalDataPanel==null)
 				updatePhysicalDataPanel = new UpdatePhysicalDataPanel(user);
+			else
+				updatePhysicalDataPanel.repaint();
 			if (profilePanel!=null)
 				profilePanel.setVisible(false);
 			profilePanel = null;			
@@ -483,12 +490,12 @@ public class MainGUI extends JFrame{
 				profile.getSportsList().add(sport);			  
 				JOptionPane.showMessageDialog(instance, "Le sport " + sport.getName() + " a bien été ajouté !", "Sport ajouté", JOptionPane.INFORMATION_MESSAGE);
 				session.merge(profile);
+				user.setProfile(profile);
 			}
 			else
 				JOptionPane.showMessageDialog(instance, "Erreur : vous avez déjà indiqué " + sport.getName() + " !", "Erreur", JOptionPane.ERROR_MESSAGE);
 
 			session.getTransaction().commit();
-		
 			sportManagerPanel.repaintPanel();
 		}	
 	}
@@ -609,15 +616,14 @@ public class MainGUI extends JFrame{
 			session.merge(retrievedProfile);
 
 			session.getTransaction().commit();
-			updatePhysicalDataPanel.repaint();
-			physicalDataChartPanel.repaint();
-			repaintFrame();
+			user.setProfile(retrievedProfile);
+			physicalDataChartPanel.getUser().setProfile(retrievedProfile);
+			physicalDataChartPanel.repaintPanel();
 		}
 	}	
 
 	class previousMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("previous -----------------");
 			physicalDataChartPanel.getNextMonthWeightButton().setVisible(true);
 			if (physicalDataChartPanel.getCurrentMonth()==1){
 				physicalDataChartPanel.setCurrentMonth(12);
@@ -637,7 +643,6 @@ public class MainGUI extends JFrame{
 
 	class nextMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("next -----------------");
 
 			if (physicalDataChartPanel.getCurrentMonth()==12){
 				physicalDataChartPanel.setCurrentMonth(1);
@@ -649,7 +654,6 @@ public class MainGUI extends JFrame{
 
 			physicalDataChartPanel.getCurrentWeightChartPanel().removeAll();
 			physicalDataChartPanel.getCurrentWeightChartPanel().add(physicalDataChartPanel.getWeightChart().showWeightPanel());
-			System.out.println("nb error = "+physicalDataChartPanel.getWeightChart().getNbError());
 			if (physicalDataChartPanel.getWeightChart().getNbError()==2)
 				physicalDataChartPanel.getNextMonthWeightButton().setVisible(false);
 			else
@@ -733,7 +737,6 @@ public class MainGUI extends JFrame{
 
 			physicalDataChartPanel.getCurrentHipSizeChartPanel().removeAll();
 			physicalDataChartPanel.getCurrentHipSizeChartPanel().add(physicalDataChartPanel.getHipSizeChart().showHipSizePanel());
-			System.out.println("nb error = "+physicalDataChartPanel.getHipSizeChart().getNbError());
 			if (physicalDataChartPanel.getHipSizeChart().getNbError()==2)
 				physicalDataChartPanel.getNextMonthHipSizeButton().setVisible(false);
 			else
@@ -817,7 +820,6 @@ public class MainGUI extends JFrame{
 
 			performanceChartPanel.getCurrentCyclingPerfChartPanel().removeAll();
 			performanceChartPanel.getCurrentCyclingPerfChartPanel().add(performanceChartPanel.getCyclingPerfChart().showCyclingPerfPanel());
-			System.out.println("nb error = "+performanceChartPanel.getCyclingPerfChart().getNbError());
 			if (performanceChartPanel.getCyclingPerfChart().getNbError()==2)
 				performanceChartPanel.getNextMonthCyclingPerfButton().setVisible(false);
 			else
@@ -828,6 +830,4 @@ public class MainGUI extends JFrame{
 		}
 	}
 	
-	
-
 }

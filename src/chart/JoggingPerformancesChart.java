@@ -110,7 +110,7 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
 						joggingSeries.add(cal.get(Calendar.DAY_OF_MONTH), Float.parseFloat(joggingPracticesList.get(i).getPerformance()));
-						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" perf = "+Float.parseFloat(joggingPracticesList.get(i).getPerformance()));
+						System.out.println("Date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" -- Performance pour le jogging = "+Float.parseFloat(joggingPracticesList.get(i).getPerformance()));
 					}
 					i--;
 				}while (currentMonth==month && currentYear==year && i>=0);
@@ -128,7 +128,7 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 	}
 
 	private JFreeChart createChart(XYDataset dataset) {
-		return ChartFactory.createXYLineChart("Performances en jogging", monthName, "minutes", dataset, PlotOrientation.VERTICAL, true, true, false);
+		return ChartFactory.createXYLineChart("Performances en jogging", monthName+" "+year, "minutes", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}	
 
 

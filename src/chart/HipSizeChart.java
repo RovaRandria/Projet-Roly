@@ -97,7 +97,7 @@ public class HipSizeChart extends ApplicationFrame {
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
 						hipSizeSeries.add(cal.get(Calendar.DAY_OF_MONTH), profile.getPhysicalDataList().get(i).getHipSize());
-						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" poids = "+profile.getPhysicalDataList().get(i).getHipSize());
+						System.out.println("Date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" -- Tour de hanche = "+profile.getPhysicalDataList().get(i).getHipSize());
 					}
 					i--;
 				}while (currentMonth==month && currentYear==year && i>=0);
@@ -112,7 +112,7 @@ public class HipSizeChart extends ApplicationFrame {
 	}
 
 	private JFreeChart createChart(XYDataset dataset) {
-		return ChartFactory.createXYLineChart("Courbe de tour de hanche", monthName, "cm", dataset, PlotOrientation.VERTICAL, true, true, false);
+		return ChartFactory.createXYLineChart("Courbe de tour de hanche", monthName+" "+year, "cm", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}	
 
 	

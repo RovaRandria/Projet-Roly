@@ -64,6 +64,12 @@ public class PhysicalDataChartPanel extends JPanel {
 		initActions();
 	}
 	
+	public void repaintPanel(){
+		initStyle();
+		init();
+		initActions();
+	}
+	
 	public void init() {
 
 		/*
@@ -71,7 +77,7 @@ public class PhysicalDataChartPanel extends JPanel {
 		 */
 		weightChart = new WeightChart("Courbe de poids", currentMonth, currentYear, user);	
 		currentWeightChartPanel = weightChart.showWeightPanel();
-
+		
 		nextMonthWeightPanel.add(nextMonthWeightButton);
 		previousMonthWeightPanel.add(previousMonthWeightButton);
 		weightButtonBox.add(previousMonthWeightPanel);
@@ -279,6 +285,14 @@ public class PhysicalDataChartPanel extends JPanel {
 
 	public void setHipSizeMainBox(Box hipSizeMainBox) {
 		this.hipSizeMainBox = hipSizeMainBox;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 

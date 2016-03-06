@@ -52,7 +52,7 @@ public class CyclingPerformancesChart extends ApplicationFrame {
 		List<Practice> practicesList = profile.getPracticesList();
 		ArrayList<Practice> cyclingPracticesList = new ArrayList<Practice>();
 		for(int i = 0; i < practicesList.size(); i++) {
-			if(practicesList.get(i).getSport().getName().equals("Vélo"));
+			if(practicesList.get(i).getSport().getName().equals("Vélo"))
 				cyclingPracticesList.add(practicesList.get(i));
 		}
 		session.getTransaction().commit();
@@ -64,7 +64,7 @@ public class CyclingPerformancesChart extends ApplicationFrame {
 		monthName = DataUtility.convertMonth(month);
 		cyclingSeries.add(0.9, null);
 		cyclingSeries.add(31.1, null);
-		
+
 		if (!cyclingPracticesList.isEmpty()){
 			cal.setTime(cyclingPracticesList.get(i).getDate());
 			currentMonth = cal.get(Calendar.MONTH)+1;
@@ -111,7 +111,7 @@ public class CyclingPerformancesChart extends ApplicationFrame {
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
 						cyclingSeries.add(cal.get(Calendar.DAY_OF_MONTH), Float.parseFloat(cyclingPracticesList.get(i).getPerformance()));
-						System.out.println("date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" perf = "+Float.parseFloat(cyclingPracticesList.get(i).getPerformance()));
+						System.out.println("Date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" -- Performance en cyclisme = "+Float.parseFloat(cyclingPracticesList.get(i).getPerformance()));
 					}
 					i--;
 				}while (currentMonth==month && currentYear==year && i>=0);
@@ -129,7 +129,7 @@ public class CyclingPerformancesChart extends ApplicationFrame {
 	}
 
 	private JFreeChart createChart(XYDataset dataset) {
-		return ChartFactory.createXYLineChart("Performances en vélo", monthName, "minutes", dataset, PlotOrientation.VERTICAL, true, true, false);
+		return ChartFactory.createXYLineChart("Performances en vélo", monthName+" "+year, "minutes", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}	
 
 

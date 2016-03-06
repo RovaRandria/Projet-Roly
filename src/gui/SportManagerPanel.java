@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -47,6 +48,7 @@ public class SportManagerPanel extends JPanel {
 	private JLabel sportsTitleLabel3;
 	
 	private JPanel addDeletePanel = new JPanel();
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
 
@@ -93,7 +95,7 @@ public class SportManagerPanel extends JPanel {
 			if (sportLastPracticeLabel.getText().equals(""))
 				sportLastPracticeLabel = new JLabel("Sport : "+lastPractice.getSport().getName());
 			if (dateLastPracticeLabel.getText().equals(""))
-				dateLastPracticeLabel = new JLabel("Date : "+lastPractice.getDate().toString());
+				dateLastPracticeLabel = new JLabel("Date : "+sdf.format(lastPractice.getDate()));
 			if (placeLastPracticeLabel.getText().equals(""))
 				placeLastPracticeLabel = new JLabel("Lieu : "+lastPractice.getPlace());
 			if (durationLastPracticeLabel.getText().equals(""))

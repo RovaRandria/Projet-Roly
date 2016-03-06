@@ -41,7 +41,9 @@ public class ProfilePanel extends JPanel {
 	private JLabel physicalDataWaistLabel = new JLabel();
 	
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 20);
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
+	
 	public ProfilePanel(User user, boolean isMine) {
 		this.user = user;
 		this.isMine = isMine;
@@ -50,18 +52,29 @@ public class ProfilePanel extends JPanel {
 		initActions();
 	}
 	
-	private void init() {
+	public void repaintPanel(){
+		init();
+		initStyle();
+		initActions();
+	}
+	
+	public void init() {
 		if (isMine){
 			pseudoLabel = new JLabel(user.getPseudo());
 			homeLabel = new JLabel("Mon profil");
-			SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
-			registrationDateLabel = new JLabel(sdf1.format(user.getProfile().getRegistrationDate()));
-			firstNameLabel = new JLabel(user.getProfile().getFirstName());
-			lastNameLabel = new JLabel(user.getProfile().getLastName());
+			registrationDateLabel = new JLabel(sdf.format(user.getProfile().getRegistrationDate()));
+			if (user.getProfile().getFirstName()!=null && !user.getProfile().getFirstName().equals(""))
+				firstNameLabel = new JLabel(user.getProfile().getFirstName());
+			else
+				firstNameLabel = new JLabel("Non renseigné");
+
+			if (user.getProfile().getLastName()!=null && !user.getProfile().getLastName().equals(""))
+				lastNameLabel = new JLabel(user.getProfile().getLastName());
+			else
+				lastNameLabel = new JLabel("Non renseigné");
 			
 			if(user.getProfile().getBirthdate() != null){
-				SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
-				birthdateLabel = new JLabel(sdf2.format(user.getProfile().getBirthdate()));
+				birthdateLabel = new JLabel(sdf.format(user.getProfile().getBirthdate()));
 			}
 			else
 				birthdateLabel = new JLabel("Non renseigné");
@@ -71,7 +84,10 @@ public class ProfilePanel extends JPanel {
 			else
 				genderLabel = new JLabel("Non renseigné");
 			
-			sportsLabel.setText(user.getProfile().displaySport());
+			if (user.getProfile().displaySport()!=null && !user.getProfile().displaySport().equals(""))
+				sportsLabel.setText(user.getProfile().displaySport());
+			else
+				sportsLabel.setText("Non renseigné");
 			
 			List<PhysicalData> physicalDataList = user.getProfile().getPhysicalDataList();
 			if (physicalDataList.size()==0){
@@ -79,7 +95,7 @@ public class ProfilePanel extends JPanel {
 			}
 			else{
 				PhysicalData latestPhysicalData = user.getProfile().getPhysicalDataList().get(user.getProfile().getPhysicalDataList().size()-1);
-				physicalDataDateLabel = new JLabel("Dernière mesure prise le "+latestPhysicalData.getMeasureDate());	
+				physicalDataDateLabel = new JLabel("Dernière mesure prise le "+sdf.format(latestPhysicalData.getMeasureDate()));
 				physicalDataWeightLabel = new JLabel("Poids : "+latestPhysicalData.getWeight());
 				physicalDataHipLabel = new JLabel("Tour de hanche : "+latestPhysicalData.getHipSize());
 				physicalDataWaistLabel = new JLabel("Tour de taille : "+latestPhysicalData.getWaistSize());
@@ -153,7 +169,7 @@ public class ProfilePanel extends JPanel {
 		}
 	}
 	
-	private void initStyle() {
+	public void initStyle() {
 		homeLabel.setFont(TITLE_FONT);
 		physicalDataPanel.setOpaque(false);
 		updateInfoButton.setOpaque(false);
