@@ -21,11 +21,14 @@ public class ProfilePanel extends JPanel {
 	private User user;
 	private JPanel physicalDataPanel = new JPanel();
 	private boolean isMine;
+	private int privacy;
 
 	private JButton updateInfoButton = new JButton();
 	private JButton showPhysicalDataButton = new JButton();
 	private JButton sportManagerButton = new JButton();
 	private JButton disconnectionButton = new JButton();	
+	private JButton searchButton = new JButton();	
+	private JButton showPerfButton = new JButton();	
 	
 	private JLabel homeLabel = new JLabel();
 	private JLabel pseudoLabel = new JLabel();
@@ -47,6 +50,7 @@ public class ProfilePanel extends JPanel {
 	public ProfilePanel(User user, boolean isMine) {
 		this.user = user;
 		this.isMine = isMine;
+		this.privacy = user.getProfile().getPrivacy();
 		init();
 		initStyle();
 		initActions();
@@ -103,6 +107,7 @@ public class ProfilePanel extends JPanel {
 			updateInfoButton = new JButton("Modifier mes informations");
 			showPhysicalDataButton = new JButton("Détails");
 			sportManagerButton = new JButton("Voir mes activités sportives");
+			searchButton = new JButton("Rechercher un sportif");
 			disconnectionButton = new JButton("Déconnexion");	
 			
 			
@@ -164,8 +169,145 @@ public class ProfilePanel extends JPanel {
 			add(updateInfoButton, frameConstraints);
 			frameConstraints.insets = new Insets(3, 0, 3, 0);
 			add(sportManagerButton, frameConstraints);
-			frameConstraints.insets = new Insets(40, 0, 5, 0);
+			add(searchButton, frameConstraints);
+			frameConstraints.insets = new Insets(35, 0, 5, 0);
 			add(disconnectionButton, frameConstraints);
+		}
+		else{
+			// Public
+			if (privacy==0){
+				pseudoLabel = new JLabel(user.getPseudo());
+				homeLabel = new JLabel("Profil de "+user.getPseudo());
+				registrationDateLabel = new JLabel(sdf.format(user.getProfile().getRegistrationDate()));
+				if (user.getProfile().getFirstName()!=null && !user.getProfile().getFirstName().equals(""))
+					firstNameLabel = new JLabel(user.getProfile().getFirstName());
+				else
+					firstNameLabel = new JLabel("Non renseigné");
+
+				if (user.getProfile().getLastName()!=null && !user.getProfile().getLastName().equals(""))
+					lastNameLabel = new JLabel(user.getProfile().getLastName());
+				else
+					lastNameLabel = new JLabel("Non renseigné");
+				
+				if(user.getProfile().getBirthdate() != null){
+					birthdateLabel = new JLabel(sdf.format(user.getProfile().getBirthdate()));
+				}
+				else
+					birthdateLabel = new JLabel("Non renseigné");
+				
+				if(user.getProfile().getGender() != null)
+					genderLabel = new JLabel(user.getProfile().getGender().toString());
+				else
+					genderLabel = new JLabel("Non renseigné");
+				
+				if (user.getProfile().displaySport()!=null && !user.getProfile().displaySport().equals(""))
+					sportsLabel.setText(user.getProfile().displaySport());
+				else
+					sportsLabel.setText("Non renseigné");
+				
+				List<PhysicalData> physicalDataList = user.getProfile().getPhysicalDataList();
+				if (physicalDataList.size()==0){
+					physicalDataDateLabel = new JLabel("Non renseigné");	
+				}
+				else{
+					PhysicalData latestPhysicalData = user.getProfile().getPhysicalDataList().get(user.getProfile().getPhysicalDataList().size()-1);
+					physicalDataDateLabel = new JLabel("Dernière mesure prise le "+sdf.format(latestPhysicalData.getMeasureDate()));
+					physicalDataWeightLabel = new JLabel("Poids : "+latestPhysicalData.getWeight());
+					physicalDataHipLabel = new JLabel("Tour de hanche : "+latestPhysicalData.getHipSize());
+					physicalDataWaistLabel = new JLabel("Tour de taille : "+latestPhysicalData.getWaistSize());
+				}
+				showPerfButton = new JButton("Voir ses performances");				
+				
+				setLayout(new GridBagLayout());
+				GridBagConstraints frameConstraints = new GridBagConstraints();
+		
+				frameConstraints.insets = new Insets(5, 0, 40, 0);
+				frameConstraints.gridwidth = 2;
+				frameConstraints.gridx = 0;
+				frameConstraints.gridy = 0;
+				add(homeLabel, frameConstraints);
+		
+				frameConstraints.insets = new Insets(5, 10, 5, 50);
+				frameConstraints.gridwidth = 1;
+				frameConstraints.anchor = GridBagConstraints.WEST;
+				frameConstraints.fill = GridBagConstraints.NONE;
+				frameConstraints.gridy = GridBagConstraints.RELATIVE;
+			
+				add(new JLabel("Pseudo : "), frameConstraints);
+				add(new JLabel("Inscription le : "), frameConstraints);
+				add(new JLabel("Nom : "), frameConstraints);
+				add(new JLabel("Prénom : "), frameConstraints);
+				add(new JLabel("Date de naissance : "), frameConstraints);
+				add(new JLabel("Genre : "), frameConstraints);
+				add(new JLabel("Sports pratiqués : "), frameConstraints);
+				
+				if (physicalDataList.size()!=0)
+					frameConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+				add(new JLabel("Données physiques : "), frameConstraints);
+				
+				
+				frameConstraints.anchor = GridBagConstraints.CENTER;
+				frameConstraints.fill = GridBagConstraints.CENTER;
+				frameConstraints.gridx = 1;
+				frameConstraints.gridy = 1;
+				add(pseudoLabel, frameConstraints);
+				frameConstraints.gridy = GridBagConstraints.RELATIVE;
+				add(registrationDateLabel, frameConstraints);
+				add(lastNameLabel, frameConstraints);
+				add(firstNameLabel, frameConstraints);
+				add(birthdateLabel, frameConstraints);
+				add(genderLabel, frameConstraints);
+				add(sportsLabel, frameConstraints);
+				frameConstraints.insets = new Insets(5, 10, 3, 50);
+				add(physicalDataDateLabel, frameConstraints);
+				
+				if (physicalDataList.size()!=0){
+					frameConstraints.insets = new Insets(3, 10, 3, 50);
+					add(physicalDataWeightLabel, frameConstraints);
+					add(physicalDataHipLabel, frameConstraints);
+					add(physicalDataWaistLabel, frameConstraints);
+				}
+
+				frameConstraints.insets = new Insets(30, 0, 3, 0);
+				frameConstraints.gridwidth = 2;
+				frameConstraints.gridx = 0;
+				add(showPerfButton, frameConstraints);
+			}
+			else{
+				// privé
+				if (privacy==1){
+					pseudoLabel = new JLabel(user.getPseudo());
+					homeLabel = new JLabel("Profil de "+user.getPseudo());
+					registrationDateLabel = new JLabel(sdf.format(user.getProfile().getRegistrationDate()));
+		
+					setLayout(new GridBagLayout());
+					GridBagConstraints frameConstraints = new GridBagConstraints();
+			
+					frameConstraints.insets = new Insets(5, 0, 40, 0);
+					frameConstraints.gridwidth = 2;
+					frameConstraints.gridx = 0;
+					frameConstraints.gridy = 0;
+					add(homeLabel, frameConstraints);
+			
+					frameConstraints.insets = new Insets(5, 10, 5, 50);
+					frameConstraints.gridwidth = 1;
+					frameConstraints.anchor = GridBagConstraints.WEST;
+					frameConstraints.fill = GridBagConstraints.NONE;
+					frameConstraints.gridy = GridBagConstraints.RELATIVE;
+				
+					add(new JLabel("Pseudo : "), frameConstraints);
+					add(new JLabel("Inscription le : "), frameConstraints);
+					add(new JLabel("Ce profil est privé."), frameConstraints);
+					
+					frameConstraints.anchor = GridBagConstraints.CENTER;
+					frameConstraints.fill = GridBagConstraints.CENTER;
+					frameConstraints.gridx = 1;
+					frameConstraints.gridy = 1;
+					add(pseudoLabel, frameConstraints);
+					frameConstraints.gridy = GridBagConstraints.RELATIVE;
+					add(registrationDateLabel, frameConstraints);
+				}
+			}
 		}
 	}
 	
@@ -175,6 +317,7 @@ public class ProfilePanel extends JPanel {
 		updateInfoButton.setOpaque(false);
 		showPhysicalDataButton.setOpaque(false);
 		sportManagerButton.setOpaque(false);
+		searchButton.setOpaque(false);
 		disconnectionButton.setOpaque(false);
 		homeLabel.setOpaque(false);
 		pseudoLabel.setOpaque(false);
@@ -200,6 +343,14 @@ public class ProfilePanel extends JPanel {
 		return physicalDataPanel;
 	}
 
+
+	public JButton getSearchButton() {
+		return searchButton;
+	}
+
+	public void setSearchButton(JButton searchButton) {
+		this.searchButton = searchButton;
+	}
 
 	public void setPhysicalDataPanel(JPanel physicalDataPanel) {
 		this.physicalDataPanel = physicalDataPanel;
@@ -263,6 +414,14 @@ public class ProfilePanel extends JPanel {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public JButton getShowPerfButton() {
+		return showPerfButton;
+	}
+
+	public void setShowPerfButton(JButton showPerfButton) {
+		this.showPerfButton = showPerfButton;
 	}
 
 }

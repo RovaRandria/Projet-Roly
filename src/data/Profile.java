@@ -46,6 +46,9 @@ public class Profile {
 	@Temporal(TemporalType.DATE)
 	private Date birthdate;
 	
+	@Column(name = "privacy")
+	private int privacy;
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = PhysicalData.class)
 	@JoinColumn(name = "profil_id", nullable = false)
 	private List<PhysicalData> physicalDataList = new ArrayList<PhysicalData>();
@@ -74,6 +77,15 @@ public class Profile {
 		this.firstName = "";
 		this.lastName = "";
 		this.registrationDate = registrationDate;
+		privacy = 1;
+	}
+	
+	public Profile(String firstName, String lastName, Date registrationDate, int privacy) {
+		super();
+		this.firstName = "";
+		this.lastName = "";
+		this.registrationDate = registrationDate;
+		this.privacy = privacy;
 	}
 	
 	public Profile(String lastName, String firstName,
@@ -84,6 +96,18 @@ public class Profile {
 		this.registrationDate = registrationDate;
 		this.gender = gender;
 		this.birthdate = birthdate;
+		privacy = 1;
+	}
+	
+	public Profile(String lastName, String firstName,
+			Date registrationDate, Gender gender, Date birthdate, float weight, int privacy) {
+		super();
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.registrationDate = registrationDate;
+		this.gender = gender;
+		this.birthdate = birthdate;
+		this.privacy = privacy;
 	}
 
 	public String getId() {
@@ -200,6 +224,14 @@ public class Profile {
 				practicesListStr += practicesList.get(i).toString()+ "\n";
 		}
 		return practicesListStr;
+	}
+
+	public int getPrivacy() {
+		return privacy;
+	}
+
+	public void setPrivacy(int privacy) {
+		this.privacy = privacy;
 	}
 	
 }

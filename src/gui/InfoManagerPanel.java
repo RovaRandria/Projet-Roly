@@ -42,12 +42,17 @@ public class InfoManagerPanel extends JPanel {
 	private JRadioButton maleRadioButton = new JRadioButton("Homme");
 	private JRadioButton femaleRadioButton = new JRadioButton("Femme");
 
+	private ButtonGroup privacyButtonGroup = new ButtonGroup();
+	private JRadioButton privateRadioButton = new JRadioButton("Privé");
+	private JRadioButton publicRadioButton = new JRadioButton("Public");
+	
 	private JComboBox birthdayDayComboBox = new JComboBox(DataUtility.day().toArray());
 	private JComboBox birthdayMonthComboBox = new JComboBox(DataUtility.month().toArray());
 	private JComboBox birthdayYearComboBox = new JComboBox(DataUtility.year().toArray());
 
 	private JPanel datePanel = new JPanel();
-	private JPanel radioButtonPanel = new JPanel();
+	private JPanel genderRadioButtonPanel = new JPanel();
+	private JPanel privacyRadioButtonPanel = new JPanel();
 
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
 
@@ -70,14 +75,24 @@ public class InfoManagerPanel extends JPanel {
 			else
 				maleRadioButton.setSelected(true);
 		}
+		if(user.getProfile().getPrivacy()==0) 
+			publicRadioButton.setSelected(true);
+		else
+			privateRadioButton.setSelected(true);
+		
 		passwordField.setText(user.getPassword());
 		firstNameTextField.setText(user.getProfile().getFirstName());
 		lastNameTextField.setText(user.getProfile().getLastName());
 		genderButtonGroup.add(maleRadioButton);
 		genderButtonGroup.add(femaleRadioButton);
-		radioButtonPanel.add(maleRadioButton);
-		radioButtonPanel.add(femaleRadioButton);
+		genderRadioButtonPanel.add(maleRadioButton);
+		genderRadioButtonPanel.add(femaleRadioButton);
 
+		privacyButtonGroup.add(privateRadioButton);
+		privacyButtonGroup.add(publicRadioButton);
+		privacyRadioButtonPanel.add(privateRadioButton);
+		privacyRadioButtonPanel.add(publicRadioButton);
+		
 		Calendar cal = Calendar.getInstance();
 		if(user.getProfile().getBirthdate() != null) {
 			cal.setTime(user.getProfile().getBirthdate());
@@ -117,6 +132,7 @@ public class InfoManagerPanel extends JPanel {
 		this.add(new JLabel("Nom : "), frameConstraints);
 		this.add(new JLabel("Sexe : "), frameConstraints);
 		this.add(new JLabel("Date de naissance : "), frameConstraints);
+		this.add(new JLabel("Confidentialité : "), frameConstraints);
 
 
 		frameConstraints.anchor = GridBagConstraints.CENTER;
@@ -128,8 +144,9 @@ public class InfoManagerPanel extends JPanel {
 		this.add(passwordField, frameConstraints);
 		this.add(firstNameTextField, frameConstraints);
 		this.add(lastNameTextField, frameConstraints);
-		this.add(radioButtonPanel, frameConstraints);
+		this.add(genderRadioButtonPanel, frameConstraints);
 		this.add(datePanel, frameConstraints);
+		this.add(privacyRadioButtonPanel, frameConstraints);
 
 
 		frameConstraints.gridwidth = 2;
@@ -157,11 +174,14 @@ public class InfoManagerPanel extends JPanel {
 		errorLabel.setOpaque(false);
 		maleRadioButton.setOpaque(false);
 		femaleRadioButton.setOpaque(false);
+		privateRadioButton.setOpaque(false);
+		publicRadioButton.setOpaque(false);
 		birthdayDayComboBox.setOpaque(false);
 		birthdayMonthComboBox.setOpaque(false);
 		birthdayYearComboBox.setOpaque(false);
 		datePanel.setOpaque(false);
-		radioButtonPanel.setOpaque(false);
+		genderRadioButtonPanel.setOpaque(false);
+		privacyRadioButtonPanel.setOpaque(false);
 		this.setOpaque(false);
 	}
 
@@ -263,6 +283,38 @@ public class InfoManagerPanel extends JPanel {
 
 	public void setBirthdayYearComboBox(JComboBox birthdayYearComboBox) {
 		this.birthdayYearComboBox = birthdayYearComboBox;
+	}
+
+	public ButtonGroup getPrivacyButtonGroup() {
+		return privacyButtonGroup;
+	}
+
+	public void setPrivacyButtonGroup(ButtonGroup privacyButtonGroup) {
+		this.privacyButtonGroup = privacyButtonGroup;
+	}
+
+	public JRadioButton getPrivateRadioButton() {
+		return privateRadioButton;
+	}
+
+	public void setPrivateRadioButton(JRadioButton privateRadioButton) {
+		this.privateRadioButton = privateRadioButton;
+	}
+
+	public JRadioButton getPublicRadioButton() {
+		return publicRadioButton;
+	}
+
+	public void setPublicRadioButton(JRadioButton publicRadioButton) {
+		this.publicRadioButton = publicRadioButton;
+	}
+
+	public JPanel getPrivacyRadioButtonPanel() {
+		return privacyRadioButtonPanel;
+	}
+
+	public void setPrivacyRadioButtonPanel(JPanel privacyRadioButtonPanel) {
+		this.privacyRadioButtonPanel = privacyRadioButtonPanel;
 	}
 
 

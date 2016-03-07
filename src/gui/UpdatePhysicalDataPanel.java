@@ -110,6 +110,7 @@ public class UpdatePhysicalDataPanel extends JPanel {
 		weightLabel.setOpaque(false);
 		waistSizeLabel.setOpaque(false);
 		hipSizeLabel.setOpaque(false);
+		datePanel.setOpaque(false);
 		this.setOpaque(false);
 	}
 

@@ -39,7 +39,7 @@ public class MainGUI extends JFrame{
 	public static void main(String[] args) {
 		/*DataInit.createTables();
 		DataInit.insertSports();
-		DataInit.insertExercises()*/;
+		DataInit.insertExercises();*/
 		new MainGUI("Pass'Sport");
 	}
 
@@ -60,6 +60,7 @@ public class MainGUI extends JFrame{
 	private Box physicalDataBox;
 	private PerformanceChartPanel performanceChartPanel;
 	private PracticePanel practicePanel;
+	private SearchProfilePanel searchProfilePanel;
 	private boolean loginUpdate=false;
 	private JLabel background = new JLabel(new ImageIcon("./images/background.jpeg"));
 
@@ -111,11 +112,16 @@ public class MainGUI extends JFrame{
 									background.add(performanceChartPanel);
 								}
 								else {
-									if (profilePanel==null)
-										profilePanel = new ProfilePanel(user, true);
-									if (loginPanel!=null)	
-										loginPanel.setVisible(false);
-									background.add(profilePanel);
+									if (searchProfilePanel!=null){
+										background.add(searchProfilePanel);
+									}
+									else{
+										if (profilePanel==null)
+											profilePanel = new ProfilePanel(user, true);
+										if (loginPanel!=null)	
+											loginPanel.setVisible(false);
+										background.add(profilePanel);
+									}
 								}
 							}
 						}
@@ -148,11 +154,15 @@ public class MainGUI extends JFrame{
 			registrationPanel.getBackButton().addActionListener(new backLoginPanelAction());
 			registrationPanel.getSubmitButton().addActionListener(new registrationAction());
 		}
-		if (profilePanel!=null && profilePanel.isVisible()){
+		if (profilePanel!=null && profilePanel.isVisible() && profilePanel.isMine()){
 			profilePanel.getDisconnectionButton().addActionListener(new disconnectionAction());
 			profilePanel.getUpdateInfoButton().addActionListener(new showUpdateInfoAction());
 			profilePanel.getSportManagerButton().addActionListener(new showSportManagerAction());
 			profilePanel.getShowPhysicalDataButton().addActionListener(new showPhysicalDataAction());
+			profilePanel.getSearchButton().addActionListener(new showSearchProfileAction());
+		}
+		if (profilePanel!=null && profilePanel.isVisible() && !profilePanel.isMine()){
+			profilePanel.getShowPerfButton().addActionListener(new backHomeAction());
 		}
 		if (infoManagerPanel!=null&& infoManagerPanel.isVisible()){
 			infoManagerPanel.getUpdateInfoButton().addActionListener(new updateInfoAction());
@@ -192,6 +202,10 @@ public class MainGUI extends JFrame{
 			practicePanel.getAddPracticeButton().addActionListener(new addPracticeAction());
 			practicePanel.getBackButton().addActionListener(new backSportsPanelAction());
 		}
+		if (searchProfilePanel!=null){
+			searchProfilePanel.getSearchButton().addActionListener(new searchProfileAction());
+			searchProfilePanel.getBackHomeButton().addActionListener(new backHomeAction());
+		}
 	}
 
 	class backHomeAction implements ActionListener {
@@ -214,7 +228,9 @@ public class MainGUI extends JFrame{
 				physicalDataChartPanel.setVisible(false);
 			if (updatePhysicalDataPanel!=null)
 				updatePhysicalDataPanel.setVisible(false);
-
+			if (searchProfilePanel!=null)
+				searchProfilePanel.setVisible(false);
+			
 			registrationPanel = null;
 			infoManagerPanel = null;
 			physicalDataBox = null;
@@ -223,13 +239,15 @@ public class MainGUI extends JFrame{
 			sportManagerPanel = null;
 			performanceChartPanel = null;
 			practicePanel = null;
+			searchProfilePanel = null;
+			
 			if (profilePanel==null){
 				System.out.println("Listes des sports pratiqués = "+user.getProfile().displaySport());
 				profilePanel = new ProfilePanel(user, true);
 			}
 			else
 				profilePanel.repaint();
-
+			
 			repaintFrame();
 		}
 	}
@@ -260,7 +278,7 @@ public class MainGUI extends JFrame{
 			repaintFrame();
 		}
 	}
-
+	
 	class backSportsPanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (sportManagerPanel!=null)
@@ -358,7 +376,7 @@ public class MainGUI extends JFrame{
 					profilePanel.setVisible(false);
 				if (sportManagerPanel!=null)
 					sportManagerPanel.setVisible(false);
-
+	
 				profilePanel = null;
 				sportManagerPanel = null;
 				practicePanel.setVisible(true);
@@ -369,6 +387,19 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	class showSearchProfileAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (searchProfilePanel==null)
+				searchProfilePanel = new SearchProfilePanel(user);
+			if (profilePanel!=null)
+				profilePanel.setVisible(false);
+			profilePanel = null;
+			searchProfilePanel.setVisible(true);
+			repaintFrame();
+		}
+	}
+	
 	class registrationAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -475,6 +506,11 @@ public class MainGUI extends JFrame{
 			else if (infoManagerPanel.getFemaleRadioButton().isSelected())
 				retrievedProfile.setGender(Gender.Femme);
 
+			if(infoManagerPanel.getPrivateRadioButton().isSelected())
+				retrievedProfile.setPrivacy(1);
+			else if (infoManagerPanel.getPublicRadioButton().isSelected())
+				retrievedProfile.setPrivacy(0);
+			
 			retrievedProfile.setBirthdate(DataUtility.createDate((Integer)infoManagerPanel.getBirthdayDayComboBox().getSelectedItem(), (Integer)infoManagerPanel.getBirthdayMonthComboBox().getSelectedItem(), (Integer)infoManagerPanel.getBirthdayYearComboBox().getSelectedItem()));
 			JOptionPane.showMessageDialog(instance, "Vos informations ont bien été mises à jour !", "Informations à jour", JOptionPane.INFORMATION_MESSAGE);
 			session.merge(retrievedProfile);
@@ -528,7 +564,7 @@ public class MainGUI extends JFrame{
 			if (practiced.equals(false))
 				JOptionPane.showMessageDialog(instance, "Erreur : vous ne pratiquez pas " + sport.getName() + " !", "Erreur", JOptionPane.ERROR_MESSAGE);
 			session.getTransaction().commit();
-
+			
 			sportManagerPanel.repaintPanel();
 		}
 	}
@@ -623,6 +659,7 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+
 	class updatePhysicalDataAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -656,7 +693,7 @@ public class MainGUI extends JFrame{
 					}
 					retrievedProfile.getPhysicalDataList().add(p);
 		
-					JOptionPane.showMessageDialog(instance, "Vos données physiques ont bien été mises à jour !", "Informations à jour", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(instance, "Vos données physiques ont bien été mises Ã  jour !", "Informations Ã  jour", JOptionPane.INFORMATION_MESSAGE);
 					session.merge(retrievedProfile);
 		
 					session.getTransaction().commit();
@@ -670,6 +707,43 @@ public class MainGUI extends JFrame{
 		}
 	}	
 
+	class searchProfileAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			searchProfilePanel.getResultPanel().removeAll();
+			Session session = DBConnection.getSession();
+			session.beginTransaction();
+			searchProfilePanel.setRetrievedUser((User) session.get(User.class, searchProfilePanel.getSearchTextField().getText()));
+
+			User user = (User) session.get(User.class, searchProfilePanel.getSearchTextField().getText());
+			session.getTransaction().commit();
+			if (user==null){
+				searchProfilePanel.getResultLabel().setText("Aucun utilisateur trouvé.");
+				searchProfilePanel.getResultPanel().add(searchProfilePanel.getResultLabel());
+			}
+			else{
+				searchProfilePanel.setProfilePanel(new ProfilePanel(user, false));
+//				Boolean isFriend = false;
+//				for (int i = 0; i < user.getProfile().getFriends().size(); i++) {
+//					if(user.getProfile().getFriends().get(i).getId().equals(retrievedUser.getProfile().getId())) {
+//						isFriend = true;
+//					}										
+//				}
+//				if(isFriend) {
+//					resultPanel.add(friendsLabel);
+//					resultPanel.add(showJoggingPerfChartButton);
+//					resultPanel.add(showPhysicDataChartButton);
+//				}					
+//
+//				else
+//					resultPanel.add(addToFriendsButton);
+				searchProfilePanel.getResultPanel().add(searchProfilePanel.getProfilePanel());
+			}
+			searchProfilePanel.repaintPanel();
+			init();
+			initStyle();
+		}
+	}
+	
 	class previousMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			physicalDataChartPanel.getNextMonthWeightButton().setVisible(true);
@@ -835,7 +909,7 @@ public class MainGUI extends JFrame{
 			performanceChartPanel.repaint();
 		}
 	}
-
+	
 	class previousMonthCyclingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel.getNextMonthCyclingPerfButton().setVisible(true);
@@ -854,7 +928,7 @@ public class MainGUI extends JFrame{
 			performanceChartPanel.repaint();
 		}
 	}
-
+	
 	class nextMonthCyclingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (performanceChartPanel.getCurrentMonthCycling()==12){
@@ -876,5 +950,5 @@ public class MainGUI extends JFrame{
 			performanceChartPanel.repaint();
 		}
 	}
-
+	
 }
