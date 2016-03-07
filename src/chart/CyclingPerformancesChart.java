@@ -42,7 +42,7 @@ public class CyclingPerformancesChart extends ApplicationFrame {
 
 	private XYDataset createDataset() {
 
-		XYSeries cyclingSeries = new XYSeries("Performance vélo");
+		XYSeries cyclingSeries = new XYSeries("Performance vélo" + user.getPseudo());
 
 		Session session = DBConnection.getSession();
 		session.beginTransaction();

@@ -41,7 +41,7 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 
 	private XYDataset createDataset() {
 
-		XYSeries joggingSeries = new XYSeries("Performance jogging");
+		XYSeries joggingSeries = new XYSeries("Performance jogging de " + user.getPseudo());
 
 		Session session = DBConnection.getSession();
 		session.beginTransaction();

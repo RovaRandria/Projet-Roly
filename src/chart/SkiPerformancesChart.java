@@ -26,7 +26,7 @@ import data.Practice;
 import data.Profile;
 import data.User;
 
-public class ClimbingPerformancesChart extends ApplicationFrame {
+public class SkiPerformancesChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
@@ -35,7 +35,7 @@ public class ClimbingPerformancesChart extends ApplicationFrame {
 	private int year;
 	private int nbError;
 
-	public ClimbingPerformancesChart(String title, int month, int year, User user) {
+	public SkiPerformancesChart(String title, int month, int year, User user) {
 		super(title);
 		this.user = user;
 		this.month = month;
@@ -45,21 +45,15 @@ public class ClimbingPerformancesChart extends ApplicationFrame {
 
 
 	private CategoryDataset createDataset() {
-		String series1 = "Performances escalade" + user.getPseudo();
+		String series1 = "Performances ski";
 
-		String yellow = "jaune";
-		String orange = "orange";
+		String green = "verte";
 		String blue = "bleue";
 		String red = "rouge";
-		String white = "blanc";
-		String black = "noire";
-		String green = "verte";		
+		String black = "noire";		
 
-		int yellowRouteNb = 0;
-		int orangeRouteNb = 0;
 		int blueRouteNb = 0;
 		int redRouteNb = 0;
-		int whiteRouteNb = 0;
 		int blackRouteNb = 0;
 		int greenRouteNb = 0;
 
@@ -71,25 +65,25 @@ public class ClimbingPerformancesChart extends ApplicationFrame {
 		Profile profile = user.getProfile();
 
 		List<Practice> practicesList = profile.getPracticesList();
-		ArrayList<Practice> climbingPracticesList = new ArrayList<Practice>();
+		ArrayList<Practice> skiPracticesList = new ArrayList<Practice>();
 		for(int i = 0; i < practicesList.size(); i++) {
-			if(practicesList.get(i).getSport().getName().equals("Escalade"))
-				climbingPracticesList.add(practicesList.get(i));
+			if(practicesList.get(i).getSport().getName().equals("Ski"))
+				skiPracticesList.add(practicesList.get(i));
 		}
 		session.getTransaction().commit();
-		int nbPractices = climbingPracticesList.size();
+		int nbPractices = skiPracticesList.size();
 		int currentMonth, currentYear, i=nbPractices-1;
 
 		Calendar cal = Calendar.getInstance();
 
 		monthName = DataUtility.convertMonth(month);
 
-		if (!climbingPracticesList.isEmpty()){
-			cal.setTime(climbingPracticesList.get(i).getDate());
+		if (!skiPracticesList.isEmpty()){
+			cal.setTime(skiPracticesList.get(i).getDate());
 			currentMonth = cal.get(Calendar.MONTH)+1;
 			currentYear = cal.get(Calendar.YEAR);	
 			while ((currentMonth!=month || currentYear!=year) && i>=0 && i<nbPractices){	
-				cal.setTime(climbingPracticesList.get(i).getDate());
+				cal.setTime(skiPracticesList.get(i).getDate());
 				currentYear = cal.get(Calendar.YEAR);
 				currentMonth = cal.get(Calendar.MONTH)+1;
 
@@ -125,40 +119,28 @@ public class ClimbingPerformancesChart extends ApplicationFrame {
 
 			if (i>=0 && i<nbPractices){	
 				do {
-					cal.setTime(climbingPracticesList.get(i).getDate());
+					cal.setTime(skiPracticesList.get(i).getDate());
 					currentMonth = cal.get(Calendar.MONTH)+1;
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
 						List<Exercise>	practiceExercise = new ArrayList<Exercise>();
-						practiceExercise = climbingPracticesList.get(i).getExercisesList();
+						practiceExercise = skiPracticesList.get(i).getExercisesList();
 						for(int j = 0; j<practiceExercise.size(); j++) {
-							if(practiceExercise.get(j).getName().equals("Voie jaune")){
-								yellowRouteNb += practiceExercise.get(j).getNumberOfSeries();
-							}
-							else if(practiceExercise.get(j).getName().equals("Voie orange")){
-								orangeRouteNb += practiceExercise.get(j).getNumberOfSeries();
-							}
-							else if(practiceExercise.get(j).getName().equals("Voie bleue")){
-								blueRouteNb += practiceExercise.get(j).getNumberOfSeries();
-							}
-							else if(practiceExercise.get(j).getName().equals("Voie rouge")){
-								redRouteNb += practiceExercise.get(j).getNumberOfSeries();
-							}
-							else if(practiceExercise.get(j).getName().equals("Voie blanche")){
-								whiteRouteNb += practiceExercise.get(j).getNumberOfSeries();
-							}
-							else if(practiceExercise.get(j).getName().equals("Voie noire")){
-								blackRouteNb += practiceExercise.get(j).getNumberOfSeries();
-							}
-							else if(practiceExercise.get(j).getName().equals("Voie verte")){
+							if(practiceExercise.get(j).getName().equals("Piste verte")){
 								greenRouteNb += practiceExercise.get(j).getNumberOfSeries();
 							}
+							else if(practiceExercise.get(j).getName().equals("Piste bleue")){
+								blueRouteNb += practiceExercise.get(j).getNumberOfSeries();
+							}
+							else if(practiceExercise.get(j).getName().equals("Piste rouge")){
+								redRouteNb += practiceExercise.get(j).getNumberOfSeries();
+							}
+							else if(practiceExercise.get(j).getName().equals("Piste noire")){
+								blackRouteNb += practiceExercise.get(j).getNumberOfSeries();
+							}
 						}
-						dataset.addValue(yellowRouteNb, series1, yellow);
-						dataset.addValue(orangeRouteNb, series1, orange);
 						dataset.addValue(blueRouteNb, series1, blue);
 						dataset.addValue(redRouteNb, series1, red);
-						dataset.addValue(whiteRouteNb, series1, white);
 						dataset.addValue(blackRouteNb, series1, black);
 						dataset.addValue(greenRouteNb, series1, green);
 					}
@@ -175,14 +157,13 @@ public class ClimbingPerformancesChart extends ApplicationFrame {
 	}
 
 	private JFreeChart createChart(CategoryDataset dataset) {
-		JFreeChart chart = ChartFactory.createBarChart("Performances en escalade", monthName+" "+year, "nombre de voies", dataset, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart chart = ChartFactory.createBarChart("Performances en ski", monthName+" "+year, "nombre de pistes", dataset, PlotOrientation.VERTICAL, true, true, false);
 		CategoryPlot plot = chart.getCategoryPlot();
         plot.setNoDataMessage("Aucune donnée !");
 
         CategoryItemRenderer renderer = new CustomRenderer(
-            new Paint[] {Color.yellow, Color.orange, Color.blue,
-                Color.red, Color.white, Color.black,
-                Color.green}
+            new Paint[] {Color.green, Color.blue,
+                Color.red, Color.black}
         );
         renderer.setItemLabelsVisible(true);
         plot.setRenderer(renderer);
@@ -191,7 +172,7 @@ public class ClimbingPerformancesChart extends ApplicationFrame {
 
 
 
-	public ChartPanel showClimbingPerfPanel(){
+	public ChartPanel showSkiPerfPanel(){
 		CategoryDataset dataset = createDataset();
 		JFreeChart chart = createChart(dataset);
 		ChartPanel chartPanel = new ChartPanel(chart);

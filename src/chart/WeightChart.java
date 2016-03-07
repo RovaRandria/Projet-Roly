@@ -36,7 +36,7 @@ public class WeightChart extends ApplicationFrame {
 
 	private XYDataset createDataset() {
 		
-		XYSeries weightSeries = new XYSeries("Poids");
+		XYSeries weightSeries = new XYSeries("Poids"+ user.getPseudo());
 		Profile profile = user.getProfile();
 		
 		int nbPractices = profile.getPhysicalDataList().size();

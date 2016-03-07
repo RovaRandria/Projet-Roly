@@ -13,9 +13,11 @@ import javax.swing.JTabbedPane;
 
 import org.jfree.chart.ChartPanel;
 
+import chart.BodybuildingPerformancesChart;
 import chart.ClimbingPerformancesChart;
 import chart.CyclingPerformancesChart;
 import chart.JoggingPerformancesChart;
+import chart.SkiPerformancesChart;
 import data.User;
 
 
@@ -23,15 +25,15 @@ public class PerformanceChartPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-	private int currentMonthCycling, currentMonthJogging, currentMonthClimbing;
-	private int currentYearCycling, currentYearJogging, currentYearClimbing;
+	private int currentMonthCycling, currentMonthJogging, currentMonthClimbing, currentMonthBodybuilding, currentMonthSki;
+	private int currentYearCycling, currentYearJogging, currentYearClimbing, currentYearBodybuilding, currentYearSki;
 	
 	private JButton nextMonthJoggingPerfButton = new JButton("Suivant");
 	private JButton nextMonthClimbingPerfButton = new JButton("Suivant");
 	private JButton nextMonthSkiPerfButton = new JButton("Suivant");
-	private JButton nextMonthCyclingPerfButton = new JButton("Suivant");
-	
+	private JButton nextMonthCyclingPerfButton = new JButton("Suivant");	
 	private JButton nextMonthBodybuildingPerfButton = new JButton("Suivant");
+	
 	private JButton previousMonthJoggingPerfButton = new JButton("Précédent");
 	private JButton previousMonthClimbingPerfButton = new JButton("Précédent");
 	private JButton previousMonthSkiPerfButton = new JButton("Précédent");
@@ -73,6 +75,8 @@ public class PerformanceChartPanel extends JPanel {
 	private JoggingPerformancesChart joggingPerfChart;
 	private CyclingPerformancesChart cyclingPerfChart;
 	private ClimbingPerformancesChart climbingPerfChart;
+	private BodybuildingPerformancesChart bodybuildingPerfChart;
+	private SkiPerformancesChart skiPerfChart;
 
 	private JButton backHomeButton = new JButton("Retour aux sports");
 
@@ -86,6 +90,10 @@ public class PerformanceChartPanel extends JPanel {
 		currentYearJogging = cal.get(Calendar.YEAR);
 		currentMonthClimbing = cal.get(Calendar.MONTH)+1;
 		currentYearClimbing = cal.get(Calendar.YEAR);
+		currentMonthBodybuilding = cal.get(Calendar.MONTH)+1;
+		currentYearBodybuilding = cal.get(Calendar.YEAR);
+		currentMonthSki = cal.get(Calendar.MONTH)+1;
+		currentYearSki = cal.get(Calendar.YEAR);
 		
 		initStyle();		
 		init();
@@ -129,6 +137,28 @@ public class PerformanceChartPanel extends JPanel {
 		climbingPerfMainBox.add(currentClimbingPerfChartPanel);
 		climbingPerfMainBox.add(climbingPerfButtonBox);
 		
+		bodybuildingPerfChart = new BodybuildingPerformancesChart("Performances musculation", currentMonthBodybuilding, currentYearBodybuilding, user);
+		currentBodybuildingPerfChartPanel = bodybuildingPerfChart.showBodybuildingPerfPanel();
+
+		nextMonthBodybuildingPerfPanel.add(nextMonthBodybuildingPerfButton);
+		previousMonthBodybuildingPerfPanel.add(previousMonthBodybuildingPerfButton);
+		bodybuildingPerfButtonBox.add(previousMonthBodybuildingPerfPanel);
+		bodybuildingPerfButtonBox.add(nextMonthBodybuildingPerfPanel);
+
+		bodybuildingPerfMainBox.add(currentBodybuildingPerfChartPanel);
+		bodybuildingPerfMainBox.add(bodybuildingPerfButtonBox);
+		
+		skiPerfChart = new SkiPerformancesChart("Performances ski", currentMonthSki, currentYearSki, user);
+		currentSkiPerfChartPanel = skiPerfChart.showSkiPerfPanel();
+
+		nextMonthSkiPerfPanel.add(nextMonthSkiPerfButton);
+		previousMonthSkiPerfPanel.add(previousMonthSkiPerfButton);
+		skiPerfButtonBox.add(previousMonthSkiPerfPanel);
+		skiPerfButtonBox.add(nextMonthSkiPerfPanel);
+
+		skiPerfMainBox.add(currentSkiPerfChartPanel);
+		skiPerfMainBox.add(skiPerfButtonBox);
+		
 		choiceTabbedPane.addTab("Performances jogging", joggingPerfMainBox);
 		choiceTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 		
@@ -137,6 +167,12 @@ public class PerformanceChartPanel extends JPanel {
 		
 		choiceTabbedPane.addTab("Performances escalade", climbingPerfMainBox);
 		choiceTabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
+		
+		choiceTabbedPane.addTab("Performances musculation", bodybuildingPerfMainBox);
+		choiceTabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
+		
+		choiceTabbedPane.addTab("Performances ski", skiPerfMainBox);
+		choiceTabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
 		
 		frameConstraints.insets = new Insets(5, 0, 10, 0);
 		frameConstraints.gridx = 0;
@@ -162,6 +198,16 @@ public class PerformanceChartPanel extends JPanel {
 		previousMonthClimbingPerfButton.setOpaque(false);
 		climbingPerfButtonBox.setOpaque(false);
 		climbingPerfMainBox.setOpaque(false);
+		
+		nextMonthBodybuildingPerfButton.setOpaque(false);
+		previousMonthBodybuildingPerfButton.setOpaque(false);
+		bodybuildingPerfButtonBox.setOpaque(false);
+		bodybuildingPerfMainBox.setOpaque(false);
+		
+		nextMonthSkiPerfButton.setOpaque(false);
+		previousMonthSkiPerfButton.setOpaque(false);
+		skiPerfButtonBox.setOpaque(false);
+		skiPerfMainBox.setOpaque(false);
 		
 		backHomeButton.setOpaque(false);
 		//		if (currentJoggingPerfChartPanel!=null)
@@ -563,9 +609,55 @@ public class PerformanceChartPanel extends JPanel {
 	public void setClimbingPerfChart(ClimbingPerformancesChart climbingPerfChart) {
 		this.climbingPerfChart = climbingPerfChart;
 	}
-	
-	
 
-	
+	public int getCurrentMonthBodybuilding() {
+		return currentMonthBodybuilding;
+	}
 
+	public void setCurrentMonthBodybuilding(int currentMonthBodybuilding) {
+		this.currentMonthBodybuilding = currentMonthBodybuilding;
+	}
+
+	public int getCurrentYearBodybuilding() {
+		return currentYearBodybuilding;
+	}
+
+	public void setCurrentYearBodybuilding(int currentYearBodybuilding) {
+		this.currentYearBodybuilding = currentYearBodybuilding;
+	}
+
+	public BodybuildingPerformancesChart getBodybuildingPerfChart() {
+		return bodybuildingPerfChart;
+	}
+
+	public void setBodybuildingPerfChart(
+			BodybuildingPerformancesChart bodybuildingPerfChart) {
+		this.bodybuildingPerfChart = bodybuildingPerfChart;
+	}
+
+	public int getCurrentMonthSki() {
+		return currentMonthSki;
+	}
+
+	public void setCurrentMonthSki(int currentMonthSki) {
+		this.currentMonthSki = currentMonthSki;
+	}
+
+	public int getCurrentYearSki() {
+		return currentYearSki;
+	}
+
+	public void setCurrentYearSki(int currentYearSki) {
+		this.currentYearSki = currentYearSki;
+	}
+
+	public SkiPerformancesChart getSkiPerfChart() {
+		return skiPerfChart;
+	}
+
+	public void setSkiPerfChart(SkiPerformancesChart skiPerfChart) {
+		this.skiPerfChart = skiPerfChart;
+	}
+	
+	
 }
