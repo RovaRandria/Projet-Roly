@@ -99,9 +99,9 @@ public class SportManagerPanel extends JPanel {
 			if (placeLastPracticeLabel.getText().equals(""))
 				placeLastPracticeLabel = new JLabel("Lieu : "+lastPractice.getPlace());
 			if (durationLastPracticeLabel.getText().equals(""))
-				durationLastPracticeLabel = new JLabel("Durée : "+String.valueOf(lastPractice.getDuration()));
+				durationLastPracticeLabel = new JLabel("Durée (en minutes) : "+lastPractice.getDuration());
 			if (performanceLastPracticeLabel.getText().equals(""))
-				performanceLastPracticeLabel = new JLabel("Performance : "+lastPractice.getPerformance());
+				performanceLastPracticeLabel = new JLabel("Temps de course (en minutes) : "+lastPractice.getPerformance());
 		}
 		else{
 			if (sportLastPracticeLabel.getText().equals(""))

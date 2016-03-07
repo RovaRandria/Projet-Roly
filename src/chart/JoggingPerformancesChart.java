@@ -109,8 +109,8 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 					currentMonth = cal.get(Calendar.MONTH)+1;
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
-						joggingSeries.add(cal.get(Calendar.DAY_OF_MONTH), Float.parseFloat(joggingPracticesList.get(i).getPerformance()));
-						System.out.println("Date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" -- Performance pour le jogging = "+Float.parseFloat(joggingPracticesList.get(i).getPerformance()));
+						joggingSeries.add(cal.get(Calendar.DAY_OF_MONTH), joggingPracticesList.get(i).getPerformance());
+						System.out.println("Date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" -- Performance pour le jogging = "+joggingPracticesList.get(i).getPerformance());
 					}
 					i--;
 				}while (currentMonth==month && currentYear==year && i>=0);

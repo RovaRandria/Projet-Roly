@@ -85,9 +85,9 @@ public class PracticePanel extends JPanel {
 		session.beginTransaction();
 		user = (User) session.get(User.class, user.getPseudo());
 
-		durationTextField = new JTextField(25);
-		performanceTextField = new JTextField(25);
-		placeTextField = new JTextField(25);	
+		durationTextField = new JTextField(20);
+		performanceTextField = new JTextField(20);
+		placeTextField = new JTextField(20);	
 		
 		Calendar cal = Calendar.getInstance();
 		dayComboBox.setSelectedItem(cal.get(Calendar.DAY_OF_MONTH));
@@ -121,9 +121,9 @@ public class PracticePanel extends JPanel {
 		
 		add(new JLabel("Date : "), frameConstraints);
 		add(new JLabel("Lieu : "), frameConstraints);
-		add(new JLabel("Durée : "), frameConstraints);
+		add(new JLabel("Durée (en minutes) : "), frameConstraints);
 		if(sportName.equals("Jogging")||sportName.equals("Vélo"))
-			add(new JLabel("Temps de course : "), frameConstraints);
+			add(new JLabel("Temps de course (en minutes) : "), frameConstraints);
 		else if(sportName.equals("Escalade")) {
 			add(new JLabel("Voie jaune : "), frameConstraints);
 			add(new JLabel("Voie orange : "), frameConstraints);

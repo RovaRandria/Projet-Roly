@@ -24,6 +24,7 @@ import chart.JoggingPerformancesChart;
 import chart.WaistSizeChart;
 import chart.WeightChart;
 import data.DBConnection;
+import data.DataInit;
 import data.Exercise;
 import data.Gender;
 import data.Login;
@@ -38,7 +39,7 @@ public class MainGUI extends JFrame{
 	public static void main(String[] args) {
 		/*DataInit.createTables();
 		DataInit.insertSports();
-		DataInit.insertExercises();*/
+		DataInit.insertExercises()*/;
 		new MainGUI("Pass'Sport");
 	}
 
@@ -124,7 +125,7 @@ public class MainGUI extends JFrame{
 		}
 		this.setContentPane(background);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(540, 640);
+		setSize(540, 680);
 		setVisible(true);
 		setLocationRelativeTo(null);
 		//setResizable(false);
@@ -213,7 +214,7 @@ public class MainGUI extends JFrame{
 				physicalDataChartPanel.setVisible(false);
 			if (updatePhysicalDataPanel!=null)
 				updatePhysicalDataPanel.setVisible(false);
-			
+
 			registrationPanel = null;
 			infoManagerPanel = null;
 			physicalDataBox = null;
@@ -228,7 +229,7 @@ public class MainGUI extends JFrame{
 			}
 			else
 				profilePanel.repaint();
-			
+
 			repaintFrame();
 		}
 	}
@@ -259,7 +260,7 @@ public class MainGUI extends JFrame{
 			repaintFrame();
 		}
 	}
-	
+
 	class backSportsPanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (sportManagerPanel!=null)
@@ -357,7 +358,7 @@ public class MainGUI extends JFrame{
 					profilePanel.setVisible(false);
 				if (sportManagerPanel!=null)
 					sportManagerPanel.setVisible(false);
-	
+
 				profilePanel = null;
 				sportManagerPanel = null;
 				practicePanel.setVisible(true);
@@ -527,7 +528,7 @@ public class MainGUI extends JFrame{
 			if (practiced.equals(false))
 				JOptionPane.showMessageDialog(instance, "Erreur : vous ne pratiquez pas " + sport.getName() + " !", "Erreur", JOptionPane.ERROR_MESSAGE);
 			session.getTransaction().commit();
-			
+
 			sportManagerPanel.repaintPanel();
 		}
 	}
@@ -540,59 +541,84 @@ public class MainGUI extends JFrame{
 			Sport sport = (Sport) session.get(Sport.class, practicePanel.getSportName());
 			Practice practice = null;
 			Date date = DataUtility.createDate((Integer)practicePanel.getDayComboBox().getSelectedItem(), (Integer)practicePanel.getMonthComboBox().getSelectedItem(), (Integer)practicePanel.getYearComboBox().getSelectedItem());
-			if(practicePanel.getSportName().equals("Jogging")||practicePanel.getSportName().equals("Vélo"))
-				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), practicePanel.getPerformanceTextField().getText(), profile);
-			else if(practicePanel.getSportName().equals("Escalade")) {				
-				ArrayList<Exercise> exercisesList = new ArrayList<Exercise>();
-				Exercise yellowClimbingRoute = new Exercise("Voie jaune", (Integer)practicePanel.getYellowClimbingRouteComboBox().getSelectedItem());
-				Exercise orangeClimbingRoute = new Exercise("Voie orange", (Integer)practicePanel.getOrangeClimbingRouteComboBox().getSelectedItem());
-				Exercise blueClimbingRoute = new Exercise("Voie bleue", (Integer)practicePanel.getBlueClimbingRouteComboBox().getSelectedItem());
-				Exercise redClimbingRoute = new Exercise("Voie rouge", (Integer)practicePanel.getRedClimbingRouteComboBox().getSelectedItem());
-				Exercise whiteClimbingRoute = new Exercise("Voie blanche", (Integer)practicePanel.getWhiteClimbingRouteComboBox().getSelectedItem());
-				Exercise blackClimbingRoute = new Exercise("Voie noire", (Integer)practicePanel.getBlackClimbingRouteComboBox().getSelectedItem());
-				Exercise greenClimbingRoute = new Exercise("Voie verte", (Integer)practicePanel.getGreenClimbingRouteComboBox().getSelectedItem());
-				exercisesList.add(yellowClimbingRoute);
-				exercisesList.add(orangeClimbingRoute);
-				exercisesList.add(blueClimbingRoute);
-				exercisesList.add(redClimbingRoute);
-				exercisesList.add(whiteClimbingRoute);
-				exercisesList.add(blackClimbingRoute);
-				exercisesList.add(greenClimbingRoute);
-				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), exercisesList, profile);
+			Calendar cal = Calendar.getInstance();
+			Float duration = 0f, performance = 0f;
+			int durationError = 0, performanceError = 0;
+			try {
+				duration = Float.parseFloat(practicePanel.getDurationTextField().getText());
+			 } catch (NumberFormatException ex) {
+				 durationError = 1;
 			}
-			else if(practicePanel.getSportName().equals("Ski")) {				
-				ArrayList<Exercise> exercisesList = new ArrayList<Exercise>();
-				Exercise greenTrack = new Exercise("Piste verte", (Integer)practicePanel.getGreenTrackComboBox().getSelectedItem());
-				Exercise blueTrack = new Exercise("Piste bleue", (Integer)practicePanel.getBlueTrackComboBox().getSelectedItem());
-				Exercise redTrack = new Exercise("Piste rouge", (Integer)practicePanel.getRedTrackComboBox().getSelectedItem());
-				Exercise blackTrack = new Exercise("Piste noire", (Integer)practicePanel.getBlackTrackComboBox().getSelectedItem());
-				exercisesList.add(greenTrack);
-				exercisesList.add(blueTrack);
-				exercisesList.add(redTrack);
-				exercisesList.add(blackTrack);
-				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), exercisesList, profile);
-				
+			try {
+				performance = Float.parseFloat(practicePanel.getPerformanceTextField().getText());
+			 } catch (NumberFormatException ex) {
+				 performanceError = 1;
 			}
-			else if(practicePanel.getSportName().equals("Musculation")) {	
-				ArrayList<Exercise> exercisesList = new ArrayList<Exercise>();
-				Exercise pushup = new Exercise("Pompes", (Integer)practicePanel.getPushupComboBox().getSelectedItem());
-				Exercise situp = new Exercise("Abdominaux", (Integer)practicePanel.getSitupComboBox().getSelectedItem());
-				Exercise pullup = new Exercise("Tractions", (Integer)practicePanel.getPullupComboBox().getSelectedItem());
-				Exercise dips = new Exercise("Dips", (Integer)practicePanel.getDipsComboBox().getSelectedItem());
-				Exercise squat = new Exercise("Squat", (Integer)practicePanel.getSquatComboBox().getSelectedItem());
-				Exercise benchPress = new Exercise("Développés-couchés", (Integer)practicePanel.getBenchPressComboBox().getSelectedItem());
-				exercisesList.add(pushup);
-				exercisesList.add(situp);
-				exercisesList.add(pullup);
-				exercisesList.add(dips);
-				exercisesList.add(squat);
-				exercisesList.add(benchPress);
-				practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), Float.parseFloat(practicePanel.getDurationTextField().getText()), exercisesList, profile);			
+			if(date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR))))
+				JOptionPane.showMessageDialog(instance, "Veuillez saisir une date valide, du mois en cours !", "Date invalide", JOptionPane.ERROR_MESSAGE);
+			else if(durationError == 1)
+				JOptionPane.showMessageDialog(instance, "Veuillez saisir une durée valide !", "Durée invalide", JOptionPane.ERROR_MESSAGE);
+			else {
+				if(practicePanel.getSportName().equals("Jogging")||practicePanel.getSportName().equals("Vélo")) {
+					if(performanceError == 1)
+						JOptionPane.showMessageDialog(instance, "Veuillez saisir un temps de course valide !", "Temps de course invalide", JOptionPane.ERROR_MESSAGE);
+					else
+						practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), duration, performance, profile);
+					}
+				else if(practicePanel.getSportName().equals("Escalade")) {				
+					ArrayList<Exercise> exercisesList = new ArrayList<Exercise>();
+					Exercise yellowClimbingRoute = new Exercise("Voie jaune", (Integer)practicePanel.getYellowClimbingRouteComboBox().getSelectedItem());
+					Exercise orangeClimbingRoute = new Exercise("Voie orange", (Integer)practicePanel.getOrangeClimbingRouteComboBox().getSelectedItem());
+					Exercise blueClimbingRoute = new Exercise("Voie bleue", (Integer)practicePanel.getBlueClimbingRouteComboBox().getSelectedItem());
+					Exercise redClimbingRoute = new Exercise("Voie rouge", (Integer)practicePanel.getRedClimbingRouteComboBox().getSelectedItem());
+					Exercise whiteClimbingRoute = new Exercise("Voie blanche", (Integer)practicePanel.getWhiteClimbingRouteComboBox().getSelectedItem());
+					Exercise blackClimbingRoute = new Exercise("Voie noire", (Integer)practicePanel.getBlackClimbingRouteComboBox().getSelectedItem());
+					Exercise greenClimbingRoute = new Exercise("Voie verte", (Integer)practicePanel.getGreenClimbingRouteComboBox().getSelectedItem());
+					exercisesList.add(yellowClimbingRoute);
+					exercisesList.add(orangeClimbingRoute);
+					exercisesList.add(blueClimbingRoute);
+					exercisesList.add(redClimbingRoute);
+					exercisesList.add(whiteClimbingRoute);
+					exercisesList.add(blackClimbingRoute);
+					exercisesList.add(greenClimbingRoute);
+					practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), duration, exercisesList, profile);
+				}
+				else if(practicePanel.getSportName().equals("Ski")) {				
+					ArrayList<Exercise> exercisesList = new ArrayList<Exercise>();
+					Exercise greenTrack = new Exercise("Piste verte", (Integer)practicePanel.getGreenTrackComboBox().getSelectedItem());
+					Exercise blueTrack = new Exercise("Piste bleue", (Integer)practicePanel.getBlueTrackComboBox().getSelectedItem());
+					Exercise redTrack = new Exercise("Piste rouge", (Integer)practicePanel.getRedTrackComboBox().getSelectedItem());
+					Exercise blackTrack = new Exercise("Piste noire", (Integer)practicePanel.getBlackTrackComboBox().getSelectedItem());
+					exercisesList.add(greenTrack);
+					exercisesList.add(blueTrack);
+					exercisesList.add(redTrack);
+					exercisesList.add(blackTrack);
+					practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), duration, exercisesList, profile);
+
+				}
+				else if(practicePanel.getSportName().equals("Musculation")) {	
+					ArrayList<Exercise> exercisesList = new ArrayList<Exercise>();
+					Exercise pushup = new Exercise("Pompes", (Integer)practicePanel.getPushupComboBox().getSelectedItem());
+					Exercise situp = new Exercise("Abdominaux", (Integer)practicePanel.getSitupComboBox().getSelectedItem());
+					Exercise pullup = new Exercise("Tractions", (Integer)practicePanel.getPullupComboBox().getSelectedItem());
+					Exercise dips = new Exercise("Dips", (Integer)practicePanel.getDipsComboBox().getSelectedItem());
+					Exercise squat = new Exercise("Squat", (Integer)practicePanel.getSquatComboBox().getSelectedItem());
+					Exercise benchPress = new Exercise("Développés-couchés", (Integer)practicePanel.getBenchPressComboBox().getSelectedItem());
+					exercisesList.add(pushup);
+					exercisesList.add(situp);
+					exercisesList.add(pullup);
+					exercisesList.add(dips);
+					exercisesList.add(squat);
+					exercisesList.add(benchPress);
+					practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), duration, exercisesList, profile);			
+				}
+				if(performanceError != 1) {
+				profile.getPracticesList().add(practice);				
+				JOptionPane.showMessageDialog(instance, "Votre séance a bien été ajoutée !", "Séance ajoutée", JOptionPane.INFORMATION_MESSAGE);
+				session.persist(profile);
+				session.getTransaction().commit();
+				}
 			}
-			profile.getPracticesList().add(practice);			  
-			JOptionPane.showMessageDialog(instance, "Votre séance a bien été ajoutée !", "Séance ajoutée", JOptionPane.INFORMATION_MESSAGE);
-			session.persist(profile);
-			session.getTransaction().commit();
 			practicePanel.repaint();
 		}
 	}
@@ -604,26 +630,42 @@ public class MainGUI extends JFrame{
 			session.beginTransaction();
 			Profile retrievedProfile = (Profile) session.get(Profile.class, user.getProfile().getId());
 
-			Calendar calendar = Calendar.getInstance();
+			Calendar cal = Calendar.getInstance();
 
 			PhysicalData p = new PhysicalData();
-			p.setWeight(Float.parseFloat(updatePhysicalDataPanel.getWeightField().getText()));
-			p.setHipSize(Float.parseFloat(updatePhysicalDataPanel.getHipSizeField().getText()));
-			p.setWaistSize(Float.parseFloat(updatePhysicalDataPanel.getWaistSizeField().getText()));
-			p.setMeasureDate(DataUtility.createDate(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR)));
-
-			for (int i = 0; i < retrievedProfile.getPhysicalDataList().size(); i++) {
-				if(retrievedProfile.getPhysicalDataList().get(i).getMeasureDate().equals(p.getMeasureDate()))
-					retrievedProfile.getPhysicalDataList().remove(i);	
+			
+			int parseError = 0;
+			
+			try {
+				p.setWeight(Float.parseFloat(updatePhysicalDataPanel.getWeightField().getText()));
+				p.setHipSize(Float.parseFloat(updatePhysicalDataPanel.getHipSizeField().getText()));
+				p.setWaistSize(Float.parseFloat(updatePhysicalDataPanel.getWaistSizeField().getText()));
+			 } catch (NumberFormatException ex) {
+				 parseError = 1;
 			}
-			retrievedProfile.getPhysicalDataList().add(p);
-
-			JOptionPane.showMessageDialog(instance, "Vos données physiques ont bien été mises à jour !", "Informations à jour", JOptionPane.INFORMATION_MESSAGE);
-			session.merge(retrievedProfile);
-
-			session.getTransaction().commit();
-			user.setProfile(retrievedProfile);
-			physicalDataChartPanel.getUser().setProfile(retrievedProfile);
+			if(parseError !=1) {
+				Date date = DataUtility.createDate((Integer)updatePhysicalDataPanel.getDayComboBox().getSelectedItem(), (Integer)updatePhysicalDataPanel.getMonthComboBox().getSelectedItem(), (Integer)updatePhysicalDataPanel.getYearComboBox().getSelectedItem());
+				p.setMeasureDate(date);
+				
+				if(date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR))))
+					JOptionPane.showMessageDialog(instance, "Veuillez saisir une date valide, du mois en cours !", "Date invalide", JOptionPane.ERROR_MESSAGE);
+				else {
+					for (int i = 0; i < retrievedProfile.getPhysicalDataList().size(); i++) {
+						if(retrievedProfile.getPhysicalDataList().get(i).getMeasureDate().equals(p.getMeasureDate()))
+							retrievedProfile.getPhysicalDataList().remove(i);	
+					}
+					retrievedProfile.getPhysicalDataList().add(p);
+		
+					JOptionPane.showMessageDialog(instance, "Vos données physiques ont bien été mises à jour !", "Informations à jour", JOptionPane.INFORMATION_MESSAGE);
+					session.merge(retrievedProfile);
+		
+					session.getTransaction().commit();
+					user.setProfile(retrievedProfile);
+					physicalDataChartPanel.getUser().setProfile(retrievedProfile);
+				}
+			}
+			else
+				JOptionPane.showMessageDialog(instance, "Veuillez saisir des nombres valides !", "Valeurs incorrectes", JOptionPane.INFORMATION_MESSAGE);
 			//physicalDataChartPanel.repaintPanel();
 		}
 	}	
@@ -793,7 +835,7 @@ public class MainGUI extends JFrame{
 			performanceChartPanel.repaint();
 		}
 	}
-	
+
 	class previousMonthCyclingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel.getNextMonthCyclingPerfButton().setVisible(true);
@@ -812,7 +854,7 @@ public class MainGUI extends JFrame{
 			performanceChartPanel.repaint();
 		}
 	}
-	
+
 	class nextMonthCyclingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (performanceChartPanel.getCurrentMonthCycling()==12){
@@ -834,5 +876,5 @@ public class MainGUI extends JFrame{
 			performanceChartPanel.repaint();
 		}
 	}
-	
+
 }

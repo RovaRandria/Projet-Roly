@@ -110,8 +110,8 @@ public class CyclingPerformancesChart extends ApplicationFrame {
 					currentMonth = cal.get(Calendar.MONTH)+1;
 					currentYear = cal.get(Calendar.YEAR);
 					if (currentMonth==month && currentYear==year){
-						cyclingSeries.add(cal.get(Calendar.DAY_OF_MONTH), Float.parseFloat(cyclingPracticesList.get(i).getPerformance()));
-						System.out.println("Date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" -- Performance en cyclisme = "+Float.parseFloat(cyclingPracticesList.get(i).getPerformance()));
+						cyclingSeries.add(cal.get(Calendar.DAY_OF_MONTH), cyclingPracticesList.get(i).getPerformance());
+						System.out.println("Date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" -- Performance en cyclisme = " + cyclingPracticesList.get(i).getPerformance());
 					}
 					i--;
 				}while (currentMonth==month && currentYear==year && i>=0);

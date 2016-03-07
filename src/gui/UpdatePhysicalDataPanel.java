@@ -5,12 +5,16 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import utils.DataUtility;
 
 import data.PhysicalData;
 import data.User;
@@ -33,6 +37,12 @@ public class UpdatePhysicalDataPanel extends JPanel {
 	private JTextField  waistSizeField  = new JTextField(5);
 	private JTextField   hipSizeField  = new JTextField(5);
 	
+	private JComboBox dayComboBox = new JComboBox(DataUtility.day().toArray());
+	private JComboBox monthComboBox = new JComboBox(DataUtility.month().toArray());
+	private JComboBox yearComboBox = new JComboBox(DataUtility.year().toArray());
+	
+	private JPanel datePanel = new JPanel();
+	
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
 
 	public UpdatePhysicalDataPanel() {
@@ -54,8 +64,18 @@ public class UpdatePhysicalDataPanel extends JPanel {
 		frameConstraints.gridy = 0;
 		this.add(titleLabel, frameConstraints);
 		
+		Calendar cal = Calendar.getInstance();
+		dayComboBox.setSelectedItem(cal.get(Calendar.DAY_OF_MONTH));
+		monthComboBox.setSelectedItem(cal.get(Calendar.MONTH)+1);
+		yearComboBox.setSelectedItem(cal.get(Calendar.YEAR));
+		datePanel.add(dayComboBox);
+		datePanel.add(monthComboBox);
+		datePanel.add(yearComboBox);
+		
 		frameConstraints.gridy = GridBagConstraints.RELATIVE;
 		frameConstraints.insets = new Insets(2, 10, 2, 10);
+		add(new JLabel("Date : "), frameConstraints);
+		this.add(datePanel, frameConstraints);
 		this.add(weightLabel, frameConstraints);
 		this.add(weightField, frameConstraints);
 		this.add(waistSizeLabel, frameConstraints);
@@ -137,8 +157,75 @@ public class UpdatePhysicalDataPanel extends JPanel {
 		this.backHomeButton = backHomeButton;
 	}
 
+	public User getUser() {
+		return user;
+	}
 
+	public void setUser(User user) {
+		this.user = user;
+	}
 
+	public JLabel getTitleLabel() {
+		return titleLabel;
+	}
 
+	public void setTitleLabel(JLabel titleLabel) {
+		this.titleLabel = titleLabel;
+	}
 
+	public JLabel getWeightLabel() {
+		return weightLabel;
+	}
+
+	public void setWeightLabel(JLabel weightLabel) {
+		this.weightLabel = weightLabel;
+	}
+
+	public JLabel getWaistSizeLabel() {
+		return waistSizeLabel;
+	}
+
+	public void setWaistSizeLabel(JLabel waistSizeLabel) {
+		this.waistSizeLabel = waistSizeLabel;
+	}
+
+	public JLabel getHipSizeLabel() {
+		return hipSizeLabel;
+	}
+
+	public void setHipSizeLabel(JLabel hipSizeLabel) {
+		this.hipSizeLabel = hipSizeLabel;
+	}
+
+	public JComboBox getDayComboBox() {
+		return dayComboBox;
+	}
+
+	public void setDayComboBox(JComboBox dayComboBox) {
+		this.dayComboBox = dayComboBox;
+	}
+
+	public JComboBox getMonthComboBox() {
+		return monthComboBox;
+	}
+
+	public void setMonthComboBox(JComboBox monthComboBox) {
+		this.monthComboBox = monthComboBox;
+	}
+
+	public JComboBox getYearComboBox() {
+		return yearComboBox;
+	}
+
+	public void setYearComboBox(JComboBox yearComboBox) {
+		this.yearComboBox = yearComboBox;
+	}
+
+	public JPanel getDatePanel() {
+		return datePanel;
+	}
+
+	public void setDatePanel(JPanel datePanel) {
+		this.datePanel = datePanel;
+	}
 }

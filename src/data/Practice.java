@@ -34,7 +34,7 @@ public class Practice {
 	private String place;
 	
 	@Column(name = "performance")
-	private String performance;
+	private Float performance;
 	
 	@Column(name = "duration")
 	private float duration;
@@ -52,7 +52,7 @@ public class Practice {
 	}
 
 	public Practice(Sport sport, Date date, String place,
-			float duration, String performance, Profile profile) {
+			float duration, Float performance, Profile profile) {
 		this.sport = sport;
 		this.date = date;
 		this.place = place;
@@ -109,11 +109,11 @@ public class Practice {
 		this.sport = sport;
 	}
 	
-	public String getPerformance() {
+	public Float getPerformance() {
 		return performance;
 	}
 
-	public void setPerformance(String performance) {
+	public void setPerformance(Float performance) {
 		this.performance = performance;
 	}
 
