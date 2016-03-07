@@ -20,7 +20,11 @@ import data.DBConnection;
 import data.Practice;
 import data.Profile;
 import data.User;
-
+/**
+ * Create the chart Panel for the jogging performances of a user
+ * @author Rova
+ *
+ */
 public class JoggingPerformancesChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +42,10 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 		nbError = 0;
 	}
 
-
+	/**
+	 * Builds a line chart for the jogging performances of a user
+	 * @return
+	 */
 	private XYDataset createDataset() {
 
 		XYSeries joggingSeries = new XYSeries("Performance jogging de " + user.getPseudo());

@@ -25,7 +25,11 @@ import data.Exercise;
 import data.Practice;
 import data.Profile;
 import data.User;
-
+/**
+ * Create the chartPanel of climbing performances from an user
+ * @author Rova
+ *
+ */
 public class ClimbingPerformancesChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -43,9 +47,12 @@ public class ClimbingPerformancesChart extends ApplicationFrame {
 		nbError = 0;
 	}
 
-
+	/**
+	 * Builds the bar chart of climbing performances by the climbing routes' color from a user
+	 * @return
+	 */
 	private CategoryDataset createDataset() {
-		String series1 = "Performances escalade" + user.getPseudo();
+		String series1 = "Performances en escalade de " + user.getPseudo();
 
 		String yellow = "jaune";
 		String orange = "orange";
@@ -174,6 +181,11 @@ public class ClimbingPerformancesChart extends ApplicationFrame {
 
 	}
 
+	/**
+	 * set the color render for the barChart
+	 * @param dataset
+	 * @return
+	 */
 	private JFreeChart createChart(CategoryDataset dataset) {
 		JFreeChart chart = ChartFactory.createBarChart("Performances en escalade", monthName+" "+year, "nombre de voies", dataset, PlotOrientation.VERTICAL, true, true, false);
 		CategoryPlot plot = chart.getCategoryPlot();
@@ -190,7 +202,10 @@ public class ClimbingPerformancesChart extends ApplicationFrame {
 	}	
 
 
-
+	/**
+	 * Displays the ChartPanel
+	 * @return
+	 */
 	public ChartPanel showClimbingPerfPanel(){
 		CategoryDataset dataset = createDataset();
 		JFreeChart chart = createChart(dataset);

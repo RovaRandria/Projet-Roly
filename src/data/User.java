@@ -9,6 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/**
+ * Includes fields for the users of the application
+ * @author Rova
+ *
+ */
 @Entity
 @Table(name = "user")
 public class User {

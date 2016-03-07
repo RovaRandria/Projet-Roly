@@ -8,7 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+/**
+ * Include different fields for an exercise
+ * @author Rova
+ *
+ */
 @Entity
 @Table(name = "exercise")
 public class Exercise {
@@ -23,7 +27,7 @@ public class Exercise {
 	@Enumerated(EnumType.ORDINAL)
 	//private ArrayList<AreaOfEffect> areasOfEffect = new ArrayList<AreaOfEffect>();
 	private AreaOfEffect areaOfEffect;
-	
+
 	@Column(name = "number_of_series")
 	private int numberOfSeries;
 	
@@ -59,20 +63,6 @@ public class Exercise {
 	this.description = description;
 	this.numberOfSeries = numberOfSeries;
 	}
-	
-	/*public Exercise(String name, String description, ArrayList<AreaOfEffect> areasOfEffect) {
-		this.name = name;
-		this.areasOfEffect = areasOfEffect;
-		this.description = description;
-	}*/
-
-	/*public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}*/
 	
 	public String getName() {
 		return name;

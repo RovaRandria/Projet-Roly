@@ -21,7 +21,11 @@ import data.DBConnection;
 import data.Practice;
 import data.Profile;
 import data.User;
-
+/**
+ * Create the ChartPanel for cycling performances from a user
+ * @author Rova
+ *
+ */
 public class CyclingPerformancesChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -39,10 +43,13 @@ public class CyclingPerformancesChart extends ApplicationFrame {
 		nbError = 0;
 	}
 
-
+	/**
+	 * builds a line chart for cycling performances from a user
+	 * @return
+	 */
 	private XYDataset createDataset() {
 
-		XYSeries cyclingSeries = new XYSeries("Performance vélo" + user.getPseudo());
+		XYSeries cyclingSeries = new XYSeries("Performances en vélo de " + user.getPseudo());
 
 		Session session = DBConnection.getSession();
 		session.beginTransaction();
@@ -131,9 +138,11 @@ public class CyclingPerformancesChart extends ApplicationFrame {
 	private JFreeChart createChart(XYDataset dataset) {
 		return ChartFactory.createXYLineChart("Performances en vélo", monthName+" "+year, "minutes", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}	
-
-
-
+	
+	/**
+	 * Displays the chartPanel
+	 * @return
+	 */
 	public ChartPanel showCyclingPerfPanel(){
 		XYDataset dataset = createDataset();
 		JFreeChart chart = createChart(dataset);

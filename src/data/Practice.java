@@ -18,7 +18,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
+/**
+ * Includes the sport practices'fields of a user
+ * @author Rova
+ *
+ */
 @Entity
 @Table(name = "practice")
 public class Practice {
@@ -51,6 +55,15 @@ public class Practice {
 		
 	}
 
+	/**
+	 * builds a practice with a runtime performance (for Jogging and Cycling)
+	 * @param sport
+	 * @param date
+	 * @param place
+	 * @param duration
+	 * @param performance
+	 * @param profile
+	 */
 	public Practice(Sport sport, Date date, String place,
 			float duration, Float performance, Profile profile) {
 		this.sport = sport;
@@ -60,6 +73,15 @@ public class Practice {
 		this.performance = performance;
 	}
 	
+	/**
+	 * builds a practice with an exerciseList (for Ski, Bodybuilding and Climbing)
+	 * @param sport
+	 * @param date
+	 * @param place
+	 * @param duration
+	 * @param exercisesList
+	 * @param profile
+	 */
 	public Practice(Sport sport, Date date, String place,
 			float duration, List<Exercise> exercisesList, Profile profile) {
 		this.sport = sport;
@@ -124,6 +146,11 @@ public class Practice {
 	public void setExercisesList(List<Exercise> exercisesList) {
 		this.exercisesList = exercisesList;
 	}
+	
+	/**
+	 * Displays the different exercises of a sport practice
+	 * @return the method ToString for each exercise of a sport practice
+	 */
 	public String displayExercise() {
 		String exercisesStr = "";
 		for(int i = 0; i< this.exercisesList.size(); i++) {
@@ -137,29 +164,10 @@ public class Practice {
 		return "Le : " + date
 				+ "à :" + place + " durée : " + duration + displayExercise();
 	}
-	
-	/*public void addExercice(int exerciseId, String name, String description, ArrayList<AreaOfEffect> aoe) {
-		Exercise exercise = new Exercise(name, description, aoe);
-			 this.exercisesList.add(exercise);
-	}
-	
-	public void updateExercice(int exerciseId, String name, String description,ArrayList<AreaOfEffect> aoe) {
-		for(int i = 0; i < this.exercisesList.size(); i++) {
-			 if(this.exercisesList.get(i).getId().equals(exerciseId)) {
-				 this.exercisesList.get(i).setName(name);
-				 this.exercisesList.get(i).setDescription(description);
-				 this.exercisesList.get(i).setAreasOfEffect(aoe);
-			 }
-		}
-	}
-	
-	public void removeExercice(int exerciseId) {
-		 for(int i = 0; i < this.exercisesList.size(); i++) {
-			 if(this.exercisesList.get(i).getId().equals(exerciseId))
-				 this.exercisesList.remove(i);
-	    }   
-	}*/
 
+	/**
+	 * Remove all exercises from a sport practice
+	 */
 	public void removeAllExercises() {
 		this.exercisesList.removeAll(exercisesList);
 	}	

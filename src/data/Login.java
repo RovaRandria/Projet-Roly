@@ -5,7 +5,11 @@ import java.util.Calendar;
 import org.hibernate.Session;
 
 import utils.DataUtility;
-
+/**
+ * Include the login system methods
+ * @author Rova
+ *
+ */
 public class Login {
 	
 	private User currentUser;
@@ -24,6 +28,14 @@ public class Login {
 		return null;
 	}
 	
+	/**
+	 * Connect a user
+	 * @param pseudo
+	 * @param password
+	 * @param retrievedUser
+	 * @param session
+	 * @return
+	 */
 	public int connect(String pseudo, String password, User retrievedUser, Session session) {		
 		if(retrievedUser != null) {
 			if(retrievedUser.getPassword().equals(password)) {
@@ -68,6 +80,12 @@ public class Login {
 		this.session = session;
 	}
 
+	/**
+	 * Register an new user
+	 * @param pseudo
+	 * @param password
+	 * @return
+	 */
 	public User register(String pseudo, String password) {
 		User newUser;
 

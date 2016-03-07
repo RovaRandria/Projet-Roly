@@ -19,16 +19,13 @@ import javax.swing.JOptionPane;
 import org.hibernate.Session;
 
 import utils.DataUtility;
-import chart.BodybuildingPerformancesChart;
 import chart.ClimbingPerformancesChart;
 import chart.CyclingPerformancesChart;
 import chart.HipSizeChart;
 import chart.JoggingPerformancesChart;
-import chart.SkiPerformancesChart;
 import chart.WaistSizeChart;
 import chart.WeightChart;
 import data.DBConnection;
-import data.DataInit;
 import data.Exercise;
 import data.Gender;
 import data.Login;
@@ -41,9 +38,6 @@ import data.User;
 public class MainGUI extends JFrame{
 
 	public static void main(String[] args) {
-		/*DataInit.createTables();
-		DataInit.insertSports();
-		DataInit.insertExercises();*/
 		new MainGUI("Pass'Sport");
 	}
 
@@ -192,15 +186,17 @@ public class MainGUI extends JFrame{
 		if (performanceChartPanel!=null&& performanceChartPanel.isVisible()){
 			performanceChartPanel.getPreviousMonthJoggingPerfButton().addActionListener(new previousMonthJoggingPerfAction());
 			performanceChartPanel.getNextMonthJoggingPerfButton().addActionListener(new nextMonthJoggingPerfAction());
+			//performanceChartPanel.getPreviousMonthClimbingPerfButton().addActionListener(new previousMonthClimbingPerfAction());
+			//performanceChartPanel.getNextMonthClimbingPerfButton().addActionListener(new nextMonthClimbingPerfAction());
 			performanceChartPanel.getPreviousMonthCyclingPerfButton().addActionListener(new previousMonthCyclingPerfAction());
 			performanceChartPanel.getNextMonthCyclingPerfButton().addActionListener(new nextMonthCyclingPerfAction());
 
 			performanceChartPanel.getPreviousMonthClimbingPerfButton().addActionListener(new previousMonthClimbingPerfAction());
-			performanceChartPanel.getNextMonthClimbingPerfButton().addActionListener(new nextMonthClimbingPerfAction());			
-			performanceChartPanel.getPreviousMonthSkiPerfButton().addActionListener(new previousMonthSkiPerfAction());
-			performanceChartPanel.getNextMonthSkiPerfButton().addActionListener(new nextMonthSkiPerfAction());
-			performanceChartPanel.getPreviousMonthBodybuildingPerfButton().addActionListener(new previousMonthBodybuildingPerfAction());
-			performanceChartPanel.getNextMonthBodybuildingPerfButton().addActionListener(new nextMonthBodybuildingPerfAction());
+			performanceChartPanel.getNextMonthClimbingPerfButton().addActionListener(new nextMonthClimbingPerfAction());
+			//performanceChartPanel.getPreviousMonthSkiPerfButton().addActionListener(new previousMonthSkiPerfAction());
+			//performanceChartPanel.getNextMonthSkiPerfButton().addActionListener(new nextMonthSkiPerfAction());
+			//performanceChartPanel.getPreviousMonthBodybuildingPerfButton().addActionListener(new previousMonthBodybuildingPerfAction());
+			//performanceChartPanel.getNextMonthBodybuildingPerfButton().addActionListener(new nextMonthBodybuildingPerfAction());
 			performanceChartPanel.getBackHomeButton().addActionListener(new backSportsPanelAction());
 		}
 		if (practicePanel!=null){
@@ -654,7 +650,7 @@ public class MainGUI extends JFrame{
 					Exercise situp = new Exercise("Abdominaux", (Integer)practicePanel.getSitupComboBox().getSelectedItem());
 					Exercise pullup = new Exercise("Tractions", (Integer)practicePanel.getPullupComboBox().getSelectedItem());
 					Exercise dips = new Exercise("Dips", (Integer)practicePanel.getDipsComboBox().getSelectedItem());
-					Exercise squat = new Exercise("Squats", (Integer)practicePanel.getSquatComboBox().getSelectedItem());
+					Exercise squat = new Exercise("Squat", (Integer)practicePanel.getSquatComboBox().getSelectedItem());
 					Exercise benchPress = new Exercise("Développés-couchés", (Integer)practicePanel.getBenchPressComboBox().getSelectedItem());
 					exercisesList.add(pushup);
 					exercisesList.add(situp);
@@ -1012,87 +1008,6 @@ public class MainGUI extends JFrame{
 				performanceChartPanel.getNextMonthClimbingPerfButton().setVisible(true);
 
 			performanceChartPanel.getClimbingPerfMainBox().repaint();
-			performanceChartPanel.repaint();
-		}
-	}
-	
-	class previousMonthBodybuildingPerfAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			performanceChartPanel.getNextMonthBodybuildingPerfButton().setVisible(true);
-			if (performanceChartPanel.getCurrentMonthBodybuilding()==1){
-				performanceChartPanel.setCurrentMonthBodybuilding(12);
-				performanceChartPanel.setCurrentYearBodybuilding(performanceChartPanel.getCurrentYearBodybuilding()-1);
-			}else
-				performanceChartPanel.setCurrentMonthBodybuilding(performanceChartPanel.getCurrentMonthBodybuilding()-1);
-
-			System.out.println("Mois précédent : "+performanceChartPanel.getCurrentMonthBodybuilding()+"/"+performanceChartPanel.getCurrentYearBodybuilding());
-
-			performanceChartPanel.setBodybuildingPerfChart(new BodybuildingPerformancesChart("Performances musculation", performanceChartPanel.getCurrentMonthBodybuilding(), performanceChartPanel.getCurrentYearBodybuilding(), user));	
-			performanceChartPanel.getCurrentBodybuildingPerfChartPanel().removeAll();
-			performanceChartPanel.getCurrentBodybuildingPerfChartPanel().add(performanceChartPanel.getBodybuildingPerfChart().showBodybuildingPerfPanel());
-			performanceChartPanel.getBodybuildingPerfMainBox().repaint();
-			performanceChartPanel.repaint();
-		}
-	}
-
-	class nextMonthBodybuildingPerfAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (performanceChartPanel.getCurrentMonthBodybuilding()==12){
-				performanceChartPanel.setCurrentMonthBodybuilding(1);
-				performanceChartPanel.setCurrentYearBodybuilding(performanceChartPanel.getCurrentYearBodybuilding()+1);
-			}else
-				performanceChartPanel.setCurrentMonthBodybuilding(performanceChartPanel.getCurrentMonthBodybuilding()+1);
-			System.out.println("Mois suivant : "+performanceChartPanel.getCurrentMonthBodybuilding()+"/"+performanceChartPanel.getCurrentYearBodybuilding());
-			performanceChartPanel.setBodybuildingPerfChart(new BodybuildingPerformancesChart("Performances musculation", performanceChartPanel.getCurrentMonthBodybuilding(), performanceChartPanel.getCurrentYearBodybuilding(), user));	
-
-			performanceChartPanel.getCurrentBodybuildingPerfChartPanel().removeAll();
-			performanceChartPanel.getCurrentBodybuildingPerfChartPanel().add(performanceChartPanel.getBodybuildingPerfChart().showBodybuildingPerfPanel());
-			if (performanceChartPanel.getBodybuildingPerfChart().getNbError()==2)
-				performanceChartPanel.getNextMonthBodybuildingPerfButton().setVisible(false);
-			else
-				performanceChartPanel.getNextMonthBodybuildingPerfButton().setVisible(true);
-
-			performanceChartPanel.getBodybuildingPerfMainBox().repaint();
-			performanceChartPanel.repaint();
-		}
-	}
-	
-	class previousMonthSkiPerfAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			performanceChartPanel.getNextMonthSkiPerfButton().setVisible(true);
-			if (performanceChartPanel.getCurrentMonthSki()==1){
-				performanceChartPanel.setCurrentMonthSki(12);
-				performanceChartPanel.setCurrentYearSki(performanceChartPanel.getCurrentYearSki()-1);
-			}else
-				performanceChartPanel.setCurrentMonthSki(performanceChartPanel.getCurrentMonthSki()-1);
-
-			System.out.println("Mois précédent : "+performanceChartPanel.getCurrentMonthSki()+"/"+performanceChartPanel.getCurrentYearSki());
-
-			performanceChartPanel.setSkiPerfChart(new SkiPerformancesChart("Performances ski", performanceChartPanel.getCurrentMonthSki(), performanceChartPanel.getCurrentYearSki(), user));	
-			performanceChartPanel.getCurrentSkiPerfChartPanel().removeAll();
-			performanceChartPanel.getCurrentSkiPerfChartPanel().add(performanceChartPanel.getSkiPerfChart().showSkiPerfPanel());
-			performanceChartPanel.getSkiPerfMainBox().repaint();
-			performanceChartPanel.repaint();
-		}
-	}
-
-	class nextMonthSkiPerfAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (performanceChartPanel.getCurrentMonthSki()==12){
-				performanceChartPanel.setCurrentMonthSki(1);
-				performanceChartPanel.setCurrentYearSki(performanceChartPanel.getCurrentYearSki()+1);
-			}else
-				performanceChartPanel.setCurrentMonthSki(performanceChartPanel.getCurrentMonthSki()+1);
-			System.out.println("Mois suivant : "+performanceChartPanel.getCurrentMonthSki()+"/"+performanceChartPanel.getCurrentYearSki());
-			performanceChartPanel.setSkiPerfChart(new SkiPerformancesChart("Performances musculation", performanceChartPanel.getCurrentMonthSki(), performanceChartPanel.getCurrentYearSki(), user));	
-			performanceChartPanel.getCurrentSkiPerfChartPanel().removeAll();
-			performanceChartPanel.getCurrentSkiPerfChartPanel().add(performanceChartPanel.getSkiPerfChart().showSkiPerfPanel());
-			if (performanceChartPanel.getSkiPerfChart().getNbError()==2)
-				performanceChartPanel.getNextMonthSkiPerfButton().setVisible(false);
-			else
-				performanceChartPanel.getNextMonthSkiPerfButton().setVisible(true);
-
-			performanceChartPanel.getSkiPerfMainBox().repaint();
 			performanceChartPanel.repaint();
 		}
 	}

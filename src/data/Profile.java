@@ -22,7 +22,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
+/**
+ * Includes the fields for a user profile
+ * @author Rova
+ *
+ */
 @Entity
 @Table(name = "profile")
 public class Profile {
@@ -49,18 +53,30 @@ public class Profile {
 	@Column(name = "privacy")
 	private int privacy;
 	
+	/**
+	 * A profile can contain many physicalData, but a physicalData is linked to a single profile
+	 */
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = PhysicalData.class)
 	@JoinColumn(name = "profil_id", nullable = false)
 	private List<PhysicalData> physicalDataList = new ArrayList<PhysicalData>();
 	
+	/**
+	 * A profile can contains many sports that can be linked to other profiles
+	 */
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Sport.class)
 	@JoinTable(name = "profile_sport", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "sport_id"))
 	private List<Sport> sportsList = new ArrayList<Sport>();
 	
+	/**
+	 * A profile can contain many practices, but a physicalData is linked to a single profile
+	 */
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Practice.class)
 	@JoinColumn(name = "profil_id", nullable = false)
 	private List<Practice> practicesList = new ArrayList<Practice>();
 
+	/**
+	 * A profile corresponds to a single user
+	 */
 	@OneToOne(mappedBy="profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = User.class)
 	private User user;
 	
@@ -217,6 +233,11 @@ public class Profile {
 		this.friends = friends;
 	}
 	
+	/**
+	 * Displays all the practice of a sport of a user
+	 * @param sportName
+	 * @return the methode ToString for each practices of the sport which corresponds to sportName, of a user
+	 */
 	public String practicesListtoString(String sportName) {
 		String practicesListStr = "";
 		for(int i = 0; i< this.practicesList.size(); i++) {

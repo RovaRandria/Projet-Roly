@@ -25,7 +25,11 @@ import data.Exercise;
 import data.Practice;
 import data.Profile;
 import data.User;
-
+/**
+ * Create the chart Panel for the ski performances of a user
+ * @author Rova
+ *
+ */
 public class SkiPerformancesChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -43,9 +47,12 @@ public class SkiPerformancesChart extends ApplicationFrame {
 		nbError = 0;
 	}
 
-
+	/**
+	 *  Create the bar chart Panel for the ski performances by the route's color, of a user
+	 * @return
+	 */
 	private CategoryDataset createDataset() {
-		String series1 = "Performances ski";
+		String series1 = "Performances ski de " + user.getPseudo();
 
 		String green = "verte";
 		String blue = "bleue";
@@ -139,10 +146,10 @@ public class SkiPerformancesChart extends ApplicationFrame {
 								blackRouteNb += practiceExercise.get(j).getNumberOfSeries();
 							}
 						}
+						dataset.addValue(greenRouteNb, series1, green);
 						dataset.addValue(blueRouteNb, series1, blue);
 						dataset.addValue(redRouteNb, series1, red);
 						dataset.addValue(blackRouteNb, series1, black);
-						dataset.addValue(greenRouteNb, series1, green);
 					}
 					i--;
 				}while (currentMonth==month && currentYear==year && i>=0);

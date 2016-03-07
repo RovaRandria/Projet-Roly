@@ -3,11 +3,19 @@ package data;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
-
+/**
+ * This class links the different data classes to the database
+ * @author Rova
+ *
+ */
 public class DBConnection {
 	private static SessionFactory sessionFactory;
 	private static AnnotationConfiguration config;
 
+	/**
+	 * This class create the config of the database from the file "connection.cfg.xml" and create the link beetween the different tables
+	 * @return
+	 */
 	public static AnnotationConfiguration getConfig() {
 		if (config == null) {
 			config = new AnnotationConfiguration();
@@ -26,6 +34,10 @@ public class DBConnection {
 		return config;
 	}
 
+	/**
+	 * Create a session to access the database
+	 * @return
+	 */
 	public static SessionFactory getSessionFactory() {
 		if (sessionFactory == null) {
 			try {

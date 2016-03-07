@@ -4,6 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+/**
+ * Fields for a sport
+ * @author Rova
+ *
+ */
 @Entity
 @Table(name = "sport")
 public class Sport {
@@ -32,18 +38,6 @@ public class Sport {
 		public void setDescription(String description) {
 			this.description = description;
 		}
-
-
-
-		
-		/*
-		public String getId() {
-			return id;
-		}
-
-		public void setId(String id) {
-			this.id = id;
-		}*/
 
 		public String getName() {
 			return name;

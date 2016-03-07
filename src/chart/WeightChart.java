@@ -16,6 +16,11 @@ import utils.DataUtility;
 import data.Profile;
 import data.User;
 
+/**
+ * Create the chart Panel for the weight evolution of a user
+ * @author Rova
+ *
+ */
 public class WeightChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +38,10 @@ public class WeightChart extends ApplicationFrame {
 		nbError = 0;
 	}
 	
-
+	/**
+	 * Create the line chart for the weight evolution of a user
+	 * @return
+	 */
 	private XYDataset createDataset() {
 		
 		XYSeries weightSeries = new XYSeries("Poids"+ user.getPseudo());

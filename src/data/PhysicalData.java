@@ -10,13 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+/**
+ * Includes physical data's fields of a user
+ * @author Rova
+ *
+ */
 @Entity
 @Table(name = "physical_data")
 public class PhysicalData {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String id;
+	private String id;	
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "measure_date", nullable = false)
@@ -32,6 +36,17 @@ public class PhysicalData {
 	private float hipSize;
 	
 	public PhysicalData(){}
+	
+	public PhysicalData(Date measureDate, float weight, float waistSize,
+			float hipSize) {
+		super();
+		this.measureDate = measureDate;
+		this.weight = weight;
+		this.waistSize = waistSize;
+		this.hipSize = hipSize;
+	}
+
+
 
 	public float getWeight() {
 		return weight;
@@ -73,6 +88,11 @@ public class PhysicalData {
 		this.measureDate = measureDate;
 	}
 
+	/**
+	 * Convert the number of the month to the corresponding string
+	 * @param month
+	 * @return
+	 */
 	public String convertMonth (int month){
 		String[] monthName = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" };
 	    return monthName[month-1];

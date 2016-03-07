@@ -3,11 +3,21 @@ package utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Includes display and conversion utilities
+ * @author Rova
+ *
+ */
 public class DataUtility {
+	/**
+	 * Create a date from the format 'dd/MM/yyyy'
+	 * @param day
+	 * @param month
+	 * @param year
+	 * @return
+	 */
 	public static Date createDate(int day, int month, int year) {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		try {
@@ -24,15 +34,10 @@ public class DataUtility {
 		return null;
 	}
 
-	@SuppressWarnings("null")
-	public static int[] parseDate(Calendar cal) {
-		int[] parsedDate = null;	
-		parsedDate[0] = cal.get(Calendar.DATE);
-		parsedDate[1] = cal.get(Calendar.MONTH);
-		parsedDate[2] = cal.get(Calendar.YEAR);
-		return parsedDate;
-	}
-
+	/**
+	 * A list that contains all the sport names
+	 * @return
+	 */
 	public static List<String> getSportsListString (){
 		List<String> sportsList = new ArrayList<String>();
 		sportsList.add("Escalade");
@@ -43,6 +48,11 @@ public class DataUtility {
 		return sportsList;
 	}
 
+	/**
+	 * convert the number of month to the corresponding strings
+	 * @param month
+	 * @return
+	 */
 	public static String convertMonth (int month){
 		String[] monthName = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" };
 		return monthName[month-1];
@@ -72,12 +82,16 @@ public class DataUtility {
 		return year;
 	}
 
+	/**
+	 * Used to select the number of series for an exercise
+	 * @return
+	 */
 	public static List<Integer> numberOfSeries() {
-		List <Integer> year = new ArrayList<Integer>();
+		List <Integer> numberOfSeries = new ArrayList<Integer>();
 		for (int i = 0; i <= 100; i++) {
-			year.add(i);
+			numberOfSeries.add(i);
 		}
-		return year;
+		return numberOfSeries;
 	}
 
 

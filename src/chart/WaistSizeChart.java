@@ -16,6 +16,11 @@ import utils.DataUtility;
 import data.Profile;
 import data.User;
 
+/**
+ * Create the chart Panel for the waist size evolution of a user
+ * @author Rova
+ *
+ */
 public class WaistSizeChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +38,10 @@ public class WaistSizeChart extends ApplicationFrame {
 		nbError = 0;
 	}
 	
-
+	/**
+	 * Create the line chart for the waist size evolution of a user
+	 * @return
+	 */
 	private XYDataset createDataset() {
 		
 		XYSeries waistSizeSeries = new XYSeries("Tour de taille");

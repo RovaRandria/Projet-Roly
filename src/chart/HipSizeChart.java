@@ -16,6 +16,11 @@ import utils.DataUtility;
 import data.Profile;
 import data.User;
 
+/**
+ * Create the chart Panel for the hip size evolution of a user
+ * @author Rova
+ *
+ */
 public class HipSizeChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +38,10 @@ public class HipSizeChart extends ApplicationFrame {
 		nbError = 0;
 	}
 	
-
+	/**
+	 * Builds the chart for the hip size evolution of a user
+	 * @return
+	 */
 	private XYDataset createDataset() {
 		
 		XYSeries hipSizeSeries = new XYSeries("Tour de hanche");
@@ -116,7 +124,10 @@ public class HipSizeChart extends ApplicationFrame {
 	}	
 
 	
-	
+	/**
+	 * displays the chart
+	 * @return
+	 */
 	public ChartPanel showHipSizePanel(){
 		XYDataset dataset = createDataset();
 		JFreeChart chart = createChart(dataset);

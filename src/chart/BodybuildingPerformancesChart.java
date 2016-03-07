@@ -22,6 +22,11 @@ import data.Practice;
 import data.Profile;
 import data.User;
 
+/**
+ * Create the chart Panel of bodybuilding performances from a user
+ * @author Rova
+ *
+ */
 public class BodybuildingPerformancesChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +44,10 @@ public class BodybuildingPerformancesChart extends ApplicationFrame {
 		nbError = 0;
 	}
 
-
+	/**
+	 * Builds the bar chart of bodybuilding performances by exercises from a user
+	 * @return
+	 */
 	private CategoryDataset createDataset() {
 		String series1 = "Performances musculation de " + user.getPseudo();
 
@@ -172,7 +180,10 @@ public class BodybuildingPerformancesChart extends ApplicationFrame {
 	}	
 
 
-
+	/**
+	 * Displays the ChartPanel
+	 * @return
+	 */
 	public ChartPanel showBodybuildingPerfPanel(){
 		CategoryDataset dataset = createDataset();
 		JFreeChart chart = createChart(dataset);
