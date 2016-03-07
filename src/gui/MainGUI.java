@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -18,6 +19,7 @@ import javax.swing.JOptionPane;
 import org.hibernate.Session;
 
 import utils.DataUtility;
+import chart.ClimbingPerformancesChart;
 import chart.CyclingPerformancesChart;
 import chart.HipSizeChart;
 import chart.JoggingPerformancesChart;
@@ -37,9 +39,9 @@ import data.User;
 public class MainGUI extends JFrame{
 
 	public static void main(String[] args) {
-		/*DataInit.createTables();
+		DataInit.createTables();
 		DataInit.insertSports();
-		DataInit.insertExercises();*/
+		DataInit.insertExercises();
 		new MainGUI("Pass'Sport");
 	}
 
@@ -192,6 +194,9 @@ public class MainGUI extends JFrame{
 			//performanceChartPanel.getNextMonthClimbingPerfButton().addActionListener(new nextMonthClimbingPerfAction());
 			performanceChartPanel.getPreviousMonthCyclingPerfButton().addActionListener(new previousMonthCyclingPerfAction());
 			performanceChartPanel.getNextMonthCyclingPerfButton().addActionListener(new nextMonthCyclingPerfAction());
+
+			performanceChartPanel.getPreviousMonthClimbingPerfButton().addActionListener(new previousMonthClimbingPerfAction());
+			performanceChartPanel.getNextMonthClimbingPerfButton().addActionListener(new nextMonthClimbingPerfAction());
 			//performanceChartPanel.getPreviousMonthSkiPerfButton().addActionListener(new previousMonthSkiPerfAction());
 			//performanceChartPanel.getNextMonthSkiPerfButton().addActionListener(new nextMonthSkiPerfAction());
 			//performanceChartPanel.getPreviousMonthBodybuildingPerfButton().addActionListener(new previousMonthBodybuildingPerfAction());
@@ -585,18 +590,25 @@ public class MainGUI extends JFrame{
 			 } catch (NumberFormatException ex) {
 				 durationError = 1;
 			}
-			try {
-				performance = Float.parseFloat(practicePanel.getPerformanceTextField().getText());
-			 } catch (NumberFormatException ex) {
-				 performanceError = 1;
+			if(!profile.getPracticesList().isEmpty())
+				cal.setTime(profile.getPracticesList().get(profile.getPracticesList().size()-1).getDate());
+			List <Practice> practicesList = new ArrayList<Practice>();
+			for(int i = 0; i<profile.getPracticesList().size(); i++){
+				if(profile.getPracticesList().get(i).equals(sport.getName()))
+					practicesList.add(profile.getPracticesList().get(i));
 			}
-			cal.setTime(profile.getPhysicalDataList().get(profile.getPhysicalDataList().size()-1).getMeasureDate());
-			if(date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR))))
+			if((date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR))))&&((practicesList .isEmpty())))
 				JOptionPane.showMessageDialog(instance, "Veuillez saisir une date valide, du mois en cours !", "Date invalide", JOptionPane.ERROR_MESSAGE);
 			else if(durationError == 1)
 				JOptionPane.showMessageDialog(instance, "Veuillez saisir une durée valide !", "Durée invalide", JOptionPane.ERROR_MESSAGE);
 			else {
 				if(practicePanel.getSportName().equals("Jogging")||practicePanel.getSportName().equals("Vélo")) {
+
+					try {
+						performance = Float.parseFloat(practicePanel.getPerformanceTextField().getText());
+					 } catch (NumberFormatException ex) {
+						 performanceError = 1;
+					}
 					if(performanceError == 1)
 						JOptionPane.showMessageDialog(instance, "Veuillez saisir un temps de course valide !", "Temps de course invalide", JOptionPane.ERROR_MESSAGE);
 					else
@@ -650,6 +662,10 @@ public class MainGUI extends JFrame{
 					practice = new Practice(sport, date, practicePanel.getPlaceTextField().getText(), duration, exercisesList, profile);			
 				}
 				if(performanceError != 1) {
+				for (int i = 0; i < profile.getPracticesList().size(); i++) {
+						if(profile.getPracticesList().get(i).getDate().equals(practice.getDate())&&profile.getPracticesList().get(i).getSport().getName().equals(sport.getName()))
+							profile.getPracticesList().remove(i);	
+				}
 				profile.getPracticesList().add(practice);				
 				JOptionPane.showMessageDialog(instance, "Votre séance a bien été ajoutée !", "Séance ajoutée", JOptionPane.INFORMATION_MESSAGE);
 				session.persist(profile);
@@ -669,7 +685,8 @@ public class MainGUI extends JFrame{
 			Profile retrievedProfile = (Profile) session.get(Profile.class, user.getProfile().getId());
 
 			Calendar cal = Calendar.getInstance();
-			cal.setTime(retrievedProfile.getPhysicalDataList().get(retrievedProfile.getPhysicalDataList().size()-1).getMeasureDate());
+			if(!retrievedProfile.getPhysicalDataList().isEmpty())
+				cal.setTime(retrievedProfile.getPhysicalDataList().get(retrievedProfile.getPhysicalDataList().size()-1).getMeasureDate());
 			PhysicalData p = new PhysicalData();
 			
 			int parseError = 0;
@@ -685,7 +702,7 @@ public class MainGUI extends JFrame{
 				Date date = DataUtility.createDate((Integer)updatePhysicalDataPanel.getDayComboBox().getSelectedItem(), (Integer)updatePhysicalDataPanel.getMonthComboBox().getSelectedItem(), (Integer)updatePhysicalDataPanel.getYearComboBox().getSelectedItem());
 				p.setMeasureDate(date);
 				
-				if(date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR))))
+				if(date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))&&((!retrievedProfile.getPhysicalDataList().isEmpty())))
 					JOptionPane.showMessageDialog(instance, "Veuillez saisir une date valide, du mois en cours !", "Date invalide", JOptionPane.ERROR_MESSAGE);
 				else {
 					for (int i = 0; i < retrievedProfile.getPhysicalDataList().size(); i++) {
@@ -948,6 +965,47 @@ public class MainGUI extends JFrame{
 				performanceChartPanel.getNextMonthCyclingPerfButton().setVisible(true);
 
 			performanceChartPanel.getCyclingPerfMainBox().repaint();
+			performanceChartPanel.repaint();
+		}
+	}
+	
+	class previousMonthClimbingPerfAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			performanceChartPanel.getNextMonthClimbingPerfButton().setVisible(true);
+			if (performanceChartPanel.getCurrentMonthClimbing()==1){
+				performanceChartPanel.setCurrentMonthClimbing(12);
+				performanceChartPanel.setCurrentYearClimbing(performanceChartPanel.getCurrentYearClimbing()-1);
+			}else
+				performanceChartPanel.setCurrentMonthClimbing(performanceChartPanel.getCurrentMonthClimbing()-1);
+
+			System.out.println("Mois précédent : "+performanceChartPanel.getCurrentMonthClimbing()+"/"+performanceChartPanel.getCurrentYearClimbing());
+
+			performanceChartPanel.setClimbingPerfChart(new ClimbingPerformancesChart("Performances escalade", performanceChartPanel.getCurrentMonthClimbing(), performanceChartPanel.getCurrentYearClimbing(), user));	
+			performanceChartPanel.getCurrentClimbingPerfChartPanel().removeAll();
+			performanceChartPanel.getCurrentClimbingPerfChartPanel().add(performanceChartPanel.getClimbingPerfChart().showClimbingPerfPanel());
+			performanceChartPanel.getClimbingPerfMainBox().repaint();
+			performanceChartPanel.repaint();
+		}
+	}
+
+	class nextMonthClimbingPerfAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (performanceChartPanel.getCurrentMonthClimbing()==12){
+				performanceChartPanel.setCurrentMonthClimbing(1);
+				performanceChartPanel.setCurrentYearClimbing(performanceChartPanel.getCurrentYearClimbing()+1);
+			}else
+				performanceChartPanel.setCurrentMonthClimbing(performanceChartPanel.getCurrentMonthClimbing()+1);
+			System.out.println("Mois suivant : "+performanceChartPanel.getCurrentMonthClimbing()+"/"+performanceChartPanel.getCurrentYearClimbing());
+			performanceChartPanel.setClimbingPerfChart(new ClimbingPerformancesChart("Performances escalde", performanceChartPanel.getCurrentMonthClimbing(), performanceChartPanel.getCurrentYearClimbing(), user));	
+
+			performanceChartPanel.getCurrentClimbingPerfChartPanel().removeAll();
+			performanceChartPanel.getCurrentClimbingPerfChartPanel().add(performanceChartPanel.getClimbingPerfChart().showClimbingPerfPanel());
+			if (performanceChartPanel.getClimbingPerfChart().getNbError()==2)
+				performanceChartPanel.getNextMonthClimbingPerfButton().setVisible(false);
+			else
+				performanceChartPanel.getNextMonthClimbingPerfButton().setVisible(true);
+
+			performanceChartPanel.getClimbingPerfMainBox().repaint();
 			performanceChartPanel.repaint();
 		}
 	}
