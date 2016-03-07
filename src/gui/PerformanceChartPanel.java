@@ -13,6 +13,7 @@ import javax.swing.JTabbedPane;
 
 import org.jfree.chart.ChartPanel;
 
+import chart.ClimbingPerformancesChart;
 import chart.CyclingPerformancesChart;
 import chart.JoggingPerformancesChart;
 import data.User;
@@ -22,8 +23,8 @@ public class PerformanceChartPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-	private int currentMonthCycling, currentMonthJogging;
-	private int currentYearCycling, currentYearJogging;
+	private int currentMonthCycling, currentMonthJogging, currentMonthClimbing;
+	private int currentYearCycling, currentYearJogging, currentYearClimbing;
 	
 	private JButton nextMonthJoggingPerfButton = new JButton("Suivant");
 	private JButton nextMonthClimbingPerfButton = new JButton("Suivant");
@@ -71,6 +72,7 @@ public class PerformanceChartPanel extends JPanel {
 	
 	private JoggingPerformancesChart joggingPerfChart;
 	private CyclingPerformancesChart cyclingPerfChart;
+	private ClimbingPerformancesChart climbingPerfChart;
 
 	private JButton backHomeButton = new JButton("Retour aux sports");
 
@@ -82,6 +84,8 @@ public class PerformanceChartPanel extends JPanel {
 		currentYearCycling = cal.get(Calendar.YEAR);
 		currentMonthJogging = cal.get(Calendar.MONTH)+1;
 		currentYearJogging = cal.get(Calendar.YEAR);
+		currentMonthClimbing = cal.get(Calendar.MONTH)+1;
+		currentYearClimbing = cal.get(Calendar.YEAR);
 		
 		initStyle();		
 		init();
@@ -114,11 +118,25 @@ public class PerformanceChartPanel extends JPanel {
 		cyclingPerfMainBox.add(currentCyclingPerfChartPanel);
 		cyclingPerfMainBox.add(cyclingPerfButtonBox);
 		
+		climbingPerfChart = new ClimbingPerformancesChart("Performances escalade", currentMonthClimbing, currentYearClimbing, user);
+		currentClimbingPerfChartPanel = climbingPerfChart.showClimbingPerfPanel();
+
+		nextMonthClimbingPerfPanel.add(nextMonthClimbingPerfButton);
+		previousMonthClimbingPerfPanel.add(previousMonthClimbingPerfButton);
+		climbingPerfButtonBox.add(previousMonthClimbingPerfPanel);
+		climbingPerfButtonBox.add(nextMonthClimbingPerfPanel);
+
+		climbingPerfMainBox.add(currentClimbingPerfChartPanel);
+		climbingPerfMainBox.add(climbingPerfButtonBox);
+		
 		choiceTabbedPane.addTab("Performances jogging", joggingPerfMainBox);
 		choiceTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 		
 		choiceTabbedPane.addTab("Performances vélo", cyclingPerfMainBox);
 		choiceTabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+		
+		choiceTabbedPane.addTab("Performances escalade", climbingPerfMainBox);
+		choiceTabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 		
 		frameConstraints.insets = new Insets(5, 0, 10, 0);
 		frameConstraints.gridx = 0;
@@ -139,6 +157,12 @@ public class PerformanceChartPanel extends JPanel {
 		previousMonthCyclingPerfButton.setOpaque(false);
 		cyclingPerfButtonBox.setOpaque(false);
 		cyclingPerfMainBox.setOpaque(false);
+		
+		nextMonthClimbingPerfButton.setOpaque(false);
+		previousMonthClimbingPerfButton.setOpaque(false);
+		climbingPerfButtonBox.setOpaque(false);
+		climbingPerfMainBox.setOpaque(false);
+		
 		backHomeButton.setOpaque(false);
 		//		if (currentJoggingPerfChartPanel!=null)
 		//			currentJoggingPerfChartPanel.setOpaque(false);
@@ -514,6 +538,30 @@ public class PerformanceChartPanel extends JPanel {
 
 	public void setCyclingPerfChart(CyclingPerformancesChart cyclingPerfChart) {
 		this.cyclingPerfChart = cyclingPerfChart;
+	}
+
+	public int getCurrentMonthClimbing() {
+		return currentMonthClimbing;
+	}
+
+	public void setCurrentMonthClimbing(int currentMonthClimbing) {
+		this.currentMonthClimbing = currentMonthClimbing;
+	}
+
+	public int getCurrentYearClimbing() {
+		return currentYearClimbing;
+	}
+
+	public void setCurrentYearClimbing(int currentYearClimbing) {
+		this.currentYearClimbing = currentYearClimbing;
+	}
+
+	public ClimbingPerformancesChart getClimbingPerfChart() {
+		return climbingPerfChart;
+	}
+
+	public void setClimbingPerfChart(ClimbingPerformancesChart climbingPerfChart) {
+		this.climbingPerfChart = climbingPerfChart;
 	}
 	
 	

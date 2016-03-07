@@ -590,6 +590,7 @@ public class MainGUI extends JFrame{
 			 } catch (NumberFormatException ex) {
 				 performanceError = 1;
 			}
+			cal.setTime(profile.getPhysicalDataList().get(profile.getPhysicalDataList().size()-1).getMeasureDate());
 			if(date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR))))
 				JOptionPane.showMessageDialog(instance, "Veuillez saisir une date valide, du mois en cours !", "Date invalide", JOptionPane.ERROR_MESSAGE);
 			else if(durationError == 1)
@@ -668,7 +669,7 @@ public class MainGUI extends JFrame{
 			Profile retrievedProfile = (Profile) session.get(Profile.class, user.getProfile().getId());
 
 			Calendar cal = Calendar.getInstance();
-
+			cal.setTime(retrievedProfile.getPhysicalDataList().get(retrievedProfile.getPhysicalDataList().size()-1).getMeasureDate());
 			PhysicalData p = new PhysicalData();
 			
 			int parseError = 0;
