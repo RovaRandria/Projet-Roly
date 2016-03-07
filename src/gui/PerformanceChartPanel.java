@@ -20,7 +20,11 @@ import chart.JoggingPerformancesChart;
 import chart.SkiPerformancesChart;
 import data.User;
 
-
+/**
+ * Panel that show the charts about performances
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */	
 public class PerformanceChartPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -80,6 +84,10 @@ public class PerformanceChartPanel extends JPanel {
 
 	private JButton backHomeButton = new JButton("Retour aux sports");
 
+	/**
+	 * Constructor
+	 * @param user : charts are based on those user's performances
+	 */
 	public PerformanceChartPanel(User user) {
 		super();
 		this.user = user;
@@ -97,9 +105,11 @@ public class PerformanceChartPanel extends JPanel {
 		
 		initStyle();		
 		init();
-		initActions();
 	}
 
+	/**
+	 * Method that initialize the components on the panel
+	 */
 	public void init() {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
@@ -183,6 +193,9 @@ public class PerformanceChartPanel extends JPanel {
 		add(backHomeButton, frameConstraints);
 	}
 
+	/**
+	 * Method that initialize the style of the components
+	 */
 	public void initStyle(){
 		nextMonthJoggingPerfButton.setOpaque(false);
 		previousMonthJoggingPerfButton.setOpaque(false);
@@ -210,13 +223,7 @@ public class PerformanceChartPanel extends JPanel {
 		skiPerfMainBox.setOpaque(false);
 		
 		backHomeButton.setOpaque(false);
-		//		if (currentJoggingPerfChartPanel!=null)
-		//			currentJoggingPerfChartPanel.setOpaque(false);
 		this.setOpaque(false);
-	}
-
-	public void initActions(){
-
 	}
 
 

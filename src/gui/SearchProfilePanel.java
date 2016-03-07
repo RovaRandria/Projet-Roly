@@ -14,7 +14,11 @@ import javax.swing.JTextField;
 
 import data.User;
 
-
+/**
+ * Panel that show the form to search another user
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */
 public class SearchProfilePanel extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
@@ -32,26 +36,29 @@ public class SearchProfilePanel extends JPanel{
 	private User retrievedUser;
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 20);
 
-//	private JButton showPhysicDataChartButton = new JButton("Voir évolution physique");
-//	private JButton showJoggingPerfChartButton = new JButton("Voir évolution jogging");
-//	private JButton addToFriendsButton = new JButton("Ajouter en ami");
-//	private JLabel friendsLabel = new JLabel("Amis avec vous");
-//	private User user;
-
 	private Box mainBox = Box.createVerticalBox();
 
+	/**
+	 * Constructor
+	 * @param user : the user logged in
+	 */
 	public SearchProfilePanel(User user) {
 		this.retrievedUser = user;
 		init();
 		initStyle();
-		initActions();
 	}
 	
+	/**
+	 * Method that reinitialize the main panel
+	 */
 	public void repaintPanel(){
 		init();
 		initStyle();
-		initActions();
 	}
+	
+	/**
+	 * Method that initialize the components on the panel
+	 */
 	public void init() {
 		searchPanel.add(searchTextField);
 		searchPanel.add(searchButton);
@@ -78,6 +85,9 @@ public class SearchProfilePanel extends JPanel{
 
 	}
 
+	/**
+	 * Method that initialize the style of the components
+	 */
 	public void initStyle(){
 		titleLabel.setFont(TITLE_FONT);
 		resultLabel.setForeground(new Color(255, 0, 0));
@@ -92,51 +102,6 @@ public class SearchProfilePanel extends JPanel{
 			resultLabel.setOpaque(false);
 		this.setOpaque(false);
 	}
-
-	public void initActions(){
-//		addToFriendsButton.addActionListener(new addToFriendsAction());
-//		showPhysicDataChartButton.addActionListener(new showChartAction());
-//		showJoggingPerfChartButton.addActionListener(new showJoggingPerfChartAction());
-	}
-
-	
-	
-
-//	class addToFriendsAction implements ActionListener {
-//		public void actionPerformed(ActionEvent e) {
-//			Session session = DBConnection.getSession();
-//			session.beginTransaction();
-//			/*if(user.getFriends() == null) {
-//				ArrayList<Profile> friendsList = new ArrayList<Profile>();
-//				friendsList.add(retrievedUser.getProfile());
-//				user.setFriends(friendsList);
-//			}
-//			else*/
-//			user.getProfile().getFriends().add(retrievedUser.getProfile());
-//			session.merge(user);
-//			session.getTransaction().commit();
-//			JOptionPane.showMessageDialog(instance, retrievedUser.getPseudo() + " a bien été ajoué en ami !", "Ami ajouté", JOptionPane.INFORMATION_MESSAGE);
-//			resultPanel.removeAll();
-//			resultPanel.add(friendsLabel);
-//			resultPanel.add(showJoggingPerfChartButton);
-//			resultPanel.add(showPhysicDataChartButton);
-//			profilePanel = new ProfilePanel(retrievedUser, false);
-//			resultPanel.add(profilePanel);
-//
-//		}
-//	}
-//
-//	class showChartAction implements ActionListener {
-//		public void actionPerformed(ActionEvent e) {
-//			new PhysicalDataChartPanel(retrievedUser);
-//		}
-//	}
-//
-//	class showJoggingPerfChartAction implements ActionListener {
-//		public void actionPerformed(ActionEvent e) {
-//			new PerformanceChartPanel(retrievedUser);
-//		}
-//	}
 
 	public JTextField getSearchTextField() {
 		return searchTextField;

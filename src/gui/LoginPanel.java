@@ -13,7 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-	
+/**
+ * Panel that show the form to log in the application
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */	
 public class LoginPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -34,13 +38,17 @@ public class LoginPanel extends JPanel {
 	
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
 
+	/**
+	 * Constructor
+	 */
 	public LoginPanel() {
 		initStyle();
 		init();
-		initActions();
-		
 	}
 	
+	/**
+	 * Method that initialize the components on the panel
+	 */
 	public void init() {
 		setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
@@ -67,6 +75,9 @@ public class LoginPanel extends JPanel {
 
 	}
 	
+	/**
+	 * Method that initialize the style of the components
+	 */
 	public void initStyle() {
 		homeLabel.setFont(TITLE_FONT);
 		errorLabel.setForeground(new Color(255, 0, 0));
@@ -80,10 +91,7 @@ public class LoginPanel extends JPanel {
 		registrationButton.setOpaque(false);
 		this.setOpaque(false);
 	}
-	
-	public void initActions() {		
 
-	}
 
 	public JButton getConnectionButton() {
 		return connectionButton;

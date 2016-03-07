@@ -18,6 +18,11 @@ import utils.DataUtility;
 import data.DBConnection;
 import data.User;
 
+/**
+ * Panel that show the form to add a new practice 
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */
 public class PracticePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -55,12 +60,6 @@ public class PracticePanel extends JPanel {
 
 	private JLabel titleLabel = new JLabel("Mes séances de sports");
 	
-	//private JLabel historyLabel = new JLabel("Historique des séances ");
-	
-	//private JTextArea practicesListTextArea = new JTextArea();
-	
-	//private JScrollPane jScrollPracticesList = new JScrollPane();
-	
 	private JTextField durationTextField;
 	private JTextField performanceTextField;
 	private JTextField placeTextField;
@@ -72,14 +71,21 @@ public class PracticePanel extends JPanel {
 	public PracticePanel() {
 	}
 
+	/**
+	 * Constructor
+	 * @param user : add practices to user
+	 * @param sportName : name of the sport practiced
+	 */
 	public PracticePanel(User user, String sportName) {
 		this.user = user;
 		this.sportName = sportName;
 		initStyle();
 		init();
-		initActions();
 	}
 
+	/**
+	 * Method that initialize the components on the panel
+	 */
 	public void init() {
 		Session session = DBConnection.getSession();
 		session.beginTransaction();
@@ -190,6 +196,9 @@ public class PracticePanel extends JPanel {
 		session.getTransaction().commit();
 	}
 
+	/**
+	 * Method that initialize the style of the components
+	 */
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
 		dayComboBox.setOpaque(false);
@@ -201,11 +210,6 @@ public class PracticePanel extends JPanel {
 				datePanel.setOpaque(false);
 				this.setOpaque(false);
 	}
-
-	public void initActions() {		
-		
-	}
-
 
 	public JComboBox getDayComboBox() {
 		return dayComboBox;

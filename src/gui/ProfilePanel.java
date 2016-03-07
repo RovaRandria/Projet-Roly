@@ -14,7 +14,11 @@ import javax.swing.JPanel;
 import data.PhysicalData;
 import data.User;
 
-
+/**
+ * Panel that show the profile of a user
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */
 public class ProfilePanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
@@ -47,21 +51,30 @@ public class ProfilePanel extends JPanel {
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	
+	/**
+	 * Constructor
+	 * @param user : the user related to the profile
+	 * @param isMine : true when the profile is the profile of the user logged in, false otherwise
+	 */
 	public ProfilePanel(User user, boolean isMine) {
 		this.user = user;
 		this.isMine = isMine;
 		this.privacy = user.getProfile().getPrivacy();
 		init();
 		initStyle();
-		initActions();
 	}
 	
+	/**
+	 * Method that reinitialize the main panel
+	 */
 	public void repaintPanel(){
 		init();
 		initStyle();
-		initActions();
 	}
 	
+	/**
+	 * Method that initialize the components on the panel
+	 */
 	public void init() {
 		if (isMine){
 			pseudoLabel = new JLabel(user.getPseudo());
@@ -216,7 +229,6 @@ public class ProfilePanel extends JPanel {
 					physicalDataHipLabel = new JLabel("Tour de hanche : "+latestPhysicalData.getHipSize());
 					physicalDataWaistLabel = new JLabel("Tour de taille : "+latestPhysicalData.getWaistSize());
 				}
-				showPerfButton = new JButton("Voir ses performances");				
 				
 				setLayout(new GridBagLayout());
 				GridBagConstraints frameConstraints = new GridBagConstraints();
@@ -271,7 +283,6 @@ public class ProfilePanel extends JPanel {
 				frameConstraints.insets = new Insets(30, 0, 3, 0);
 				frameConstraints.gridwidth = 2;
 				frameConstraints.gridx = 0;
-				add(showPerfButton, frameConstraints);
 			}
 			else{
 				// privé
@@ -311,6 +322,9 @@ public class ProfilePanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Method that initialize the style of the components
+	 */
 	public void initStyle() {
 		homeLabel.setFont(TITLE_FONT);
 		physicalDataPanel.setOpaque(false);
@@ -333,11 +347,6 @@ public class ProfilePanel extends JPanel {
 		physicalDataWaistLabel.setOpaque(false);
 		this.setOpaque(false);
 	}
-	
-	public void initActions() {		
-
-	}
-
 
 	public JPanel getPhysicalDataPanel() {
 		return physicalDataPanel;

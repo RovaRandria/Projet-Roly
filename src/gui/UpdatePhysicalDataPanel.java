@@ -19,6 +19,11 @@ import utils.DataUtility;
 import data.PhysicalData;
 import data.User;
 
+/**
+ * Panel that show the form to update user's physical data
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */
 public class UpdatePhysicalDataPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -48,13 +53,20 @@ public class UpdatePhysicalDataPanel extends JPanel {
 	public UpdatePhysicalDataPanel() {
 	}
 
+	/**
+	 * Constructor
+	 * @param user : update user's physical data 
+	 * @see User
+	 */
 	public UpdatePhysicalDataPanel(User user) {
 		this.user = user;
 		initStyle();
 		init();
-		initActions();
 	}
 
+	/**
+	 * Method that initialize the components on the panel
+	 */
 	public void init() {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
@@ -102,6 +114,9 @@ public class UpdatePhysicalDataPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Method that initialize the style of the components
+	 */
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
 		updatePhysicalDataButton.setOpaque(false);
@@ -112,10 +127,6 @@ public class UpdatePhysicalDataPanel extends JPanel {
 		hipSizeLabel.setOpaque(false);
 		datePanel.setOpaque(false);
 		this.setOpaque(false);
-	}
-
-	public void initActions() {		
-
 	}
 
 	public JButton getUpdatePhysicalDataButton() {

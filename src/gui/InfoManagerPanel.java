@@ -21,6 +21,11 @@ import utils.DataUtility;
 import data.Gender;
 import data.User;
 
+/**
+ * Panel that show the form to update user's informations
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */
 public class InfoManagerPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -59,13 +64,20 @@ public class InfoManagerPanel extends JPanel {
 	public InfoManagerPanel() {
 	}
 
+	/**
+	 * Constructor
+	 * @param user : user who wants to update their informations
+	 * @see User
+	 */
 	public InfoManagerPanel(User user) {
 		this.user = user;
 		initStyle();
 		init();
-		initActions();
 	}
 
+	/**
+	 * Method that initialize the components on the panel
+	 */
 	public void init() {
 		pseudoLabel = new JLabel(user.getPseudo());
 
@@ -160,6 +172,9 @@ public class InfoManagerPanel extends JPanel {
 
 	}
 
+	/**
+	 * Method that initialize the style of the components
+	 */
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
 		errorLabel.setForeground(new Color(255, 0, 0));
@@ -183,10 +198,6 @@ public class InfoManagerPanel extends JPanel {
 		genderRadioButtonPanel.setOpaque(false);
 		privacyRadioButtonPanel.setOpaque(false);
 		this.setOpaque(false);
-	}
-
-	public void initActions() {		
-
 	}
 
 	public JButton getUpdateInfoButton() {

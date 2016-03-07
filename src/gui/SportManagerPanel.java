@@ -20,6 +20,11 @@ import data.DBConnection;
 import data.Practice;
 import data.User;
 
+/**
+ * Panel that show the form to manage sports and practices
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */	
 public class SportManagerPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -55,19 +60,28 @@ public class SportManagerPanel extends JPanel {
 	public SportManagerPanel() {
 	}
 
+	/**
+	 * Constructor
+	 * @param user : user logged in
+	 * @see User
+	 */
 	public SportManagerPanel(User user) {
 		this.user = user;
 		init();
 		initStyle();
-		initActions();
 	}
 
+	/**
+	 * Method that reinitialize the main panel
+	 */
 	public void repaintPanel(){
 		init();
 		initStyle();
-		initActions();
 	}
 
+	/**
+	 * Method that initialize the components on the panel
+	 */
 	public void init() {		
 		Session session = DBConnection.getSession();
 		session.beginTransaction();
@@ -156,7 +170,8 @@ public class SportManagerPanel extends JPanel {
 			add(placeLastPracticeLabel, frameConstraints);
 			add(durationLastPracticeLabel, frameConstraints);
 			add(exerciceLastPracticeLabel, frameConstraints);
-			add(performanceLastPracticeLabel, frameConstraints);
+			if((user.getProfile().getPracticesList().get(user.getProfile().getPracticesList().size()-1).getSport().getName().equals("Jogging"))||(user.getProfile().getPracticesList().get(user.getProfile().getPracticesList().size()-1).getSport().getName().equals("Vélo")))
+				add(performanceLastPracticeLabel, frameConstraints);
 		}
 		
 		
@@ -204,9 +219,11 @@ public class SportManagerPanel extends JPanel {
 		session.getTransaction().commit();
 	}
 
+	/**
+	 * Method that initialize the style of the components
+	 */
 	public void initStyle() {
 		titleLabel.setFont(TITLE_FONT);
-		//sportComboBox.setOpaque(false);
 		addSportButton.setOpaque(false);
 		removeSportButton.setOpaque(false);
 		showPracticePanelButton.setOpaque(false);
@@ -225,10 +242,6 @@ public class SportManagerPanel extends JPanel {
 		sportsTitleLabel2.setOpaque(false);
 		sportsTitleLabel3.setOpaque(false);
 		this.setOpaque(false);
-	}
-
-	public void initActions() {		
-
 	}
 
 	public JComboBox getSportComboBox() {

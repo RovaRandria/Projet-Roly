@@ -19,13 +19,16 @@ import javax.swing.JOptionPane;
 import org.hibernate.Session;
 
 import utils.DataUtility;
+import chart.BodybuildingPerformancesChart;
 import chart.ClimbingPerformancesChart;
 import chart.CyclingPerformancesChart;
 import chart.HipSizeChart;
 import chart.JoggingPerformancesChart;
+import chart.SkiPerformancesChart;
 import chart.WaistSizeChart;
 import chart.WeightChart;
 import data.DBConnection;
+import data.DataInit;
 import data.Exercise;
 import data.Gender;
 import data.Login;
@@ -35,9 +38,19 @@ import data.Profile;
 import data.Sport;
 import data.User;
 
+/**
+ * Main class from where we execute the application
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */
+
 public class MainGUI extends JFrame{
 
+	
 	public static void main(String[] args) {
+		DataInit.createTables();
+		DataInit.insertSports();
+		DataInit.insertExercises();
 		new MainGUI("Pass'Sport");
 	}
 
@@ -62,19 +75,28 @@ public class MainGUI extends JFrame{
 	private boolean loginUpdate=false;
 	private JLabel background = new JLabel(new ImageIcon("./images/background.jpeg"));
 
+	/**
+	 * Constructor
+	 * @param title : String that contains the window's title of the application
+	 */
 	public MainGUI(String title) {
 		super(title);
 		login = new  Login(false);
 		repaintFrame();
 	}
 
+	/**
+	 * Method that reinitialize the main frame
+	 */
 	public void repaintFrame(){
 		initStyle();
 		init();
 		initActions();
 	}
 
-
+	/**
+	 * Method that initialize the components on the frame
+	 */
 	public void init() {
 
 		if (!login.isCoState()) {
@@ -132,9 +154,12 @@ public class MainGUI extends JFrame{
 		setSize(540, 680);
 		setVisible(true);
 		setLocationRelativeTo(null);
-		//setResizable(false);
+		setResizable(false);
 	}
 
+	/**
+	 * Method that initialize the style of the components
+	 */
 	public void initStyle() {
 		background.setLayout(new GridBagLayout());
 		Toolkit kit = Toolkit.getDefaultToolkit();
@@ -142,6 +167,9 @@ public class MainGUI extends JFrame{
 		instance.setIconImage(img);
 	}
 
+	/**
+	 * Method that initialize the action of all the buttons which are visible on the frame
+	 */
 	public void initActions() {		
 		if (loginPanel!=null && loginPanel.isVisible() && !loginUpdate){
 			loginUpdate = true;
@@ -186,17 +214,15 @@ public class MainGUI extends JFrame{
 		if (performanceChartPanel!=null&& performanceChartPanel.isVisible()){
 			performanceChartPanel.getPreviousMonthJoggingPerfButton().addActionListener(new previousMonthJoggingPerfAction());
 			performanceChartPanel.getNextMonthJoggingPerfButton().addActionListener(new nextMonthJoggingPerfAction());
-			//performanceChartPanel.getPreviousMonthClimbingPerfButton().addActionListener(new previousMonthClimbingPerfAction());
-			//performanceChartPanel.getNextMonthClimbingPerfButton().addActionListener(new nextMonthClimbingPerfAction());
 			performanceChartPanel.getPreviousMonthCyclingPerfButton().addActionListener(new previousMonthCyclingPerfAction());
 			performanceChartPanel.getNextMonthCyclingPerfButton().addActionListener(new nextMonthCyclingPerfAction());
 
 			performanceChartPanel.getPreviousMonthClimbingPerfButton().addActionListener(new previousMonthClimbingPerfAction());
-			performanceChartPanel.getNextMonthClimbingPerfButton().addActionListener(new nextMonthClimbingPerfAction());
-			//performanceChartPanel.getPreviousMonthSkiPerfButton().addActionListener(new previousMonthSkiPerfAction());
-			//performanceChartPanel.getNextMonthSkiPerfButton().addActionListener(new nextMonthSkiPerfAction());
-			//performanceChartPanel.getPreviousMonthBodybuildingPerfButton().addActionListener(new previousMonthBodybuildingPerfAction());
-			//performanceChartPanel.getNextMonthBodybuildingPerfButton().addActionListener(new nextMonthBodybuildingPerfAction());
+			performanceChartPanel.getNextMonthClimbingPerfButton().addActionListener(new nextMonthClimbingPerfAction());			
+			performanceChartPanel.getPreviousMonthSkiPerfButton().addActionListener(new previousMonthSkiPerfAction());
+			performanceChartPanel.getNextMonthSkiPerfButton().addActionListener(new nextMonthSkiPerfAction());
+			performanceChartPanel.getPreviousMonthBodybuildingPerfButton().addActionListener(new previousMonthBodybuildingPerfAction());
+			performanceChartPanel.getNextMonthBodybuildingPerfButton().addActionListener(new nextMonthBodybuildingPerfAction());
 			performanceChartPanel.getBackHomeButton().addActionListener(new backSportsPanelAction());
 		}
 		if (practicePanel!=null){
@@ -209,6 +235,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that goes back to the profile's panel
+	 */
 	class backHomeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (profilePanel!=null)
@@ -253,6 +282,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that goes back to the login's panel
+	 */
 	class backLoginPanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (profilePanel!=null)
@@ -280,6 +312,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 	
+	/**
+	 * Action's inner class that goes back to the sports' panel
+	 */
 	class backSportsPanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (sportManagerPanel!=null)
@@ -297,6 +332,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the registration form
+	 */
 	class showRegistrationAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -308,6 +346,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the form to update the informations of the user logged in
+	 */
 	class showUpdateInfoAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -321,6 +362,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the physical data of the user
+	 */
 	class showPhysicalDataAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (physicalDataChartPanel==null)
@@ -343,6 +387,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the form to update the sports' and practices' informations of the user
+	 */
 	class showSportManagerAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (sportManagerPanel==null)
@@ -355,6 +402,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the charts of the user's performances
+	 */
 	class showPerfChartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (performanceChartPanel==null)
@@ -368,6 +418,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the form to update the informations of the user logged in
+	 */
 	class showPracticePanelAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(sportManagerPanel.getSportComboBox2().getSelectedItem() != null) {
@@ -388,6 +441,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the search bar to look for other users
+	 */
 	class showSearchProfileAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -401,6 +457,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 	
+	/**
+	 * Action's inner class that register a new user
+	 */
 	class registrationAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -432,6 +491,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that connect a user
+	 */
 	class connectionAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -472,6 +534,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that disconnect a user
+	 */
 	class disconnectionAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -484,7 +549,10 @@ public class MainGUI extends JFrame{
 			JOptionPane.showMessageDialog(instance, "Vous avez bien été déconnecté !", "Déconnexion réussie", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
-
+	
+	/**
+	 * Action's inner class that update the user's informations
+	 */
 	class updateInfoAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -522,6 +590,9 @@ public class MainGUI extends JFrame{
 		}
 	}	
 
+	/**
+	 * Action's inner class that add a new practiced sport for a user
+	 */
 	class addSportAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -544,6 +615,9 @@ public class MainGUI extends JFrame{
 		}	
 	}
 
+	/**
+	 * Action's inner class that remove a new practiced sport for a user
+	 */
 	class removeSportAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -570,6 +644,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that add a new practice for a user
+	 */
 	class addPracticeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			Session session = DBConnection.getSession();
@@ -579,6 +656,7 @@ public class MainGUI extends JFrame{
 			Practice practice = null;
 			Date date = DataUtility.createDate((Integer)practicePanel.getDayComboBox().getSelectedItem(), (Integer)practicePanel.getMonthComboBox().getSelectedItem(), (Integer)practicePanel.getYearComboBox().getSelectedItem());
 			Calendar cal = Calendar.getInstance();
+			Calendar today = Calendar.getInstance();			
 			Float duration = 0f, performance = 0f;
 			int durationError = 0, performanceError = 0;
 			boolean invalidDate = false;
@@ -594,7 +672,7 @@ public class MainGUI extends JFrame{
 				if(profile.getPracticesList().get(i).equals(sport.getName()))
 					practicesList.add(profile.getPracticesList().get(i));
 			}
-			if((date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))))
+			if((date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(today.get(Calendar.DAY_OF_MONTH), (today.get(Calendar.MONTH)+1), today.get(Calendar.YEAR)))))
 						invalidDate = true;
 			if(!practicesList.isEmpty()&&invalidDate)
 				JOptionPane.showMessageDialog(instance, "Veuillez saisir une date valide, du mois en cours !", "Date invalide", JOptionPane.ERROR_MESSAGE);
@@ -650,7 +728,7 @@ public class MainGUI extends JFrame{
 					Exercise situp = new Exercise("Abdominaux", (Integer)practicePanel.getSitupComboBox().getSelectedItem());
 					Exercise pullup = new Exercise("Tractions", (Integer)practicePanel.getPullupComboBox().getSelectedItem());
 					Exercise dips = new Exercise("Dips", (Integer)practicePanel.getDipsComboBox().getSelectedItem());
-					Exercise squat = new Exercise("Squat", (Integer)practicePanel.getSquatComboBox().getSelectedItem());
+					Exercise squat = new Exercise("Squats", (Integer)practicePanel.getSquatComboBox().getSelectedItem());
 					Exercise benchPress = new Exercise("Développés-couchés", (Integer)practicePanel.getBenchPressComboBox().getSelectedItem());
 					exercisesList.add(pushup);
 					exercisesList.add(situp);
@@ -675,7 +753,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
-
+	/**
+	 * Action's inner class that add a new physical data for a user
+	 */
 	class updatePhysicalDataAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -684,6 +764,7 @@ public class MainGUI extends JFrame{
 			Profile retrievedProfile = (Profile) session.get(Profile.class, user.getProfile().getId());
 
 			Calendar cal = Calendar.getInstance();
+			Calendar today = Calendar.getInstance();
 			if(!retrievedProfile.getPhysicalDataList().isEmpty())
 				cal.setTime(retrievedProfile.getPhysicalDataList().get(retrievedProfile.getPhysicalDataList().size()-1).getMeasureDate());
 			PhysicalData p = new PhysicalData();
@@ -702,7 +783,7 @@ public class MainGUI extends JFrame{
 				Date date = DataUtility.createDate((Integer)updatePhysicalDataPanel.getDayComboBox().getSelectedItem(), (Integer)updatePhysicalDataPanel.getMonthComboBox().getSelectedItem(), (Integer)updatePhysicalDataPanel.getYearComboBox().getSelectedItem());
 				p.setMeasureDate(date);
 				
-				if(date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR))))
+				if(date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(today.get(Calendar.DAY_OF_MONTH), (today.get(Calendar.MONTH)+1), today.get(Calendar.YEAR))))
 						invalidDate = true;
 				if((!retrievedProfile.getPhysicalDataList().isEmpty())&& invalidDate)
 					JOptionPane.showMessageDialog(instance, "Veuillez saisir une date valide, du mois en cours !", "Date invalide", JOptionPane.ERROR_MESSAGE);
@@ -723,10 +804,12 @@ public class MainGUI extends JFrame{
 			}
 			else
 				JOptionPane.showMessageDialog(instance, "Veuillez saisir des nombres valides !", "Valeurs incorrectes", JOptionPane.INFORMATION_MESSAGE);
-			//physicalDataChartPanel.repaintPanel();
 		}
 	}	
 
+	/**
+	 * Action's inner class that search users by their pseudo
+	 */
 	class searchProfileAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			searchProfilePanel.getResultPanel().removeAll();
@@ -742,20 +825,6 @@ public class MainGUI extends JFrame{
 			}
 			else{
 				searchProfilePanel.setProfilePanel(new ProfilePanel(user, false));
-//				Boolean isFriend = false;
-//				for (int i = 0; i < user.getProfile().getFriends().size(); i++) {
-//					if(user.getProfile().getFriends().get(i).getId().equals(retrievedUser.getProfile().getId())) {
-//						isFriend = true;
-//					}										
-//				}
-//				if(isFriend) {
-//					resultPanel.add(friendsLabel);
-//					resultPanel.add(showJoggingPerfChartButton);
-//					resultPanel.add(showPhysicDataChartButton);
-//				}					
-//
-//				else
-//					resultPanel.add(addToFriendsButton);
 				searchProfilePanel.getResultPanel().add(searchProfilePanel.getProfilePanel());
 			}
 			searchProfilePanel.repaintPanel();
@@ -764,6 +833,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 	
+	/**
+	 * Action's inner class that show the previous month of the weight chart
+	 */
 	class previousMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			physicalDataChartPanel.getNextMonthWeightButton().setVisible(true);
@@ -783,6 +855,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the next month of the weight chart
+	 */
 	class nextMonthWeightAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
@@ -806,6 +881,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the previous month of the waist size chart
+	 */
 	class previousMonthWaistSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			physicalDataChartPanel.getNextMonthWaistSizeButton().setVisible(true);
@@ -825,6 +903,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the next month of the waist size chart
+	 */
 	class nextMonthWaistSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (physicalDataChartPanel.getCurrentMonthWaistSize()==12){
@@ -848,6 +929,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the previous month of the hip size chart
+	 */
 	class previousMonthHipSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			physicalDataChartPanel.getNextMonthHipSizeButton().setVisible(true);
@@ -867,6 +951,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the next month of the hip size chart
+	 */
 	class nextMonthHipSizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (physicalDataChartPanel.getCurrentMonthHipSize()==12){
@@ -889,6 +976,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the previous month of the jogging's performance chart
+	 */
 	class previousMonthJoggingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel.getNextMonthJoggingPerfButton().setVisible(true);
@@ -908,6 +998,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the next month of the jogging's performance chart
+	 */
 	class nextMonthJoggingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (performanceChartPanel.getCurrentMonthJogging()==12){
@@ -930,6 +1023,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 	
+	/**
+	 * Action's inner class that show the previous month of the cycling's performance chart
+	 */
 	class previousMonthCyclingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel.getNextMonthCyclingPerfButton().setVisible(true);
@@ -949,6 +1045,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 	
+	/**
+	 * Action's inner class that show the next month of the cycling's performance chart
+	 */
 	class nextMonthCyclingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (performanceChartPanel.getCurrentMonthCycling()==12){
@@ -971,6 +1070,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 	
+	/**
+	 * Action's inner class that show the previous month of the climbing's performance chart
+	 */
 	class previousMonthClimbingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel.getNextMonthClimbingPerfButton().setVisible(true);
@@ -990,6 +1092,9 @@ public class MainGUI extends JFrame{
 		}
 	}
 
+	/**
+	 * Action's inner class that show the next month of the climbing's performance chart
+	 */
 	class nextMonthClimbingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (performanceChartPanel.getCurrentMonthClimbing()==12){
@@ -1008,6 +1113,99 @@ public class MainGUI extends JFrame{
 				performanceChartPanel.getNextMonthClimbingPerfButton().setVisible(true);
 
 			performanceChartPanel.getClimbingPerfMainBox().repaint();
+			performanceChartPanel.repaint();
+		}
+	}
+	
+	/**
+	 * Action's inner class that show the previous month of the body building's performance chart
+	 */
+	class previousMonthBodybuildingPerfAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			performanceChartPanel.getNextMonthBodybuildingPerfButton().setVisible(true);
+			if (performanceChartPanel.getCurrentMonthBodybuilding()==1){
+				performanceChartPanel.setCurrentMonthBodybuilding(12);
+				performanceChartPanel.setCurrentYearBodybuilding(performanceChartPanel.getCurrentYearBodybuilding()-1);
+			}else
+				performanceChartPanel.setCurrentMonthBodybuilding(performanceChartPanel.getCurrentMonthBodybuilding()-1);
+
+			System.out.println("Mois précédent : "+performanceChartPanel.getCurrentMonthBodybuilding()+"/"+performanceChartPanel.getCurrentYearBodybuilding());
+
+			performanceChartPanel.setBodybuildingPerfChart(new BodybuildingPerformancesChart("Performances musculation", performanceChartPanel.getCurrentMonthBodybuilding(), performanceChartPanel.getCurrentYearBodybuilding(), user));	
+			performanceChartPanel.getCurrentBodybuildingPerfChartPanel().removeAll();
+			performanceChartPanel.getCurrentBodybuildingPerfChartPanel().add(performanceChartPanel.getBodybuildingPerfChart().showBodybuildingPerfPanel());
+			performanceChartPanel.getBodybuildingPerfMainBox().repaint();
+			performanceChartPanel.repaint();
+		}
+	}
+
+	/**
+	 * Action's inner class that show the next month of the body building's performance chart
+	 */
+	class nextMonthBodybuildingPerfAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (performanceChartPanel.getCurrentMonthBodybuilding()==12){
+				performanceChartPanel.setCurrentMonthBodybuilding(1);
+				performanceChartPanel.setCurrentYearBodybuilding(performanceChartPanel.getCurrentYearBodybuilding()+1);
+			}else
+				performanceChartPanel.setCurrentMonthBodybuilding(performanceChartPanel.getCurrentMonthBodybuilding()+1);
+			System.out.println("Mois suivant : "+performanceChartPanel.getCurrentMonthBodybuilding()+"/"+performanceChartPanel.getCurrentYearBodybuilding());
+			performanceChartPanel.setBodybuildingPerfChart(new BodybuildingPerformancesChart("Performances musculation", performanceChartPanel.getCurrentMonthBodybuilding(), performanceChartPanel.getCurrentYearBodybuilding(), user));	
+
+			performanceChartPanel.getCurrentBodybuildingPerfChartPanel().removeAll();
+			performanceChartPanel.getCurrentBodybuildingPerfChartPanel().add(performanceChartPanel.getBodybuildingPerfChart().showBodybuildingPerfPanel());
+			if (performanceChartPanel.getBodybuildingPerfChart().getNbError()==2)
+				performanceChartPanel.getNextMonthBodybuildingPerfButton().setVisible(false);
+			else
+				performanceChartPanel.getNextMonthBodybuildingPerfButton().setVisible(true);
+
+			performanceChartPanel.getBodybuildingPerfMainBox().repaint();
+			performanceChartPanel.repaint();
+		}
+	}
+	
+	/**
+	 * Action's inner class that show the previous month of the ski's performance chart
+	 */
+	class previousMonthSkiPerfAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			performanceChartPanel.getNextMonthSkiPerfButton().setVisible(true);
+			if (performanceChartPanel.getCurrentMonthSki()==1){
+				performanceChartPanel.setCurrentMonthSki(12);
+				performanceChartPanel.setCurrentYearSki(performanceChartPanel.getCurrentYearSki()-1);
+			}else
+				performanceChartPanel.setCurrentMonthSki(performanceChartPanel.getCurrentMonthSki()-1);
+
+			System.out.println("Mois précédent : "+performanceChartPanel.getCurrentMonthSki()+"/"+performanceChartPanel.getCurrentYearSki());
+
+			performanceChartPanel.setSkiPerfChart(new SkiPerformancesChart("Performances ski", performanceChartPanel.getCurrentMonthSki(), performanceChartPanel.getCurrentYearSki(), user));	
+			performanceChartPanel.getCurrentSkiPerfChartPanel().removeAll();
+			performanceChartPanel.getCurrentSkiPerfChartPanel().add(performanceChartPanel.getSkiPerfChart().showSkiPerfPanel());
+			performanceChartPanel.getSkiPerfMainBox().repaint();
+			performanceChartPanel.repaint();
+		}
+	}
+
+	/**
+	 * Action's inner class that show the next month of the ski's performance chart
+	 */
+	class nextMonthSkiPerfAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (performanceChartPanel.getCurrentMonthSki()==12){
+				performanceChartPanel.setCurrentMonthSki(1);
+				performanceChartPanel.setCurrentYearSki(performanceChartPanel.getCurrentYearSki()+1);
+			}else
+				performanceChartPanel.setCurrentMonthSki(performanceChartPanel.getCurrentMonthSki()+1);
+			System.out.println("Mois suivant : "+performanceChartPanel.getCurrentMonthSki()+"/"+performanceChartPanel.getCurrentYearSki());
+			performanceChartPanel.setSkiPerfChart(new SkiPerformancesChart("Performances musculation", performanceChartPanel.getCurrentMonthSki(), performanceChartPanel.getCurrentYearSki(), user));	
+			performanceChartPanel.getCurrentSkiPerfChartPanel().removeAll();
+			performanceChartPanel.getCurrentSkiPerfChartPanel().add(performanceChartPanel.getSkiPerfChart().showSkiPerfPanel());
+			if (performanceChartPanel.getSkiPerfChart().getNbError()==2)
+				performanceChartPanel.getNextMonthSkiPerfButton().setVisible(false);
+			else
+				performanceChartPanel.getNextMonthSkiPerfButton().setVisible(true);
+
+			performanceChartPanel.getSkiPerfMainBox().repaint();
 			performanceChartPanel.repaint();
 		}
 	}

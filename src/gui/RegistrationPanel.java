@@ -12,6 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+/**
+ * Panel that show the form to register a new user
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */	
 public class RegistrationPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -28,12 +33,17 @@ public class RegistrationPanel extends JPanel{
 	
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 15);
 	
+	/**
+	 * Constructor
+	 */
 	public RegistrationPanel() {
 		initStyle();
 		init();
-		initActions();
 	}
 	
+	/**
+	 * Method that initialize the components on the panel
+	 */
 	private void init() {
 		GridBagConstraints frameConstraints = new GridBagConstraints();
 		setLayout(new GridBagLayout());
@@ -70,6 +80,9 @@ public class RegistrationPanel extends JPanel{
 
 	}
 	
+	/**
+	 * Method that initialize the style of the components
+	 */
 	private void initStyle() {
 		homeLabel.setFont(TITLE_FONT);
 		errorLabel.setForeground(new Color(255, 0, 0));
@@ -83,10 +96,6 @@ public class RegistrationPanel extends JPanel{
 		this.setOpaque(false);
 	}
 	
-	private void initActions() {
-
-	}
-
 	public JLabel getHomeLabel() {
 		return homeLabel;
 	}

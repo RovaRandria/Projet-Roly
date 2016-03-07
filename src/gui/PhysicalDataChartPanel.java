@@ -15,7 +15,11 @@ import chart.WaistSizeChart;
 import chart.WeightChart;
 import data.User;
 
-
+/**
+ * Panel that show the charts about physical data
+ * @author Angelique Nguyen & Rova Randrianantoanina
+ * @version 1.0
+ */	
 public class PhysicalDataChartPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -52,6 +56,10 @@ public class PhysicalDataChartPanel extends JPanel {
 	private JPanel nextMonthHipSizePanel = new JPanel();
 	private JPanel previousMonthHipSizePanel = new JPanel();
 
+	/**
+	 * Constructor
+	 * @param user : charts are based on those user's performances
+	 */
 	public PhysicalDataChartPanel(User user) {
 		super();
 		this.user = user;
@@ -65,15 +73,19 @@ public class PhysicalDataChartPanel extends JPanel {
 		
 		initStyle();
 		init();
-		initActions();
 	}
 	
+	/**
+	 * Method that reinitialize the panel
+	 */
 	public void repaintPanel(){
 		initStyle();
 		init();
-		initActions();
 	}
 	
+	/**
+	 * Method that initialize the components on the panel
+	 */
 	public void init() {
 
 		/*
@@ -137,6 +149,9 @@ public class PhysicalDataChartPanel extends JPanel {
 
 	}
 
+	/**
+	 * Method that initialize the style of the components
+	 */
 	public void initStyle(){
 		nextMonthWeightButton.setOpaque(false);
 		previousMonthWeightButton.setOpaque(false);
@@ -150,19 +165,9 @@ public class PhysicalDataChartPanel extends JPanel {
 		weightMainBox.setOpaque(false);
 		waistSizeMainBox.setOpaque(false);
 		hipSizeMainBox.setOpaque(false);
-//		if (currentWeightChartPanel!=null)
-//			currentWeightChartPanel.setOpaque(false);
-//		if (currentWaistSizeChartPanel!=null)
-//			currentWaistSizeChartPanel.setOpaque(false);
-//		if (currentHipSizeChartPanel!=null)
-//			currentHipSizeChartPanel.setOpaque(false);
 		this.setOpaque(false);
 	}
 
-	public void initActions(){
-
-	}
-	
 	public int getCurrentMonthWeight() {
 		return currentMonthWeight;
 	}
