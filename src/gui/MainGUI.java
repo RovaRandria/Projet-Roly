@@ -585,6 +585,7 @@ public class MainGUI extends JFrame{
 			Calendar cal = Calendar.getInstance();
 			Float duration = 0f, performance = 0f;
 			int durationError = 0, performanceError = 0;
+			boolean invalidDate = false;
 			try {
 				duration = Float.parseFloat(practicePanel.getDurationTextField().getText());
 			 } catch (NumberFormatException ex) {
@@ -597,7 +598,9 @@ public class MainGUI extends JFrame{
 				if(profile.getPracticesList().get(i).equals(sport.getName()))
 					practicesList.add(profile.getPracticesList().get(i));
 			}
-			if((date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR))))&&((practicesList .isEmpty())))
+			if((date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))))
+						invalidDate = true;
+			if(!practicesList.isEmpty()&&invalidDate)
 				JOptionPane.showMessageDialog(instance, "Veuillez saisir une date valide, du mois en cours !", "Date invalide", JOptionPane.ERROR_MESSAGE);
 			else if(durationError == 1)
 				JOptionPane.showMessageDialog(instance, "Veuillez saisir une durée valide !", "Durée invalide", JOptionPane.ERROR_MESSAGE);
@@ -690,6 +693,7 @@ public class MainGUI extends JFrame{
 			PhysicalData p = new PhysicalData();
 			
 			int parseError = 0;
+			boolean invalidDate = false;
 			
 			try {
 				p.setWeight(Float.parseFloat(updatePhysicalDataPanel.getWeightField().getText()));
@@ -702,7 +706,9 @@ public class MainGUI extends JFrame{
 				Date date = DataUtility.createDate((Integer)updatePhysicalDataPanel.getDayComboBox().getSelectedItem(), (Integer)updatePhysicalDataPanel.getMonthComboBox().getSelectedItem(), (Integer)updatePhysicalDataPanel.getYearComboBox().getSelectedItem());
 				p.setMeasureDate(date);
 				
-				if(date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))&&((!retrievedProfile.getPhysicalDataList().isEmpty())))
+				if(date.before(DataUtility.createDate(1, (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR)))||date.after(DataUtility.createDate(cal.get(Calendar.DAY_OF_MONTH), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.YEAR))))
+						invalidDate = true;
+				if((!retrievedProfile.getPhysicalDataList().isEmpty())&& invalidDate)
 					JOptionPane.showMessageDialog(instance, "Veuillez saisir une date valide, du mois en cours !", "Date invalide", JOptionPane.ERROR_MESSAGE);
 				else {
 					for (int i = 0; i < retrievedProfile.getPhysicalDataList().size(); i++) {
@@ -711,7 +717,7 @@ public class MainGUI extends JFrame{
 					}
 					retrievedProfile.getPhysicalDataList().add(p);
 		
-					JOptionPane.showMessageDialog(instance, "Vos données physiques ont bien été mises Ã  jour !", "Informations Ã  jour", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(instance, "Vos données physiques ont bien été mises à  jour !", "Informations à  jour", JOptionPane.INFORMATION_MESSAGE);
 					session.merge(retrievedProfile);
 		
 					session.getTransaction().commit();
