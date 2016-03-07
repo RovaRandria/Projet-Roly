@@ -1,7 +1,5 @@
 package data;
 
-import gui.MainGUI;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -155,6 +153,5 @@ public class DataInit {
 		DataInit.insertSports();
 		DataInit.insertExercises();
 		DataInit.insertTestValues();
-		new MainGUI("Pass'Sport");
 	}
 }

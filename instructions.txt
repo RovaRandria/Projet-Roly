@@ -1,0 +1,8 @@
+Projet Pass'Sport - Angélique NGUYEN - Rova RANDRIANANTOANINA
+
+Instructions :  - se connecter à la postGreSQL via PgAdmin par exemple en utilisant le compte "postgres", mot de passe : "postgres" (à créer si possible)
+		- créer une base de donnée "reseau_social_sport"
+		- pour le premier lancement, exécuter "DataInit.jar" (cette version recréé la base de données à chaque lancement)
+		- puis exécuter "PassSport.jar"
+		- se connecter à l'utilisateur "py", mot de passe "misopogon" (attention à la casse !)
+
