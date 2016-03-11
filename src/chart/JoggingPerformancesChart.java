@@ -29,6 +29,7 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
+	private User otherUser;
 	private int month;
 	private String monthName;
 	private int year;
@@ -37,6 +38,15 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 	public JoggingPerformancesChart(String title, int month, int year, User user) {
 		super(title);
 		this.user = user;
+		this.month = month;
+		this.year = year;
+		nbError = 0;
+	}
+	
+	public JoggingPerformancesChart(String title, int month, int year, User user1, User user2) {
+		super(title);
+		this.user = user1;
+		this.otherUser = user2;
 		this.month = month;
 		this.year = year;
 		nbError = 0;
@@ -133,6 +143,112 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 		return dataset;
 
 	}
+	
+	/**
+	 * Builds a line chart for the comparison of jogging performances of a user
+	 * @return
+	 */
+	private XYDataset createDatasetComparison() {
+
+		XYSeries joggingSeries = new XYSeries("Performances de "+user.getPseudo()+"    ");
+		XYSeries joggingSeries2 = new XYSeries("Performances de "+otherUser.getPseudo());
+
+		Session session = DBConnection.getSession();
+		session.beginTransaction();
+		user = (User) session.get(User.class, user.getPseudo());
+		Profile profile = user.getProfile();
+		
+		List<Practice> practicesList = profile.getPracticesList();
+		ArrayList<Practice> joggingPracticesList = new ArrayList<Practice>();
+		for(int i = 0; i < practicesList.size(); i++) {
+			if(practicesList.get(i).getSport().getName().equals("Jogging"))
+				joggingPracticesList.add(practicesList.get(i));
+		}
+		
+		Profile profile2 = otherUser.getProfile();
+		List<Practice> practicesList2 = profile2.getPracticesList();
+		ArrayList<Practice> joggingPracticesList2 = new ArrayList<Practice>();
+		for(int i = 0; i < practicesList2.size(); i++) {
+			if(practicesList2.get(i).getSport().getName().equals("Jogging"))
+				joggingPracticesList2.add(practicesList2.get(i));
+		}
+		
+		session.getTransaction().commit();
+		int nbPractices = joggingPracticesList.size();
+		int currentMonth, currentYear, i=nbPractices-1;
+
+		Calendar cal = Calendar.getInstance();
+		
+		monthName = DataUtility.convertMonth(month);
+		joggingSeries.add(0.9, null);
+		joggingSeries.add(31.1, null);
+		joggingSeries2.add(0.9, null);
+		joggingSeries2.add(31.1, null);
+		
+		if (!joggingPracticesList.isEmpty()){
+			cal.setTime(joggingPracticesList.get(i).getDate());
+			currentMonth = cal.get(Calendar.MONTH)+1;
+			currentYear = cal.get(Calendar.YEAR);	
+			while ((currentMonth!=month || currentYear!=year) && i>=0 && i<nbPractices){	
+				cal.setTime(joggingPracticesList.get(i).getDate());
+				currentYear = cal.get(Calendar.YEAR);
+				currentMonth = cal.get(Calendar.MONTH)+1;
+				
+				if (currentYear > year){
+					i--;
+				}else{
+					if (currentYear < year){
+						i++;
+						if (i>=nbPractices){
+							nbError = 2;
+						}
+						else{
+							nbError = 0;
+						}
+					}
+					else{
+						if (currentMonth > month){
+							i--;
+						}else{
+							if (currentMonth < month){
+								i++;
+								if (i>=nbPractices){
+									nbError = 2;
+								}
+								else{
+									nbError = 0;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			if (i>=0 && i<nbPractices){		
+				do {
+					cal.setTime(joggingPracticesList.get(i).getDate());
+					currentMonth = cal.get(Calendar.MONTH)+1;
+					currentYear = cal.get(Calendar.YEAR);
+					if (currentMonth==month && currentYear==year){
+						joggingSeries.add(cal.get(Calendar.DAY_OF_MONTH), joggingPracticesList.get(i).getPerformance());
+						joggingSeries2.add(cal.get(Calendar.DAY_OF_MONTH), joggingPracticesList2.get(i).getPerformance());
+						System.out.println("Date = "+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+" -- Performance pour le jogging = "+joggingPracticesList.get(i).getPerformance());
+					}
+					i--;
+				}while (currentMonth==month && currentYear==year && i>=0);
+			}
+		}
+		else{
+			nbError = 1;
+		}
+
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(joggingSeries);
+		dataset.addSeries(joggingSeries2);
+
+		return dataset;
+
+	}
 
 	private JFreeChart createChart(XYDataset dataset) {
 		return ChartFactory.createXYLineChart("Performances en jogging", monthName+" "+year, "minutes", dataset, PlotOrientation.VERTICAL, true, true, false);
@@ -148,6 +264,13 @@ public class JoggingPerformancesChart extends ApplicationFrame {
 		return chartPanel;
 	}
 
+	public ChartPanel showComparisonJoggingPerfPanel(){
+		XYDataset dataset = createDatasetComparison();
+		JFreeChart chart = createChart(dataset);
+		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+		return chartPanel;
+	}
 
 	public int getNbError() {
 		return nbError;

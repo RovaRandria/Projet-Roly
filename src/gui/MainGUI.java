@@ -48,9 +48,9 @@ public class MainGUI extends JFrame{
 
 	
 	public static void main(String[] args) {
-		DataInit.createTables();
+		/*DataInit.createTables();
 		DataInit.insertSports();
-		DataInit.insertExercises();
+		DataInit.insertExercises();*/
 		new MainGUI("Pass'Sport");
 	}
 
@@ -73,6 +73,7 @@ public class MainGUI extends JFrame{
 	private PracticePanel practicePanel;
 	private SearchProfilePanel searchProfilePanel;
 	private boolean loginUpdate=false;
+	private ComparisonChartPerformancePanel comparisonChartPerformancePanel;
 	private JLabel background = new JLabel(new ImageIcon("./images/background.jpeg"));
 
 	/**
@@ -136,11 +137,16 @@ public class MainGUI extends JFrame{
 										background.add(searchProfilePanel);
 									}
 									else{
-										if (profilePanel==null)
-											profilePanel = new ProfilePanel(user, true);
-										if (loginPanel!=null)	
-											loginPanel.setVisible(false);
-										background.add(profilePanel);
+										if (comparisonChartPerformancePanel!=null){
+											background.add(comparisonChartPerformancePanel);
+										}
+										else{
+											if (profilePanel==null)
+												profilePanel = new ProfilePanel(user, true);
+											if (loginPanel!=null)	
+												loginPanel.setVisible(false);
+											background.add(profilePanel);
+										}
 									}
 								}
 							}
@@ -232,6 +238,13 @@ public class MainGUI extends JFrame{
 		if (searchProfilePanel!=null){
 			searchProfilePanel.getSearchButton().addActionListener(new searchProfileAction());
 			searchProfilePanel.getBackHomeButton().addActionListener(new backHomeAction());
+		}
+		if (comparisonChartPerformancePanel!=null && comparisonChartPerformancePanel.isVisible()){
+			comparisonChartPerformancePanel.getPreviousMonthJoggingPerfButton().addActionListener(new previousMonthJoggingComparisonAction());
+			comparisonChartPerformancePanel.getNextMonthJoggingPerfButton().addActionListener(new nextMonthJoggingComparisonAction());
+			comparisonChartPerformancePanel.getPreviousMonthClimbingPerfButton().addActionListener(new previousMonthComparisonClimbingPerfAction());
+			comparisonChartPerformancePanel.getNextMonthClimbingPerfButton().addActionListener(new nextMonthComparisonClimbingPerfAction());
+			comparisonChartPerformancePanel.getBackHomeButton().addActionListener(new backSearchProfilePanelAction());
 		}
 	}
 
@@ -327,6 +340,23 @@ public class MainGUI extends JFrame{
 			practicePanel = null;
 			performanceChartPanel = null;
 			sportManagerPanel = new SportManagerPanel(user);
+
+			repaintFrame();
+		}
+	}
+	
+	/**
+	 * Action's inner class that goes back to the search profile's panel
+	 */
+	class backSearchProfilePanelAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (searchProfilePanel!=null)
+				searchProfilePanel.setVisible(true);
+			if (comparisonChartPerformancePanel!=null)
+				comparisonChartPerformancePanel.setVisible(false);
+
+			comparisonChartPerformancePanel = null;
+			searchProfilePanel = new SearchProfilePanel();
 
 			repaintFrame();
 		}
@@ -448,11 +478,28 @@ public class MainGUI extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (searchProfilePanel==null)
-				searchProfilePanel = new SearchProfilePanel(user);
+				searchProfilePanel = new SearchProfilePanel();
 			if (profilePanel!=null)
 				profilePanel.setVisible(false);
 			profilePanel = null;
 			searchProfilePanel.setVisible(true);
+			repaintFrame();
+		}
+	}
+	
+	/**
+	 * Action's inner class that show the comparison between 2 users
+	 */
+	class showComparisonPerfAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (comparisonChartPerformancePanel==null)
+				comparisonChartPerformancePanel = new ComparisonChartPerformancePanel(user, searchProfilePanel.getProfilePanel().getUser());
+			if (searchProfilePanel!=null)
+				searchProfilePanel.setVisible(false);
+			searchProfilePanel = null;
+			comparisonChartPerformancePanel.setVisible(true);
+			
 			repaintFrame();
 		}
 	}
@@ -815,7 +862,6 @@ public class MainGUI extends JFrame{
 			searchProfilePanel.getResultPanel().removeAll();
 			Session session = DBConnection.getSession();
 			session.beginTransaction();
-			searchProfilePanel.setRetrievedUser((User) session.get(User.class, searchProfilePanel.getSearchTextField().getText()));
 
 			User user = (User) session.get(User.class, searchProfilePanel.getSearchTextField().getText());
 			session.getTransaction().commit();
@@ -830,6 +876,7 @@ public class MainGUI extends JFrame{
 			searchProfilePanel.repaintPanel();
 			init();
 			initStyle();
+			searchProfilePanel.getProfilePanel().getShowPerfButton().addActionListener(new showComparisonPerfAction());
 		}
 	}
 	
@@ -1024,6 +1071,54 @@ public class MainGUI extends JFrame{
 	}
 	
 	/**
+	 * Action's inner class that show the previous month of the comparison of jogging's performance chart
+	 */
+	class previousMonthJoggingComparisonAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			comparisonChartPerformancePanel.getNextMonthJoggingPerfButton().setVisible(true);
+			if (comparisonChartPerformancePanel.getCurrentMonthJogging()==1){
+				comparisonChartPerformancePanel.setCurrentMonthJogging(12);
+				comparisonChartPerformancePanel.setCurrentYearJogging(comparisonChartPerformancePanel.getCurrentYearJogging()-1);
+			}else
+				comparisonChartPerformancePanel.setCurrentMonthJogging(comparisonChartPerformancePanel.getCurrentMonthJogging()-1);
+
+			System.out.println("Mois précédent : "+comparisonChartPerformancePanel.getCurrentMonthJogging()+"/"+comparisonChartPerformancePanel.getCurrentYearJogging());
+
+			comparisonChartPerformancePanel.setJoggingPerfChart(new JoggingPerformancesChart("Performances jogging", comparisonChartPerformancePanel.getCurrentMonthJogging(), comparisonChartPerformancePanel.getCurrentYearJogging(), user, comparisonChartPerformancePanel.getUser2()));	
+			comparisonChartPerformancePanel.getCurrentJoggingPerfChartPanel().removeAll();
+			comparisonChartPerformancePanel.getCurrentJoggingPerfChartPanel().add(comparisonChartPerformancePanel.getJoggingPerfChart().showComparisonJoggingPerfPanel());
+			comparisonChartPerformancePanel.getJoggingPerfMainBox().repaint();
+			comparisonChartPerformancePanel.repaint();
+		}
+	}
+	
+	/**
+	 * Action's inner class that show the next month of the jogging's performance chart
+	 */
+	class nextMonthJoggingComparisonAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (comparisonChartPerformancePanel.getCurrentMonthJogging()==12){
+				comparisonChartPerformancePanel.setCurrentMonthJogging(1);
+				comparisonChartPerformancePanel.setCurrentYearJogging(comparisonChartPerformancePanel.getCurrentYearJogging()+1);
+			}else
+				comparisonChartPerformancePanel.setCurrentMonthJogging(comparisonChartPerformancePanel.getCurrentMonthJogging()+1);
+			System.out.println("Mois suivant : "+comparisonChartPerformancePanel.getCurrentMonthJogging()+"/"+comparisonChartPerformancePanel.getCurrentYearJogging());
+			comparisonChartPerformancePanel.setJoggingPerfChart(new JoggingPerformancesChart("Performances jogging", comparisonChartPerformancePanel.getCurrentMonthJogging(), comparisonChartPerformancePanel.getCurrentYearJogging(), user, comparisonChartPerformancePanel.getUser2()));	
+
+			comparisonChartPerformancePanel.getCurrentJoggingPerfChartPanel().removeAll();
+			comparisonChartPerformancePanel.getCurrentJoggingPerfChartPanel().add(comparisonChartPerformancePanel.getJoggingPerfChart().showComparisonJoggingPerfPanel());
+			if (comparisonChartPerformancePanel.getJoggingPerfChart().getNbError()==2)
+				comparisonChartPerformancePanel.getNextMonthJoggingPerfButton().setVisible(false);
+			else
+				comparisonChartPerformancePanel.getNextMonthJoggingPerfButton().setVisible(true);
+
+			comparisonChartPerformancePanel.getJoggingPerfMainBox().repaint();
+			comparisonChartPerformancePanel.repaint();
+		}
+	}
+	
+
+	/**
 	 * Action's inner class that show the previous month of the cycling's performance chart
 	 */
 	class previousMonthCyclingPerfAction implements ActionListener {
@@ -1095,6 +1190,11 @@ public class MainGUI extends JFrame{
 	/**
 	 * Action's inner class that show the next month of the climbing's performance chart
 	 */
+	
+
+	/**
+	 * Action's inner class that show the next month of the climbing's performance chart
+	 */
 	class nextMonthClimbingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (performanceChartPanel.getCurrentMonthClimbing()==12){
@@ -1118,8 +1218,52 @@ public class MainGUI extends JFrame{
 	}
 	
 	/**
-	 * Action's inner class that show the previous month of the body building's performance chart
+	 * Action's inner class that show the previous month of the climbing's performance chart
 	 */
+	class previousMonthComparisonClimbingPerfAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			comparisonChartPerformancePanel.getNextMonthClimbingPerfButton().setVisible(true);
+			if (comparisonChartPerformancePanel.getCurrentMonthClimbing()==1){
+				comparisonChartPerformancePanel.setCurrentMonthClimbing(12);
+				comparisonChartPerformancePanel.setCurrentYearClimbing(comparisonChartPerformancePanel.getCurrentYearClimbing()-1);
+			}else
+				comparisonChartPerformancePanel.setCurrentMonthClimbing(comparisonChartPerformancePanel.getCurrentMonthClimbing()-1);
+
+			System.out.println("Mois précédent : "+comparisonChartPerformancePanel.getCurrentMonthClimbing()+"/"+comparisonChartPerformancePanel.getCurrentYearClimbing());
+
+			comparisonChartPerformancePanel.setClimbingPerfChart(new ClimbingPerformancesChart("Performances escalade", comparisonChartPerformancePanel.getCurrentMonthClimbing(), comparisonChartPerformancePanel.getCurrentYearClimbing(), user, comparisonChartPerformancePanel.getUser2()));	
+			comparisonChartPerformancePanel.getCurrentClimbingPerfChartPanel().removeAll();
+			comparisonChartPerformancePanel.getCurrentClimbingPerfChartPanel().add(comparisonChartPerformancePanel.getClimbingPerfChart().showComparisonClimbingPerfPanel());
+			comparisonChartPerformancePanel.getClimbingPerfMainBox().repaint();
+			comparisonChartPerformancePanel.repaint();
+		}
+	}
+
+	/**
+	 * Action's inner class that show the next month of the climbing's performance chart
+	 */
+	class nextMonthComparisonClimbingPerfAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (comparisonChartPerformancePanel.getCurrentMonthClimbing()==12){
+				comparisonChartPerformancePanel.setCurrentMonthClimbing(1);
+				comparisonChartPerformancePanel.setCurrentYearClimbing(comparisonChartPerformancePanel.getCurrentYearClimbing()+1);
+			}else
+				comparisonChartPerformancePanel.setCurrentMonthClimbing(comparisonChartPerformancePanel.getCurrentMonthClimbing()+1);
+			System.out.println("Mois suivant : "+comparisonChartPerformancePanel.getCurrentMonthClimbing()+"/"+comparisonChartPerformancePanel.getCurrentYearClimbing());
+			comparisonChartPerformancePanel.setClimbingPerfChart(new ClimbingPerformancesChart("Performances escalde", comparisonChartPerformancePanel.getCurrentMonthClimbing(), comparisonChartPerformancePanel.getCurrentYearClimbing(), user, comparisonChartPerformancePanel.getUser2()));	
+
+			comparisonChartPerformancePanel.getCurrentClimbingPerfChartPanel().removeAll();
+			comparisonChartPerformancePanel.getCurrentClimbingPerfChartPanel().add(comparisonChartPerformancePanel.getClimbingPerfChart().showComparisonClimbingPerfPanel());
+			if (comparisonChartPerformancePanel.getClimbingPerfChart().getNbError()==2)
+				comparisonChartPerformancePanel.getNextMonthClimbingPerfButton().setVisible(false);
+			else
+				comparisonChartPerformancePanel.getNextMonthClimbingPerfButton().setVisible(true);
+
+			comparisonChartPerformancePanel.getClimbingPerfMainBox().repaint();
+			comparisonChartPerformancePanel.repaint();
+		}
+	}
+	
 	class previousMonthBodybuildingPerfAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			performanceChartPanel.getNextMonthBodybuildingPerfButton().setVisible(true);
@@ -1209,5 +1353,7 @@ public class MainGUI extends JFrame{
 			performanceChartPanel.repaint();
 		}
 	}
+
+
 	
 }

@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import data.User;
 
 /**
  * Panel that show the form to search another user
@@ -22,7 +21,7 @@ import data.User;
 public class SearchProfilePanel extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
-	private ProfilePanel profilePanel;
+	private ProfilePanel profilePanel = new ProfilePanel();
 	private JPanel searchPanel = new JPanel();
 	private JPanel resultPanel;
 
@@ -33,7 +32,6 @@ public class SearchProfilePanel extends JPanel{
 	private JLabel titleLabel = new JLabel("Recherche de sportifs");
 	private JLabel subtitleLabel = new JLabel("Entrez le pseudo de l'utilisateur que vous recherchez");
 	private JLabel resultLabel;
-	private User retrievedUser;
 	private static final Font TITLE_FONT = new Font("Arial", Font.ITALIC|Font.BOLD, 20);
 
 	private Box mainBox = Box.createVerticalBox();
@@ -42,8 +40,7 @@ public class SearchProfilePanel extends JPanel{
 	 * Constructor
 	 * @param user : the user logged in
 	 */
-	public SearchProfilePanel(User user) {
-		this.retrievedUser = user;
+	public SearchProfilePanel() {
 		init();
 		initStyle();
 	}
@@ -138,12 +135,6 @@ public class SearchProfilePanel extends JPanel{
 	}
 	public void setResultLabel(JLabel resultLabel) {
 		this.resultLabel = resultLabel;
-	}
-	public User getRetrievedUser() {
-		return retrievedUser;
-	}
-	public void setRetrievedUser(User retrievedUser) {
-		this.retrievedUser = retrievedUser;
 	}
 	public Box getMainBox() {
 		return mainBox;

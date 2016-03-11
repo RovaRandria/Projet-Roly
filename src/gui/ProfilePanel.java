@@ -64,6 +64,10 @@ public class ProfilePanel extends JPanel {
 		initStyle();
 	}
 	
+	public ProfilePanel (){
+		
+	}
+	
 	/**
 	 * Method that reinitialize the main panel
 	 */
@@ -229,6 +233,7 @@ public class ProfilePanel extends JPanel {
 					physicalDataHipLabel = new JLabel("Tour de hanche : "+latestPhysicalData.getHipSize());
 					physicalDataWaistLabel = new JLabel("Tour de taille : "+latestPhysicalData.getWaistSize());
 				}
+				showPerfButton = new JButton("Comparer nos performances");	
 				
 				setLayout(new GridBagLayout());
 				GridBagConstraints frameConstraints = new GridBagConstraints();
@@ -283,6 +288,7 @@ public class ProfilePanel extends JPanel {
 				frameConstraints.insets = new Insets(30, 0, 3, 0);
 				frameConstraints.gridwidth = 2;
 				frameConstraints.gridx = 0;
+				add(showPerfButton, frameConstraints);
 			}
 			else{
 				// privé
